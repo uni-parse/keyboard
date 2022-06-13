@@ -1,0 +1,22 @@
+:root {
+  box-sizing: border-box;
+}
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+#gaara {
+  max-width: 100%;
+  filter: drop-shadow(.2em .5em 7px #000);
+  cursor: cell;
+}
+.a {
+  background-clip: text;
+}
