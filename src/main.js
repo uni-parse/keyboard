@@ -24,11 +24,12 @@ const remap = {
     e: ['f', '$', '⁰'],
     r: ['p', '<', '≤'],
     t: ['b', '>', '≥'],
-    y: ['Enter'],
+    y: ['Bs'],
     u: ['j', '+', '±'],
     i: ['l', '', '', 7, 'Home', { '<^<!': '^7' }],
     o: ['u', '', '', 8, 'Up', {
       '<^<!': '^8',
+      '<^>!': '^{Up}',
       '<!>!': '!{Up}',
       // '<+<!>!': '+!{Up}',
       '+>!': '+{Up}',
@@ -50,16 +51,18 @@ const remap = {
     d: ['s', 'Volume_Down', 'Browser_Search'],
     f: ['t', 'Volume_Up', 'Browser_Forward'],
     g: ['', 'Del', '', '', '', { '+!': '+{Del}' }],
-    h: ['=', '≠', '≈'],
+    h: ['Enter'],
     j: ['m', '-', '∞'],
     k: ['n', '', '', 1, 'Left', {
       '<^<!': '^1',
+      '<^>!': '^{Left}',
       '<!>!': '!{Left}',
       '+>!': '+{Left}',
       '<#>!': '#{Left}',
     }],
     l: ['e', '', '', 2, 'Down', {
       '<^<!': '^2',
+      '<^>!': '^{Down}',
       '<!>!': '!{Down}',
       // '<+<!>!': '+!{Down}',
       '+>!': '+{Down}',
@@ -68,6 +71,7 @@ const remap = {
     }],
     '`;': ['i', '', '', 3, 'Right', {
       '<^<!': '^3',
+      '<^>!': '^{Right}',
       '<!>!': '!{Right}',
       '+>!': '+{Right}',
       '<#>!': '#{Right}',
@@ -100,16 +104,16 @@ const remap = {
     let str = ''
     for (const mode in this.keys[key][5]) {
       if (this.keys[key][5][mode]) {
-        str += `\n\t${mode}${key}::SendInput, ${this.keys[key][5][mode]}\n\t\treturn`
+        str += `\t${mode}${key}::SendInput, ${this.keys[key][5][mode]}\n\t\treturn\n`
       } else {
-        str += `\n\t${mode}${key}::BlockInput, on\n\t\treturn`
+        str += `\t${mode}${key}::BlockInput, on\n\t\treturn\n`
       }
     }
     return str
   },
   show() {
     for (const key in this.keys) {
-      this.output += `${this.keys[key][0] ? `\t${key}::${this.keys[key][0]}\n` : ''}${this.keys[key][1] ? `\t!${key}::SendInput, {${this.keys[key][1]}}\n\t\treturn` : ''}${this.keys[key][2] ? `\n\t<!>!${key}::SendInput, {${this.keys[key][2]}}\n\t\treturn` : ''}${this.keys[key][3] ? `\n\t<!${key}::SendInput, {${this.keys[key][3]}}\n\t\treturn` : ''}${this.keys[key][4] ? `\n\t>!${key}::SendInput, {${this.keys[key][4]}}\n\t\treturn` : ''}${this.keys[key][5] ? this.switch(key) : ''}\n`
+      this.output += `;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ${key}\n${this.keys[key][0] ? `\t${key}::${this.keys[key][0]}\n` : ''}${this.keys[key][1] ? `\t!${key}::SendInput, {${this.keys[key][1]}}\n\t\treturn\n` : ''}${this.keys[key][2] ? `\t<!>!${key}::SendInput, {${this.keys[key][2]}}\n\t\treturn\n` : ''}${this.keys[key][3] ? `\t<!${key}::SendInput, {${this.keys[key][3]}}\n\t\treturn\n` : ''}${this.keys[key][4] ? `\t>!${key}::SendInput, {${this.keys[key][4]}}\n\t\treturn\n` : ''}${this.keys[key][5] ? this.switch(key) : ''}\n`
     }
     console.log(this.output)
     pre.innerText = this.output
