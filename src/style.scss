@@ -19,6 +19,8 @@ main{
   display: inline-flex;
   width: clamp(300px,100vw,1200px);
   flex-flow: column nowrap;
+  overflow: hidden;
+  max-width: calc(100vw - 1.1em);
 }
 img {
   max-width: 100%;
