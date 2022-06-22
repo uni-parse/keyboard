@@ -1,3 +1,7 @@
+@mixin space($p:0,$m:$p){
+  padding: $p;
+  margin: $m;
+}
 :root {
   box-sizing: border-box;
 }
@@ -8,15 +12,44 @@
 }
 html,
 body {
-  margin: 0;
-  padding: 0;
+  @include space();
   text-align: center;
 }
-#gaara {
-  max-width: 100%;
-  filter: drop-shadow(.2em .5em 7px #000);
-  cursor: cell;
+main{
+  display: inline-flex;
+  width: clamp(300px,100vw,1200px);
+  flex-flow: column nowrap;
 }
-.a {
-  background-clip: text;
+img {
+  max-width: 100%;
+  // object-fit: contain;
+  //cursor: cell;
+  // position: sticky;
+  // top: 0;
+}
+div#script{
+  align-self: center;
+  background-color: red;
+  display: inline-block;
+  position: relative;
+  height: 80vh;
+  @include space(0,1em 0 0 0);
+}
+pre{
+  display: inline-block;
+  text-align: start;
+  font-size: clamp(1rem,1.25vw,1.25rem);
+  tab-size: 2;
+  overflow: auto;
+  background-color: #333;
+  max-height: 100%;
+  max-width: calc(100vw - 1em);
+  color: yellowgreen;
+  @include space();
+}
+button{
+    padding: 0.25rem;
+    position: absolute;
+    right: 1.2rem;
+    top: 0.75rem;
 }

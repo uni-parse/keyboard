@@ -176,16 +176,16 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ [
 	[:::
-	![::SendInput, {=}
+	![::SendInput, {`;}
 		return
-	<!>![::SendInput, {≠}
+	<!>![::SendInput, {≈}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ]
-	]::`;
-	<!>!]::SendInput, {≈}
+	]::=
+	<!>!]::SendInput, {≠}
 		return
-	<!]::SendInput, {`;}
+	<!]::SendInput, {=}
 		return
 	>!]::SendInput, {PgDn}
 		return

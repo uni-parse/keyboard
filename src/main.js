@@ -1,5 +1,19 @@
-const pre = document.createElement('pre')
-document.body.appendChild(pre)
+import './style.scss'
+import srcset from './assets/uniparse-layout.png?w=320;375;425;768;1024;width&format=avif;webp&srcset'
+const img = document.createElement('img'),
+  pre = document.createElement('pre'),
+  btn = document.createElement('button'),
+  div = document.createElement('div'),
+  main = document.createElement('main')
+img.srcset = srcset
+img.alt = 'UniParse keyboard layout'
+div.id = 'script'
+btn.textContent = 'copy'
+div.appendChild(btn)
+div.appendChild(pre)
+main.appendChild(img)
+main.appendChild(div)
+document.body.appendChild(main)
 const remap = {
   keys: {
     // 'old': ['new', '!', '<!>!', '<!', '>!', { '<^<!': ['^',3], '<!>!': ['!',4], '+>!': ['+',4] }],
@@ -37,8 +51,8 @@ const remap = {
       '<^<!>!': '^!{Up}',
     }],
     p: ['y', '', '', 9, 'End', { '<^<!': '^9' }],
-    '[': [':', '=', '≠', '', ''],
-    ']': ['`;', '', '≈', '`;', 'PgDn'],
+    '[': [':', '`;', '≈'],
+    ']': ['=', '', '≠', '=', 'PgDn'],
     'Enter': ['Bs'],
 
 
@@ -117,6 +131,10 @@ const remap = {
     }
     console.log(this.output)
     pre.innerText = this.output
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(this.output)
+        .then(() => btn.textContent = 'copied')
+    }, {once:true})
   }
 }
 remap.show()
