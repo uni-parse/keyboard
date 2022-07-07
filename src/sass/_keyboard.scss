@@ -1,6 +1,7 @@
 @use 'utilities' as *;
 div#keyboard {
   min-width: 640px;
+  overflow: auto;
   display: flex;
   flex-flow: row wrap;
   border: red thin solid;
