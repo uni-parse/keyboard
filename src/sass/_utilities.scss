@@ -1,0 +1,4 @@
+@mixin space($p:0,$m:$p){
+  padding: $p;
+  margin: $m;
+}

@@ -1,0 +1,18 @@
+@use 'utilities' as *;
+div#keyboard {
+  min-width: 640px;
+  display: flex;
+  flex-flow: row wrap;
+  border: red thin solid;
+  & > span {
+    flex-basis: 6%;//15x
+    display: grid;
+    grid: 1fr 1fr/ 1fr 1fr;
+    border: gray thin solid;
+    border-radius: 0.3em;
+    @include space(.2em,.6%);
+    & > kbd {
+      padding: 0.2em;
+    }
+  }
+}

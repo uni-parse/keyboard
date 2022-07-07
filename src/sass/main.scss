@@ -1,20 +1,7 @@
-@mixin space($p:0,$m:$p){
-  padding: $p;
-  margin: $m;
-}
-:root {
-  box-sizing: border-box;
-}
-*,
-*:after,
-*:before {
-  box-sizing: inherit;
-}
-html,
-body {
-  @include space();
-  text-align: center;
-}
+@use 'utilities' as *;
+@use 'base';
+@use 'keyboard';
+
 main{
   display: inline-flex;
   width: clamp(300px,100vw,1200px);
