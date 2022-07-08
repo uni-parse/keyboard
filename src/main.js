@@ -120,10 +120,12 @@ const remap = {
 
     //▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
     ['LCtrl'],
+    ['LWin'],
     ['LAlt', 'return'],
     ['Space', '', 'Space'],
     ['RAlt', 'return'],
     ['RWin', 'return'],
+    ['AppsKey'],
     ['RCtrl', 'LCtrl', ''],
   ],
   switch(key) {
