@@ -8,16 +8,28 @@
   }
 }
 $pincky: hsl(199, 68%, 24%);
-$ring: hsl(330, 84%, 28%);
+$ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
 $index: hsl(281, 51%, 24%);
+$lAlt: darkorange;
+$rAlt: hsl(80, 100%, 50%);
+div#keyboardCtx{
+  overflow: auto;
+}
 div#keyboard {
+
   background-color: #333;
-  min-width: 640px;
+  min-width: clamp(47rem,100%,58.5rem);
   overflow: auto;
   display: flex;
+  place-content: space-evenly;
   flex-flow: row wrap;
-  border: red thin solid;
+  // border: red thin solid;
+  font: clamp(1rem,1.5vw,1.25rem) monospace;
+  ::selection{
+    background-color: transparent;
+    color: yellow;
+  }
   span {
     flex: none;
     flex-basis: 6%;
@@ -28,6 +40,12 @@ div#keyboard {
     @include space(0, 0.3%);
     &:nth-child(14) {
       flex-basis: 12.5%;
+    }
+    &:nth-child(57) {
+      color: $lAlt;
+    }
+    &:nth-child(59) {
+      color: $rAlt;
     }
     &:nth-child(15),
     &:nth-child(28) {
@@ -46,7 +64,7 @@ div#keyboard {
       flex-basis: 18%;
     }
     @include nth(55, 56, 57, 59, 60, 61, 62) {
-      flex-basis: 7.5%;
+      flex-basis: 7.4%;
     }
     &:nth-child(58) {
       flex-basis: 41%;
@@ -75,6 +93,7 @@ div#keyboard {
     @include nth(33, 37, 46, 51) {
       background-color: color.adjust($index, $lightness: 16%);
     }
+    
 
     kbd {
       padding: 0.2em;
