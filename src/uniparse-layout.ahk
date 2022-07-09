@@ -1,44 +1,46 @@
-﻿;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 0
-	0::'
-	!0::SendInput, {▬}
-		return
-	+0::SendInput, ▬
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ `
+	`::`
+	!`::SendInput, {Volume_Mute}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 1
 	1::!
-	<!1::SendInput, {Media_Prev}
-		return
-	>!1::SendInput, {?}
+	!1::SendInput, {?}
 		return
 	+1::SendInput, {?}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 2
-	2::[
-	!2::SendInput, {Media_Next}
+	2::"
+	!2::SendInput, {Media_Play_Pause}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 3
-	3::]
-	!3::SendInput, {Media_Play_Pause}
+	3::[
+	!3::SendInput, {{}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 4
-	4::"
-	!4::SendInput, {Volume_Mute}
+	4::]
+	!4::SendInput, {}}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 5
 	5::{
-	!5::SendInput, {→}
+	!5::SendInput, {Media_Prev}
+		return
+	<!>!5::SendInput, {→}
 		return
 	+5::SendInput, →
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 6
 	6::}
-	!6::SendInput, {←}
+	!6::SendInput, {Media_Next}
+		return
+	<!>!6::SendInput, {←}
 		return
 	+6::SendInput, ←
 		return
@@ -68,18 +70,22 @@
 	+9::SendInput, ►
 		return
 
-;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ `
-	`::`
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 0
+	0::)
+	!0::SendInput, {▬}
+		return
+	+0::SendInput, ▬
+		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -
-	-::)
+	-::(
 	!-::SendInput, {•}
 		return
 	+-::SendInput, •
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ =
-	=::(
+	=::'
 	<!=::SendInput, {›}
 		return
 	>!=::SendInput, {PgUp}
@@ -93,6 +99,8 @@
 		return
 	+Bs::SendInput, »
 		return
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Tab
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ q
 	!q::SendInput, {@}
@@ -132,9 +140,9 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ u
 	u::j
-	!u::SendInput, {+}
+	!u::SendInput, {`%}
 		return
-	<!>!u::SendInput, {±}
+	<!>!u::SendInput, {㊿}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ i
@@ -243,11 +251,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ k
 	k::n
-	<!k::SendInput, {1}
+	<!k::SendInput, {4}
 		return
 	>!k::SendInput, {Left}
 		return
-	<^<!k::SendInput, ^1
+	<^<!k::SendInput, ^4
 		return
 	<^>!k::SendInput, ^{Left}
 		return
@@ -260,11 +268,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ l
 	l::e
-	<!l::SendInput, {2}
+	<!l::SendInput, {5}
 		return
 	>!l::SendInput, {Down}
 		return
-	<^<!l::SendInput, ^2
+	<^<!l::SendInput, ^5
 		return
 	<^>!l::SendInput, ^{Down}
 		return
@@ -279,11 +287,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ `;
 	`;::i
-	<!`;::SendInput, {3}
+	<!`;::SendInput, {6}
 		return
 	>!`;::SendInput, {Right}
 		return
-	<^<!`;::SendInput, ^3
+	<^<!`;::SendInput, ^6
 		return
 	<^>!`;::SendInput, ^{Right}
 		return
@@ -296,8 +304,6 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ '
 	'::o
-	<!>!'::SendInput, {Ø}
-		return
 	<!'::SendInput, {0}
 		return
 	>!'::SendInput, {Enter}
@@ -345,6 +351,8 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ b
 	b::z
+	!b::SendInput, {Ø}
+		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ n
 	n::_
@@ -353,38 +361,38 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ m
 	m::k
-	!m::SendInput, {`%}
+	!m::SendInput, {+}
 		return
-	<!>!m::SendInput, {㊿}
+	<!>!m::SendInput, {±}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ,
 	,::h
-	<!,::SendInput, {4}
+	<!,::SendInput, {1}
 		return
 	>!,::SendInput, {^}
 		return
-	<^<!,::SendInput, ^4
+	<^<!,::SendInput, ^1
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ .
 	.::,
-	<!.::SendInput, {5}
+	<!.::SendInput, {2}
 		return
 	>!.::SendInput, {~}
 		return
-	<^<!.::SendInput, ^5
+	<^<!.::SendInput, ^2
 		return
 	+.::SendInput, ,
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ /
 	/::.
-	<!/::SendInput, {6}
+	<!/::SendInput, {3}
 		return
 	>!/::SendInput, {…}
 		return
-	<^<!/::SendInput, ^6
+	<^<!/::SendInput, ^3
 		return
 	+/::SendInput, .
 		return
@@ -392,18 +400,25 @@
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ RShift
 	RShift::RCtrl
 
-;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ RCtrl
-	RCtrl::LCtrl
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ LCtrl
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ LWin
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ LAlt
+	LAlt::return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ Space
 	!Space::SendInput, {Space}
 		return
-
-;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ LAlt
-	LAlt::return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ RAlt
 	RAlt::return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ RWin
 	RWin::return
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ AppsKey
+
+;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ RCtrl
+	RCtrl::LCtrl
+
