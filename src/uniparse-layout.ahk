@@ -1,4 +1,5 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+Process, Priority,, H
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ `
 	`::`
@@ -13,18 +14,18 @@
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 2
-	2::"
-	!2::SendInput, {Media_Play_Pause}
+	2::[
+	!2::SendInput, {{}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 3
-	3::[
-	!3::SendInput, {{}
+	3::]
+	!3::SendInput, {}}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 4
-	4::]
-	!4::SendInput, {}}
+	4::"
+	!4::SendInput, {Media_Play_Pause}
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 5
@@ -71,21 +72,21 @@
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ 0
-	0::)
+	0::'
 	!0::SendInput, {▬}
 		return
 	+0::SendInput, ▬
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -
-	-::(
+	-::)
 	!-::SendInput, {•}
 		return
 	+-::SendInput, •
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ =
-	=::'
+	=::(
 	<!=::SendInput, {›}
 		return
 	>!=::SendInput, {PgUp}
@@ -251,11 +252,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ k
 	k::n
-	<!k::SendInput, {4}
+	<!k::SendInput, {1}
 		return
 	>!k::SendInput, {Left}
 		return
-	<^<!k::SendInput, ^4
+	<^<!k::SendInput, ^1
 		return
 	<^>!k::SendInput, ^{Left}
 		return
@@ -268,11 +269,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ l
 	l::e
-	<!l::SendInput, {5}
+	<!l::SendInput, {2}
 		return
 	>!l::SendInput, {Down}
 		return
-	<^<!l::SendInput, ^5
+	<^<!l::SendInput, ^2
 		return
 	<^>!l::SendInput, ^{Down}
 		return
@@ -287,11 +288,11 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ `;
 	`;::i
-	<!`;::SendInput, {6}
+	<!`;::SendInput, {3}
 		return
 	>!`;::SendInput, {Right}
 		return
-	<^<!`;::SendInput, ^6
+	<^<!`;::SendInput, ^3
 		return
 	<^>!`;::SendInput, ^{Right}
 		return
@@ -368,31 +369,31 @@
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ,
 	,::h
-	<!,::SendInput, {1}
+	<!,::SendInput, {4}
 		return
 	>!,::SendInput, {^}
 		return
-	<^<!,::SendInput, ^1
+	<^<!,::SendInput, ^4
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ .
 	.::,
-	<!.::SendInput, {2}
+	<!.::SendInput, {5}
 		return
 	>!.::SendInput, {~}
 		return
-	<^<!.::SendInput, ^2
+	<^<!.::SendInput, ^5
 		return
 	+.::SendInput, ,
 		return
 
 ;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ /
 	/::.
-	<!/::SendInput, {3}
+	<!/::SendInput, {6}
 		return
 	>!/::SendInput, {…}
 		return
-	<^<!/::SendInput, ^3
+	<^<!/::SendInput, ^6
 		return
 	+/::SendInput, .
 		return

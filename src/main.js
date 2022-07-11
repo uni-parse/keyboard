@@ -1,6 +1,7 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾ ⤿⥁🔍
 
 import './sass/main.scss'
+import keys from './keys6'
 // import srcset from './assets/uniparse-layout.png?w=320;375;425;768;1024;width&format=avif;webp&srcset'
 const pre = document.createElement('pre'),
   // img = document.createElement('img'),
@@ -24,6 +25,7 @@ main.appendChild(script)
 document.body.appendChild(main)
 const remap = {
   output: `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+Process, Priority,, H
 
 `,
   switch(key) {
@@ -41,7 +43,7 @@ const remap = {
   },
   show(keys) {
     keys.forEach(key => {
-      this.output += `;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ${key[0]}\n${key[1] ?
+      this.output += `;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ${key[0]}\n${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
         `\t${key[0]}::${((typeof key[1] == 'object') ? key[1][0] : key[1])}\n` : ''}${key[2] ?
           `\t!${key[0]}::SendInput, {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}${key[3] ?
             `\t<!>!${key[0]}::SendInput, {${((typeof key[3] == 'object') ? key[3][0] : key[3])}}\n\t\treturn\n` : ''}${key[4] ?
@@ -58,8 +60,55 @@ const remap = {
     }, { once: true })
   },
 }
+remap.show(keys)
+keys.forEach(key => {
+  const keySpan = document.createElement('span')
+  function addSpan(index, className) {
+    const kbd = document.createElement('kbd')
+    if (className) {
+      kbd.setAttribute('class', className)
+    }
+    kbd.appendChild(
+      document.createTextNode(
+        (
+          typeof key[index] == 'object'
+        ) ? (
+          (key[index][1].includes('`') && key[index].length > 1) ? key[index][1].replare('`', '') : key[index][1]
+        ) : (
+          (key[index].includes('`') && key[index].length > 1) ? key[index].replace('`', '') : key[index]
+        )
+      )
+    )
+    keySpan.appendChild(kbd)
+  }
+  if (!key[1] || key[1] == 'return') {
+    addSpan(0, 'key')
+  } else {
+    addSpan(1, 'key')
+  }
 
-fetch('/src/keys2.json')
+  if (key[2]) {
+    addSpan(2, 'alt')
+  } else {
+    if (key[5]) {
+      addSpan(5, 'rAlt')
+    }
+    if (key[4]) {
+      addSpan(4, 'lAlt')
+    }
+  }
+
+  if (key[3]) {
+    addSpan(3, 'dblAlt')
+  }
+
+  keyboard.appendChild(keySpan)
+})
+
+
+
+/*
+fetch('/src/qwerty.json')
   .then(response => response.json())
   .then(json => {
     remap.show(json)
@@ -72,18 +121,15 @@ fetch('/src/keys2.json')
         }
         kbd.appendChild(
           document.createTextNode(
-            (typeof key[index] == 'object') ? (
+            (
+              typeof key[index] == 'object'
+            ) ? (
               (key[index][1].includes('`') && key[index].length > 1) ? key[index][1].replare('`', '') : key[index][1]
             ) : (
               (key[index].includes('`') && key[index].length > 1) ? key[index].replace('`', '') : key[index]
             )
           )
         )
-        if (className == 'lAlt') {
-          kbd.style.color = 'darkorange'
-        } else if (className == 'rAlt') {
-          kbd.style.color = 'hsl(80, 100%, 50%)'
-        }
         keySpan.appendChild(kbd)
       }
       if (!key[1] || key[1] == 'return') {
@@ -109,7 +155,7 @@ fetch('/src/keys2.json')
 
       keyboard.appendChild(keySpan)
     })
-  })
+  })*/
 
 
 // remap.show(remap.keys)

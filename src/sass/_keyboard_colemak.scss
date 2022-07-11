@@ -61,13 +61,13 @@ div#keyboard {
       flex-basis: 7.2%;
     }
     &:nth-child(54) {
-      flex-basis: 18%;
+      flex-basis: 17%;
     }
     @include nth(55, 56, 57, 59, 60, 61, 62) {
       flex-basis: 7.4%;
     }
     &:nth-child(58) {
-      flex-basis: 41%;
+      flex-basis: 41%;//space
     }
     @include nth(1, 2, 3, 13, 14, 16, 26, 27) {
       background-color: $pincky;
@@ -97,6 +97,8 @@ div#keyboard {
 
     kbd {
       padding: 0.2em;
+      &.lAlt{color: $lAlt}
+      &.rAlt{color: $rAlt}
     }
   }
 }

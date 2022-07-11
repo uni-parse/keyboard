@@ -1,6 +1,6 @@
 @use 'utilities' as *;
 @use 'base';
-@use 'keyboard';
+@use 'keyboard_caws';
 
 main{
   display: inline-flex;
