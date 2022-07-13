@@ -43,15 +43,27 @@ Process, Priority,, H
   },
   show(keys) {
     keys.forEach(key => {
-      this.output += `;▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ ${key[0]}\n${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
-        `\t${key[0]}::${((typeof key[1] == 'object') ? key[1][0] : key[1])}\n` : ''}${key[2] ?
-          `\t!${key[0]}::SendInput, {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}${key[3] ?
-            `\t<!>!${key[0]}::SendInput, {${((typeof key[3] == 'object') ? key[3][0] : key[3])}}\n\t\treturn\n` : ''}${key[4] ?
-              `\t<!${key[0]}::SendInput, {${((typeof key[4] == 'object') ? key[4][0] : key[4])}}\n\t\treturn\n` : ''}${key[5] ?
-                `\t>!${key[0]}::SendInput, {${((typeof key[5] == 'object') ? key[5][0] : key[5])}}\n\t\treturn\n` : ''}${key[6] ?
-                  this.switch(key) : ''}\n`
+      this.output += `${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
+        `\t${key[0]}::${((typeof key[1] == 'object') ? key[1][0] : key[1])}\n` : ''}`
     })
+    this.output = this.output.replace('RAlt::F24','')
+    this.output += `
 
+#InputLevel 1
+	RAlt::F24
+#InputLevel 0
+#Persistent
+
+`
+    keys.forEach(key => {
+      this.output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
+          `\tF24 & ${key[0]}::SendInput {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}`
+      if (typeof key[2]=='object') {
+        if (key[2][0] == 'Blind}{AltDown' || key[2][0] == 'Blind}{CtrlDown' || key[2][0] == 'Blind}{ShiftDown' || key[2][0] == 'Blind}{LWinDown') {
+          this.output += `\tF24 & ${key[0]} Up::SendInput {${key[2][0].replace('Blind}{', '').replace('Down', '') + 'Up'}}\n\t\treturn\n`
+        }
+      }
+    })
     //console.log(this.output)
     pre.innerText = this.output
     btn.addEventListener('click', () => {
@@ -73,7 +85,7 @@ keys.forEach(key => {
         (
           typeof key[index] == 'object'
         ) ? (
-          (key[index][1].includes('`') && key[index].length > 1) ? key[index][1].replare('`', '') : key[index][1]
+          (key[index][1].includes('`') && key[index][1].length > 1) ? key[index][1].replare('`', '') : key[index][1]
         ) : (
           (key[index].includes('`') && key[index].length > 1) ? key[index].replace('`', '') : key[index]
         )
@@ -88,78 +100,70 @@ keys.forEach(key => {
   }
 
   if (key[2]) {
-    addSpan(2, 'alt')
-  } else {
-    if (key[5]) {
-      addSpan(5, 'rAlt')
-    }
-    if (key[4]) {
-      addSpan(4, 'lAlt')
-    }
+    addSpan(2, 'ext')
   }
 
   if (key[3]) {
-    addSpan(3, 'dblAlt')
+    addSpan(3, 'sym')
   }
 
   keyboard.appendChild(keySpan)
 })
 
 
+let toggle_ext = false, toggle_sym = false
+const span_key = document.querySelectorAll('.key')
+const span_ext = document.querySelectorAll('.ext')
+const span_sym = document.querySelectorAll('.sym')
+const ext = document.querySelector('#keyboard>span:nth-child(59)')
+const sym = document.querySelector('#keyboard>span:nth-child(57)')
 
-/*
-fetch('/src/qwerty.json')
-  .then(response => response.json())
-  .then(json => {
-    remap.show(json)
-    json.forEach(key => {
-      const keySpan = document.createElement('span')
-      function addSpan(index, className) {
-        const kbd = document.createElement('kbd')
-        if (className) {
-          kbd.setAttribute('class', className)
-        }
-        kbd.appendChild(
-          document.createTextNode(
-            (
-              typeof key[index] == 'object'
-            ) ? (
-              (key[index][1].includes('`') && key[index].length > 1) ? key[index][1].replare('`', '') : key[index][1]
-            ) : (
-              (key[index].includes('`') && key[index].length > 1) ? key[index].replace('`', '') : key[index]
-            )
-          )
-        )
-        keySpan.appendChild(kbd)
-      }
-      if (!key[1] || key[1] == 'return') {
-        addSpan(0, 'key')
-      } else {
-        addSpan(1, 'key')
-      }
-
-      if (key[2]) {
-        addSpan(2, 'alt')
-      } else {
-        if (key[5]) {
-          addSpan(5, 'rAlt')
-        }
-        if (key[4]) {
-          addSpan(4, 'lAlt')
-        }
-      }
-
-      if (key[3]) {
-        addSpan(3, 'dblAlt')
-      }
-
-      keyboard.appendChild(keySpan)
+ext.addEventListener('click', () => {
+  toggle_ext = !toggle_ext
+  if (toggle_ext) {
+    span_ext.forEach(key => {
+      key.style.opacity = 1
+    });
+    span_sym.forEach(key => {
+      key.style.opacity = 0
     })
-  })*/
+    span_key.forEach(key => {
+      key.style.opacity = 0
+    })
+  } else {
+    span_ext.forEach(key => {
+      key.style.opacity = 0
+    });
+    span_sym.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_key.forEach(key => {
+      key.style.opacity = 1
+    })
+  }
+})
 
-
-// remap.show(remap.keys)
-
-
-
-
+sym.addEventListener('click', () => {
+  toggle_sym = !toggle_sym
+  if (toggle_sym) {
+    span_sym.forEach(key => {
+      key.style.opacity = 1
+    })
+    span_ext.forEach(key => {
+      key.style.opacity = 0
+    });
+    span_key.forEach(key => {
+      key.style.opacity = 0
+    })
+  } else {
+    span_sym.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_ext.forEach(key => {
+      key.style.opacity = 0
+    });
+    span_key.forEach(key => {
+      key.style.opacity = 1
+    })
+  }
+})

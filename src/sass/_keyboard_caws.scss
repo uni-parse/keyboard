@@ -8,19 +8,17 @@
   }
 }
 @mixin radial($c) {
-  background: $c radial-gradient(
-    color.adjust($c, $lightness: 30%),
-    $c 70%
-  );
+  background: $c
+    radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
   @content;
 }
 $pincky: hsl(199, 68%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
 $indexL: hsl(281, 51%, 24%);
-$indexR: hsl(252, 61%, 25%);
-$lAlt: darkorange;
-$rAlt: hsl(80, 100%, 50%);
+$indexR: hsl(216, 70%, 25%);
+$sym: darkorange;
+$ext: hsl(80, 100%, 50%);
 div#keyboardCtx {
   overflow: auto;
 }
@@ -35,28 +33,37 @@ div#keyboard {
   font: clamp(1rem, 1.5vw, 1.25rem) monospace;
   ::selection {
     background-color: transparent;
-    color: yellow;
+    color: currentColor;
   }
   span {
+    &:hover {
+      cursor: pointer;
+    }
     flex: none;
     flex-basis: 6%;
     display: grid;
     grid: 1fr 1fr/ 1fr 1fr;
-    border: black thin solid;
-    border-radius: 0.3em;
+    border: black thin groove;
+    border-radius: 0.5em 0.5em 50% 50%/0.5em 0.5em 0.5em 0.5em;
     color: white;
+    transition: all 0.15s ease-out;
+    box-shadow: 0.3em 0.3em 7px 0 #111;
+    &:active {
+    box-shadow: 0 0 1px 0 #111;
+    }
     background-image: radial-gradient(
-      transparent 20%, rgba(0, 0, 0, 0.562)
+      transparent 20%,
+      rgba(0, 0, 0, 0.562)
     );
     @include space(0, 0.3%);
     &:nth-child(14) {
-      flex-basis: 12.5%;
+      flex-basis: 12%;
     }
     &:nth-child(57) {
-      color: $lAlt;
+      color: $sym;
     }
     &:nth-child(59) {
-      color: $rAlt;
+      color: $ext;
     }
     &:nth-child(15),
     &:nth-child(28) {
@@ -81,57 +88,78 @@ div#keyboard {
     &:nth-child(58) {
       flex-basis: 41%; //space
     }
-    @include nth(1, 2, 13,14, 16, 26, 27, 30, 40, 41) {
+    @include nth(1, 2, 13, 14, 16, 26, 27, 30, 40, 41) {
       background-color: $pincky;
     }
     @include nth(3, 12, 17, 25, 31, 39, 44, 53) {
       background-color: $ring;
     }
     &:nth-child(4) {
-      background: linear-gradient(90deg, $ring, $middle);
+      background: linear-gradient(90deg, $ring 60%, $middle);
     }
     @include nth(5, 10, 18, 24, 32, 38, 45, 52) {
       background-color: $middle;
     }
     &:nth-child(11) {
-      background: linear-gradient(90deg, $middle,$ring);
+      background: linear-gradient(90deg, $middle 60%, $ring);
     }
-    @include nth(6, 7, 19, 20, 33, 34, 46, 47, 48) {
+    @include nth(6, 7, 19, 20, 33, 34, 46, 47) {
       background-color: $indexL;
     }
-    @include nth(8, 9, 22, 23, 36, 37, 49, 50, 51) {
+    @include nth(9, 22, 23, 36, 37, 50, 51) {
       background-color: $indexR;
     }
-    @include nth(21, 35) {
-      background: linear-gradient(90deg, $indexL 35%, $indexR);
+    &:nth-child(48) {
+      background-color: color.adjust($indexL,$lightness:-10%);
+    }
+    &:nth-child(49) {
+      background-color: color.adjust($indexR,$lightness:-10%);
+    }
+    &:nth-child(8) {
+      background: linear-gradient(90deg, color.adjust($indexL,$lightness:-10%), color.adjust($indexR,$lightness:-10%) 40%);
+    }
+    @include nth(21) {
+      background: linear-gradient(90deg, color.adjust($indexL,$lightness:-10%) 60%, color.adjust($indexR,$lightness:-10%));
+    }
+    @include nth(35) {
+      background: linear-gradient(
+        90deg,
+        color.adjust($indexL,$lightness:-10%) 30%,
+        color.adjust($indexR,$lightness:-10%) 70%
+      );
     }
     @include nth(30, 31, 32, 33, 37, 38, 39, 40, 46, 51) {
       border: solid thin black;
-      box-shadow: 0 0 10px black;
     }
     @include nth(30, 40) {
-      @include radial($pincky)
+      @include radial($pincky);
     }
     @include nth(31, 39) {
-    @include radial($ring)
+      @include radial($ring);
     }
     @include nth(32, 38) {
-    @include radial($middle)
+      @include radial($middle);
     }
     @include nth(33, 46) {
-    @include radial($indexL)
+      @include radial($indexL);
     }
     @include nth(37, 51) {
-    @include radial($indexR)
+      @include radial($indexR);
     }
 
     kbd {
       padding: 0.2em;
-      &.lAlt {
-        color: $lAlt;
+      &:hover {
+        cursor: pointer;
       }
-      &.rAlt {
-        color: $rAlt;
+      &.sym {
+        color: $sym;
+        opacity: 0;
+      }
+      &.ext {
+        inset: center;
+        color: $ext;
+        opacity: 0;
       }
     }
   }
