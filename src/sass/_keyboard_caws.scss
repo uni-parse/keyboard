@@ -12,7 +12,7 @@
     radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
   @content;
 }
-$pincky: hsl(199, 68%, 24%);
+$pincky: hsl(200, 67%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
 $indexL: hsl(281, 51%, 24%);
@@ -47,9 +47,10 @@ div#keyboard {
     border-radius: 0.5em 0.5em 50% 50%/0.5em 0.5em 0.5em 0.5em;
     color: white;
     transition: all 0.15s ease-out;
-    box-shadow: 0.3em 0.3em 7px 0 #111;
+    box-shadow: 0.2em 0.3em 7px 0 #111;
     &:active {
     box-shadow: 0 0 1px 0 #111;
+    transform: translate(.1em,.1em);
     }
     background-image: radial-gradient(
       transparent 20%,
@@ -73,7 +74,6 @@ div#keyboard {
       flex-basis: 11%;
     }
     &:nth-child(41) {
-      //flex-basis: 13.8%;//13.8 6
       margin-right: 7.8%;
     }
     &:nth-child(42) {
@@ -145,6 +145,12 @@ div#keyboard {
     }
     @include nth(37, 51) {
       @include radial($indexR);
+    }
+    @include nth(57,58,59){
+      @include radial(#333);
+    }
+    @include nth(55,62){
+      @include radial(color.adjust($pincky,$saturation:-40%));
     }
 
     kbd {

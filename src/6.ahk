@@ -1,12 +1,15 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-Process, Priority,, H
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+Process, Priority,, High
 
 	7::\
 	8::7
 	9::8
 	0::9
 	-::0
-	=::-
+	=::=
 	e::f
 	r::p
 	t::b
@@ -16,7 +19,7 @@ Process, Priority,, H
 	o::u
 	p::y
 	[::'
-	]::=
+	]::-
 	CapsLock::Bs
 	s::r
 	d::s
@@ -47,7 +50,12 @@ Process, Priority,, H
 	RAlt::F24
 #InputLevel 0
 #Persistent
+SetCapsLockState, AlwaysOff
 
+
+
+	F24 & `::SendInput {Blind}{Esc}
+		return
 	F24 & 1::SendInput {Blind}{F1}
 		return
 	F24 & 2::SendInput {Blind}{F2}
@@ -72,17 +80,19 @@ Process, Priority,, H
 		return
 	F24 & Bs::SendInput {Blind}{F12}
 		return
-	F24 & q::SendInput {Esc}
+	F24 & q::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click R Down}
 		return
-	F24 & w::SendInput {Browser_Back}
+	F24 & q Up::SendInput {Click R Up}
 		return
-	F24 & e::SendInput {Blind}{CtrlDown}{f}{CtrlUp}
+	F24 & w::SendInput {XButton1}
 		return
-	F24 & r::SendInput {Browser_Forward}
+	F24 & e::SendInput {Click 0 -7 0 Rel}
+		return
+	F24 & r::SendInput {XButton2}
 		return
 	F24 & y::SendInput {Blind}{PrintScreen}
-		return
-	F24 & u::SendInput {Blind}{PgUp}
 		return
 	F24 & i::SendInput {Blind}{Home}
 		return
@@ -92,23 +102,27 @@ Process, Priority,, H
 		return
 	F24 & [::SendInput {Blind}{Del}
 		return
-	F24 & a::SendInput {Blind}{AltDown}
+	F24 & CapsLock::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click M Down}
 		return
-	F24 & a Up::SendInput {AltUp}
+	F24 & CapsLock Up::SendInput {Click M Up}
 		return
-	F24 & s::SendInput {Blind}{LWinDown}
+	F24 & a::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click L Down}
 		return
-	F24 & s Up::SendInput {LWinUp}
+	F24 & a Up::SendInput {Click L Up}
 		return
-	F24 & d::SendInput {Blind}{ShiftDown}
+	F24 & s::SendInput {Click -7 0 0 Rel}
 		return
-	F24 & d Up::SendInput {ShiftUp}
+	F24 & d::SendInput {Click 0 7 0 Rel}
 		return
-	F24 & f::SendInput {Blind}{CtrlDown}
+	F24 & f::SendInput {Click 7 0 0 Rel}
 		return
-	F24 & f Up::SendInput {CtrlUp}
+	F24 & g::SendInput {Blind}{WheelUp}
 		return
-	F24 & j::SendInput {Blind}{PgDn}
+	F24 & j::SendInput {Blind}{PgUp}
 		return
 	F24 & k::SendInput {Blind}{Left}
 		return
@@ -118,15 +132,9 @@ Process, Priority,, H
 		return
 	F24 & '::SendInput {Blind}{Enter}
 		return
-	F24 & z::SendInput {CtrlDown}{x}{CtrlUp}
+	F24 & v::SendInput {Blind}{WheelDown}
 		return
-	F24 & x::SendInput {CtrlDown}{c}{CtrlUp}
-		return
-	F24 & v::SendInput {CtrlDown}{v}{CtrlUp}
-		return
-	F24 & b::SendInput {CtrlDown}{z}{CtrlUp}
-		return
-	F24 & n::SendInput {CtrlDown}{y}{CtrlUp}
+	F24 & m::SendInput {Blind}{PgDn}
 		return
 	F24 & ,::SendInput {Blind}{Bs}
 		return

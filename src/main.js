@@ -25,42 +25,28 @@ main.appendChild(script)
 document.body.appendChild(main)
 const remap = {
   output: `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-Process, Priority,, H
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+Process, Priority,, High
 
 `,
-  switch(key) {
-    let str = ''
-    for (const mode in key[6]) {
-      if (Object.hasOwnProperty.call(key[6], mode)) {
-        if (key[6][mode]) {
-          str += `\t${mode}${key[0]}::SendInput, ${key[6][mode]}\n\t\treturn\n`
-        } else {
-          str += `\t${mode}${key[0]}::BlockInput, on\n\t\treturn\n`
-        }
-      }
-    }
-    return str
-  },
   show(keys) {
     keys.forEach(key => {
       this.output += `${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
         `\t${key[0]}::${((typeof key[1] == 'object') ? key[1][0] : key[1])}\n` : ''}`
     })
-    this.output = this.output.replace('RAlt::F24','')
-    this.output += `
-
-#InputLevel 1
-	RAlt::F24
-#InputLevel 0
-#Persistent
-
-`
+    this.output = this.output.replace('RAlt::F24', '')
+    this.output += `\n\n#InputLevel 1\n\tRAlt::F24\n#InputLevel 0\n#Persistent\nSetCapsLockState, AlwaysOff\n\n\n\n`
     keys.forEach(key => {
       this.output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
-          `\tF24 & ${key[0]}::SendInput {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}`
-      if (typeof key[2]=='object') {
-        if (key[2][0] == 'Blind}{AltDown' || key[2][0] == 'Blind}{CtrlDown' || key[2][0] == 'Blind}{ShiftDown' || key[2][0] == 'Blind}{LWinDown') {
-          this.output += `\tF24 & ${key[0]} Up::SendInput {${key[2][0].replace('Blind}{', '').replace('Down', '') + 'Up'}}\n\t\treturn\n`
+        `\tF24 & ${key[0]}::SendInput {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}`
+      if (typeof key[2] == 'object') {
+        if (key[2][0].includes(' Down')) {
+          if (key[2][0].includes('Click')) {
+            this.output = this.output.replace(`F24 & ${key[0]}::SendInput {Blind}{Click ${key[2][0][13]} Down}`, `F24 & ${key[0]}::\n\t\tif !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")\n\t\t\tSendInput {Blind}{Click ${key[2][0][13]} Down}`)
+          }
+          this.output += `\tF24 & ${key[0]} Up::SendInput {${key[2][0].replace('Blind}{', '').replace('Down', 'Up')}}\n\t\treturn\n`
         }
       }
     })
