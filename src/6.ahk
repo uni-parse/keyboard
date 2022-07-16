@@ -1,7 +1,6 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
 Process, Priority,, High
 
 	7::\
@@ -9,7 +8,7 @@ Process, Priority,, High
 	9::8
 	0::9
 	-::0
-	=::=
+	=::-
 	e::f
 	r::p
 	t::b
@@ -19,7 +18,7 @@ Process, Priority,, High
 	o::u
 	p::y
 	[::'
-	]::-
+	]::=
 	CapsLock::Bs
 	s::r
 	d::s
@@ -43,7 +42,6 @@ Process, Priority,, High
 	.::,
 	/::.
 	LAlt::LShift
-	
 
 
 #InputLevel 1
@@ -68,6 +66,12 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & 6::SendInput {Blind}{F6}
 		return
+	F24 & 7::
+		GetKeyState, cp, CapsLock, T
+		if cp = D
+			SetCapsLockState, AlwaysOff
+		else
+			SetCapsLockState, AlwaysOn
 	F24 & 8::SendInput {Blind}{F7}
 		return
 	F24 & 9::SendInput {Blind}{F8}
@@ -86,13 +90,13 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & q Up::SendInput {Click R Up}
 		return
-	F24 & w::SendInput {XButton1}
+	F24 & w::SendInput {Blind}{WheelDown}
 		return
-	F24 & e::SendInput {Click 0 -7 0 Rel}
-		return
-	F24 & r::SendInput {XButton2}
+	F24 & r::SendInput {Blind}{WheelUp}
 		return
 	F24 & y::SendInput {Blind}{PrintScreen}
+		return
+	F24 & u::SendInput {Blind}{PgUp}
 		return
 	F24 & i::SendInput {Blind}{Home}
 		return
@@ -100,7 +104,9 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & p::SendInput {Blind}{End}
 		return
-	F24 & [::SendInput {Blind}{Del}
+	F24 & [::SendInput {Volume_Down}
+		return
+	F24 & ]::SendInput {Volume_Up}
 		return
 	F24 & CapsLock::
 		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
@@ -114,15 +120,9 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & a Up::SendInput {Click L Up}
 		return
-	F24 & s::SendInput {Click -7 0 0 Rel}
+	F24 & h::SendInput {Media_Play_Pause}
 		return
-	F24 & d::SendInput {Click 0 7 0 Rel}
-		return
-	F24 & f::SendInput {Click 7 0 0 Rel}
-		return
-	F24 & g::SendInput {Blind}{WheelUp}
-		return
-	F24 & j::SendInput {Blind}{PgUp}
+	F24 & j::SendInput {Blind}{PgDn}
 		return
 	F24 & k::SendInput {Blind}{Left}
 		return
@@ -132,13 +132,56 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & '::SendInput {Blind}{Enter}
 		return
-	F24 & v::SendInput {Blind}{WheelDown}
+	F24 & \::SendInput {Blind}{Del}
 		return
-	F24 & m::SendInput {Blind}{PgDn}
+	F24 & z::SendInput {XButton1}
+		return
+	F24 & x::SendInput {XButton2}
+		return
+	F24 & n::SendInput {Appskey}
+		return
+	F24 & m::SendInput {Blind}{Tab}
 		return
 	F24 & ,::SendInput {Blind}{Bs}
 		return
-	F24 & .::SendInput {Blind}{Tab}
+	F24 & .::SendInput {Media_Prev}
 		return
-	F24 & /::SendInput {Appskey}
+	F24 & /::SendInput {Media_Next}
 		return
+
+
+#if GetKeyState("RAlt", "P")
+{
+	s::
+		If !GetKeyState("e","P") && !GetKeyState("d","P")
+		  SendInput {Click -7 0 0 Rel}
+		else if GetKeyState("e","P")
+			SendInput {Click -7 -15 0 Rel}
+		else if GetKeyState("d","P")
+			SendInput {Click -7 15 0 Rel}
+		return
+	f::
+		If !GetKeyState("e","P") && !GetKeyState("d","P")
+		  SendInput {Click 7 0 0 Rel}
+		else if GetKeyState("e","P")
+			SendInput {Click 7 -15 0 Rel}
+		else if GetKeyState("d","P")
+			SendInput {Click 7 15 0 Rel}
+		return
+	d::
+		If !GetKeyState("s","P") && !GetKeyState("f","P")
+		  SendInput {Click 0 15 0 Rel}
+		else if GetKeyState("s","P")
+			SendInput {Click -7 15 0 Rel}
+		else if GetKeyState("f","P")
+			SendInput {Click 7 15 0 Rel}
+		return
+	e::
+		If !GetKeyState("s","P") && !GetKeyState("f","P")
+		  SendInput {Click 0 -15 0 Rel}
+		else if GetKeyState("s","P")
+			SendInput {Click -7 -15 0 Rel}
+		else if GetKeyState("f","P")
+			SendInput {Click 7 -15 0 Rel}
+		return
+}
