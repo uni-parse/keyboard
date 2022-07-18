@@ -3,14 +3,14 @@
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High
 
-x1 = 6
-y1 = 6
+x1 = 5
+y1 = 5
 x2 = 20
 y2 = 20
-x3 = 30
-y3 = 30
-x := x1
-y := y1
+x3 = 40
+y3 = 40
+x := x2
+y := y2
 
 	7::\
 	8::7
@@ -97,9 +97,9 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & q Up::SendInput {Click R Up}
 		return
-	F24 & w::SendInput {Blind}{WheelDown}
+	F24 & w::SendInput {Blind}{WheelUp}
 		return
-	F24 & r::SendInput {Blind}{WheelUp}
+	F24 & r::SendInput {Blind}{WheelDown}
 		return
 	F24 & y::SendInput {Blind}{PrintScreen}
 		return
@@ -146,12 +146,12 @@ SetCapsLockState, AlwaysOff
 	F24 & x::SendInput {XButton2}
 		return
 	F24 & c::
-		x := x2
-		y := y2
-		return
-	F24 & v::
 		x := x1
 		y := y1
+		return
+	F24 & v::
+		x := x2
+		y := y2
 		return
 	F24 & b::
 		x := x3
