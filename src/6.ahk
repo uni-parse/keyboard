@@ -62,8 +62,6 @@ SetCapsLockState, AlwaysOff
 
 
 
-	F24 & `::SendInput {Blind}{Esc}
-		return
 	F24 & 1::SendInput {Blind}{F1}
 		return
 	F24 & 2::SendInput {Blind}{F2}
@@ -91,17 +89,13 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & Bs::SendInput {Blind}{F12}
 		return
-	F24 & q::
-		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
-			SendInput {Blind}{Click R Down}
-		return
-	F24 & q Up::SendInput {Click R Up}
+	F24 & q::SendInput {Blind}{Esc}
 		return
 	F24 & w::SendInput {Blind}{WheelUp}
 		return
 	F24 & r::SendInput {Blind}{WheelDown}
 		return
-	F24 & y::SendInput {Blind}{PrintScreen}
+	F24 & y::SendInput {Media_Prev}
 		return
 	F24 & u::SendInput {Blind}{PgUp}
 		return
@@ -111,23 +105,15 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & p::SendInput {Blind}{End}
 		return
-	F24 & [::SendInput {Volume_Down}
+	F24 & [::SendInput {Volume_Up}
 		return
-	F24 & ]::SendInput {Volume_Up}
+	F24 & ]::SendInput {Volume_Down}
 		return
-	F24 & CapsLock::
-		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
-			SendInput {Blind}{Click M Down}
+	F24 & a::SendInput {Blind}{Bs}
 		return
-	F24 & CapsLock Up::SendInput {Click M Up}
+	F24 & g::SendInput {Blind}{Del}
 		return
-	F24 & a::
-		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
-			SendInput {Blind}{Click L Down}
-		return
-	F24 & a Up::SendInput {Click L Up}
-		return
-	F24 & h::SendInput {Media_Play_Pause}
+	F24 & h::SendInput {Media_Next}
 		return
 	F24 & j::SendInput {Blind}{PgDn}
 		return
@@ -139,7 +125,7 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & '::SendInput {Blind}{Enter}
 		return
-	F24 & \::SendInput {Blind}{Del}
+	F24 & \::SendInput {Media_Play_Pause}
 		return
 	F24 & z::SendInput {XButton1}
 		return
@@ -157,15 +143,27 @@ SetCapsLockState, AlwaysOff
 		x := x3
 		y := y3
 		return
-	F24 & n::SendInput {Appskey}
+	F24 & n::SendInput {Blind}{PrintScreen}
 		return
 	F24 & m::SendInput {Blind}{Tab}
 		return
-	F24 & ,::SendInput {Blind}{Bs}
+	F24 & ,::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click L Down}
 		return
-	F24 & .::SendInput {Media_Prev}
+	F24 & , Up::SendInput {Click L Up}
 		return
-	F24 & /::SendInput {Media_Next}
+	F24 & .::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click M Down}
+		return
+	F24 & . Up::SendInput {Click M Up}
+		return
+	F24 & /::
+		if !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")
+			SendInput {Blind}{Click R Down}
+		return
+	F24 & / Up::SendInput {Click R Up}
 		return
 
 
