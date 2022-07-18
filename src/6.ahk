@@ -3,6 +3,15 @@
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High
 
+x1 = 6
+y1 = 6
+x2 = 20
+y2 = 20
+x3 = 30
+y3 = 30
+x := x1
+y := y1
+
 	7::\
 	8::7
 	9::8
@@ -41,6 +50,7 @@ Process, Priority,, High
 	,::h
 	.::,
 	/::.
+	RShift::LAlt
 	LAlt::LShift
 
 
@@ -67,11 +77,8 @@ SetCapsLockState, AlwaysOff
 	F24 & 6::SendInput {Blind}{F6}
 		return
 	F24 & 7::
-		GetKeyState, cp, CapsLock, T
-		if cp = D
-			SetCapsLockState, AlwaysOff
-		else
-			SetCapsLockState, AlwaysOn
+		SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+		return
 	F24 & 8::SendInput {Blind}{F7}
 		return
 	F24 & 9::SendInput {Blind}{F8}
@@ -138,6 +145,18 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & x::SendInput {XButton2}
 		return
+	F24 & c::
+		x := x2
+		y := y2
+		return
+	F24 & v::
+		x := x1
+		y := y1
+		return
+	F24 & b::
+		x := x3
+		y := y3
+		return
 	F24 & n::SendInput {Appskey}
 		return
 	F24 & m::SendInput {Blind}{Tab}
@@ -154,34 +173,34 @@ SetCapsLockState, AlwaysOff
 {
 	s::
 		If !GetKeyState("e","P") && !GetKeyState("d","P")
-		  SendInput {Click -7 0 0 Rel}
+		  SendInput {Click -%x% 0 0 Rel}
 		else if GetKeyState("e","P")
-			SendInput {Click -7 -15 0 Rel}
+			SendInput {Click -%x% -%y% 0 Rel}
 		else if GetKeyState("d","P")
-			SendInput {Click -7 15 0 Rel}
+			SendInput {Click -%x% %y% 0 Rel}
 		return
 	f::
 		If !GetKeyState("e","P") && !GetKeyState("d","P")
-		  SendInput {Click 7 0 0 Rel}
+		  SendInput {Click %x% 0 0 Rel}
 		else if GetKeyState("e","P")
-			SendInput {Click 7 -15 0 Rel}
+			SendInput {Click %x% -%y% 0 Rel}
 		else if GetKeyState("d","P")
-			SendInput {Click 7 15 0 Rel}
+			SendInput {Click %x% %y% 0 Rel}
 		return
 	d::
 		If !GetKeyState("s","P") && !GetKeyState("f","P")
-		  SendInput {Click 0 15 0 Rel}
+		  SendInput {Click 0 %y% 0 Rel}
 		else if GetKeyState("s","P")
-			SendInput {Click -7 15 0 Rel}
+			SendInput {Click -%x% %y% 0 Rel}
 		else if GetKeyState("f","P")
-			SendInput {Click 7 15 0 Rel}
+			SendInput {Click %x% %y% 0 Rel}
 		return
 	e::
 		If !GetKeyState("s","P") && !GetKeyState("f","P")
-		  SendInput {Click 0 -15 0 Rel}
+		  SendInput {Click 0 -%y% 0 Rel}
 		else if GetKeyState("s","P")
-			SendInput {Click -7 -15 0 Rel}
+			SendInput {Click -%x% -%y% 0 Rel}
 		else if GetKeyState("f","P")
-			SendInput {Click 7 -15 0 Rel}
+			SendInput {Click %x% -%y% 0 Rel}
 		return
 }

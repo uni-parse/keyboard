@@ -1,7 +1,7 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾ ⤿⥁🔍
 
 import './sass/main.scss'
-import { keys, x, y } from './keys6'
+import { keys, x1, y1, x2, y2, x3, y3 } from './keys6'
 
 const pre = document.createElement('pre'),
   btn = document.createElement('button'),
@@ -25,6 +25,15 @@ const remap = {
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High
 
+x1 = ${x1}
+y1 = ${y1}
+x2 = ${x2}
+y2 = ${y2}
+x3 = ${x3}
+y3 = ${y3}
+x := x1
+y := y1
+
 `,
   show(keys) {
     let mouseL = '', mouseR = '', mouseU = '', mouseD = '', extendKey = ''
@@ -44,19 +53,25 @@ Process, Priority,, High
             this.output += `\tF24 & ${key[0]}::\n\t\tif !GetKeyState("LButton", "P") && !GetKeyState("RButton", "P") && !GetKeyState("MButton","P")\n\t\t\tSendInput {Blind}{Click ${key[2][0][13]} Down}\n\t\treturn\n`
           }
           this.output += `\tF24 & ${key[0]} Up::SendInput {${key[2][0].replace('Blind}{', '').replace('Down', 'Up')}}\n\t\treturn\n`
-        }else if (key[2][0] == 'Capslock') {
-          this.output += `\tF24 & ${key[0]}::\n\t\tGetKeyState, cp, CapsLock, T\n\t\tif cp = D\n\t\t\tSetCapsLockState, AlwaysOff\n\t\telse\n\t\t\tSetCapsLockState, AlwaysOn\n`
-        }else if (key[2][0]=='mouseL'){
-          mouseL=key[0]
+        } else if (key[2][0] == 'Capslock') {
+          this.output += `\tF24 & ${key[0]}::\n\t\tSetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
+        } else if (key[2][0] == 'mouseL') {
+          mouseL = key[0]
         } else if (key[2][0] == 'mouseR') {
-          mouseR=key[0]
+          mouseR = key[0]
         } else if (key[2][0] == 'mouseU') {
-          mouseU=key[0]
+          mouseU = key[0]
         } else if (key[2][0] == 'mouseD') {
-          mouseD=key[0]
-        } else{
+          mouseD = key[0]
+        } else if (key[2][0] == 'speedSlow') {
+          this.output += `\tF24 & ${key[0]}::\n\t\tx := x1\n\t\ty := y1\n\t\treturn\n`
+        } else if (key[2][0] == 'speedNormal') {
+          this.output += `\tF24 & ${key[0]}::\n\t\tx := x2\n\t\ty := y2\n\t\treturn\n`
+        } else if (key[2][0] == 'speedFast') {
+          this.output += `\tF24 & ${key[0]}::\n\t\tx := x3\n\t\ty := y3\n\t\treturn\n`
+        } else {
           this.output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
-        `\tF24 & ${key[0]}::SendInput {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}`
+            `\tF24 & ${key[0]}::SendInput {${((typeof key[2] == 'object') ? key[2][0] : key[2])}}\n\t\treturn\n` : ''}`
         }
       }
     })
@@ -66,37 +81,38 @@ Process, Priority,, High
 {
 	${mouseL}::
 		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  SendInput {Click -${x} 0 0 Rel}
+		  SendInput {Click -%x% 0 0 Rel}
 		else if GetKeyState("${mouseU}","P")
-			SendInput {Click -${x} -${y} 0 Rel}
+			SendInput {Click -%x% -%y% 0 Rel}
 		else if GetKeyState("${mouseD}","P")
-			SendInput {Click -${x} ${y} 0 Rel}
+			SendInput {Click -%x% %y% 0 Rel}
 		return
 	${mouseR}::
 		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  SendInput {Click ${x} 0 0 Rel}
+		  SendInput {Click %x% 0 0 Rel}
 		else if GetKeyState("${mouseU}","P")
-			SendInput {Click ${x} -${y} 0 Rel}
+			SendInput {Click %x% -%y% 0 Rel}
 		else if GetKeyState("${mouseD}","P")
-			SendInput {Click ${x} ${y} 0 Rel}
+			SendInput {Click %x% %y% 0 Rel}
 		return
 	${mouseD}::
 		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  SendInput {Click 0 ${y} 0 Rel}
+		  SendInput {Click 0 %y% 0 Rel}
 		else if GetKeyState("${mouseL}","P")
-			SendInput {Click -${x} ${y} 0 Rel}
+			SendInput {Click -%x% %y% 0 Rel}
 		else if GetKeyState("${mouseR}","P")
-			SendInput {Click ${x} ${y} 0 Rel}
+			SendInput {Click %x% %y% 0 Rel}
 		return
 	${mouseU}::
 		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  SendInput {Click 0 -${y} 0 Rel}
+		  SendInput {Click 0 -%y% 0 Rel}
 		else if GetKeyState("${mouseL}","P")
-			SendInput {Click -${x} -${y} 0 Rel}
+			SendInput {Click -%x% -%y% 0 Rel}
 		else if GetKeyState("${mouseR}","P")
-			SendInput {Click ${x} -${y} 0 Rel}
+			SendInput {Click %x% -%y% 0 Rel}
 		return
-}`
+}\n`
+
     //console.log(this.output)
     pre.innerText = this.output
     btn.addEventListener('click', () => {
