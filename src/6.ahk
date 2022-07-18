@@ -50,7 +50,7 @@ y := y2
 	,::h
 	.::,
 	/::.
-	RShift::LAlt
+	RShift::RAlt
 	LAlt::LShift
 
 

@@ -49,8 +49,8 @@ div#keyboard {
     transition: all 0.15s ease-out;
     box-shadow: 0.2em 0.3em 7px 0 #111;
     &:active {
-    box-shadow: 0 0 1px 0 #111;
-    transform: translate(.1em,.1em);
+      box-shadow: 0 0 1px 0 #111;
+      transform: translate(0.1em, 0.1em);
     }
     background-image: radial-gradient(
       transparent 20%,
@@ -95,13 +95,21 @@ div#keyboard {
       background-color: $ring;
     }
     &:nth-child(4) {
-      background: linear-gradient(90deg, $ring 60%, $middle);
+      background-image: radial-gradient(
+          transparent 20%,
+          rgba(0, 0, 0, 0.562)
+        ),
+        linear-gradient(90deg, $ring 60%, $middle);
     }
     @include nth(5, 10, 18, 24, 32, 38, 45, 52) {
       background-color: $middle;
     }
     &:nth-child(11) {
-      background: linear-gradient(90deg, $middle 60%, $ring);
+      background-image: radial-gradient(
+          transparent 20%,
+          rgba(0, 0, 0, 0.562)
+        ),
+        linear-gradient(90deg, $middle 60%, $ring);
     }
     @include nth(6, 7, 19, 20, 33, 34, 46, 47) {
       background-color: $indexL;
@@ -110,22 +118,30 @@ div#keyboard {
       background-color: $indexR;
     }
     &:nth-child(48) {
-      background-color: color.adjust($indexL,$lightness:-10%);
+      background-color: color.adjust($indexL, $lightness: -10%);
     }
     &:nth-child(49) {
-      background-color: color.adjust($indexR,$lightness:-10%);
+      background-color: color.adjust($indexR, $lightness: -10%);
     }
     &:nth-child(8) {
-      background: linear-gradient(90deg, color.adjust($indexL,$lightness:-10%), color.adjust($indexR,$lightness:-10%) 40%);
+      background: linear-gradient(
+        90deg,
+        color.adjust($indexL, $lightness: -10%),
+        color.adjust($indexR, $lightness: -10%) 40%
+      );
     }
     @include nth(21) {
-      background: linear-gradient(90deg, color.adjust($indexL,$lightness:-10%) 60%, color.adjust($indexR,$lightness:-10%));
+      background: linear-gradient(
+        90deg,
+        color.adjust($indexL, $lightness: -10%) 60%,
+        color.adjust($indexR, $lightness: -10%)
+      );
     }
     @include nth(35) {
       background: linear-gradient(
         90deg,
-        color.adjust($indexL,$lightness:-10%) 30%,
-        color.adjust($indexR,$lightness:-10%) 70%
+        color.adjust($indexL, $lightness: -10%) 30%,
+        color.adjust($indexR, $lightness: -10%) 70%
       );
     }
     @include nth(30, 31, 32, 33, 37, 38, 39, 40, 46, 51) {
@@ -146,11 +162,11 @@ div#keyboard {
     @include nth(37, 51) {
       @include radial($indexR);
     }
-    @include nth(57,58,59){
+    @include nth(57, 58, 59) {
       @include radial(#333);
     }
-    @include nth(55,62){
-      @include radial(color.adjust($pincky,$saturation:-40%));
+    @include nth(55, 62) {
+      @include radial(color.adjust($pincky, $saturation: -40%));
     }
 
     kbd {
