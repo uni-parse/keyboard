@@ -17,8 +17,9 @@ $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
 $indexL: hsl(281, 51%, 24%);
 $indexR: hsl(216, 70%, 25%);
-$sym: darkorange;
-$ext: hsl(80, 100%, 50%);
+$shift: hsl(60, 83%, 57%);
+$extend: hsl(80, 100%, 50%);
+$symbol:darkorange;
 div#keyboardCtx {
   overflow: auto;
 }
@@ -61,10 +62,10 @@ div#keyboard {
       flex-basis: 12%;
     }
     &:nth-child(57) {
-      color: $sym;
+      color: $shift;
     }
     &:nth-child(59) {
-      color: $ext;
+      color: $extend;
     }
     &:nth-child(15),
     &:nth-child(28) {
@@ -72,6 +73,7 @@ div#keyboard {
     }
     &:nth-child(29) {
       flex-basis: 11%;
+      color: $symbol;
     }
     &:nth-child(41) {
       margin-right: 7.8%;
@@ -174,14 +176,18 @@ div#keyboard {
       &:hover {
         cursor: pointer;
       }
-      &.sym {
-        color: $sym;
+      &.shift {
+        color: $shift;
         opacity: 0;
       }
-      &.ext {
+      &.extend {
         inset: center;
-        color: $ext;
+        color: $extend;
         opacity: 0;
+      }
+      &.symbol{
+        color: $symbol;
+        // opacity: 0;
       }
     }
   }

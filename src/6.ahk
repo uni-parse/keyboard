@@ -28,7 +28,6 @@ y := y2
 	p::y
 	[::'
 	]::=
-	CapsLock::Bs
 	s::r
 	d::s
 	f::t
@@ -56,12 +55,75 @@ y := y2
 
 #InputLevel 1
 	RAlt::F24
+	CapsLock::F23
 #InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
 
 
 
+	F23 & q::SendInput {]}
+		return
+	F23 & w::SendInput {#}
+		return
+	F23 & e::SendInput {$}
+		return
+	F23 & r::SendInput {{}
+		return
+	F23 & t::SendInput {}}
+		return
+	F23 & u::SendInput {^}
+		return
+	F23 & i::SendInput {Blind}{7}
+		return
+	F23 & o::SendInput {Blind}{8}
+		return
+	F23 & p::SendInput {Blind}{9}
+		return
+	F23 & a::SendInput {[}
+		return
+	F23 & s::SendInput {@}
+		return
+	F23 & d::SendInput {`%}
+		return
+	F23 & f::SendInput {(}
+		return
+	F23 & g::SendInput {)}
+		return
+	F23 & j::SendInput {*}
+		return
+	F23 & k::SendInput {Blind}{4}
+		return
+	F23 & l::SendInput {Blind}{5}
+		return
+	F23 & `;::SendInput {Blind}{6}
+		return
+	F23 & '::SendInput {Blind}{0}
+		return
+	F23 & z::SendInput {~}
+		return
+	F23 & x::SendInput {`}
+		return
+	F23 & c::SendInput {&}
+		return
+	F23 & v::SendInput {|}
+		return
+	F23 & n::SendInput {\}
+		return
+	F23 & m::SendInput {/}
+		return
+	F23 & ,::SendInput {Blind}{1}
+		return
+	F23 & .::SendInput {Blind}{2}
+		return
+	F23 & /::SendInput {Blind}{3}
+		return
+
+
+
+	F24 & `::
+		SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+		return
 	F24 & 1::SendInput {Blind}{F1}
 		return
 	F24 & 2::SendInput {Blind}{F2}
@@ -73,9 +135,6 @@ SetCapsLockState, AlwaysOff
 	F24 & 5::SendInput {Blind}{F5}
 		return
 	F24 & 6::SendInput {Blind}{F6}
-		return
-	F24 & 7::
-		SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
 	F24 & 8::SendInput {Blind}{F7}
 		return
@@ -105,9 +164,9 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & p::SendInput {Blind}{End}
 		return
-	F24 & [::SendInput {Volume_Up}
+	F24 & [::SendInput {Volume_Down}
 		return
-	F24 & ]::SendInput {Volume_Down}
+	F24 & ]::SendInput {Volume_Up}
 		return
 	F24 & a::SendInput {Blind}{Bs}
 		return

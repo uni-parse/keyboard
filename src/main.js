@@ -36,16 +36,27 @@ y := y2
 
 `,
   show(keys) {
-    let mouseL = '', mouseR = '', mouseU = '', mouseD = '', extendKey = ''
+    let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey
     keys.forEach(key => {
       if (key[1][0] == 'F24') {
         extendKey = key[0]
+      } else if (key[1][0] == 'F23') {
+        symbolKey = key[0]
       } else {
         this.output += `${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
           `\t${key[0]}::${(typeof key[1] == 'object' ? key[1][0] : key[1])}\n` : ''}`
       }
     })
-    this.output += `\n\n#InputLevel 1\n\t${extendKey}::F24\n#InputLevel 0\n#Persistent\nSetCapsLockState, AlwaysOff\n\n\n\n`
+    this.output += `\n\n#InputLevel 1\n\t${extendKey}::F24\n\t${symbolKey}::F23\n#InputLevel 0\n#Persistent\nSetCapsLockState, AlwaysOff\n\n\n\n`
+    keys.forEach(key => {
+      if (typeof key[4] == 'object' && key[4][0]) {
+        this.output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
+          `\tF23 & ${key[0]}::SendInput {${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}}\n\t\treturn\n` : ''}`
+      }else if (key[4]){
+        this.output += `\tF23 & ${key[0]}::SendInput {${key[4]}}\n\t\treturn\n`
+      }
+    })
+    this.output+='\n\n\n'
     keys.forEach(key => {
       if (typeof key[2] == 'object' && key[2][0]) {
         if (key[2][0].includes(' Down')) {
@@ -112,7 +123,6 @@ y := y2
 			SendInput {Click %x% -%y% 0 Rel}
 		return
 }\n`
-
     //console.log(this.output)
     pre.innerText = this.output
     btn.addEventListener('click', () => {
@@ -149,41 +159,53 @@ keys.forEach(key => {
   }
 
   if (key[2]) {
-    addSpan(2, 'ext')
+    addSpan(2, 'extend')
   }
 
   if (key[3]) {
-    addSpan(3, 'sym')
+    addSpan(3, 'shift')
+  }
+
+  if (key[4]) {
+    addSpan(4, 'symbol')
   }
 
   keyboard.appendChild(keySpan)
 })
 
 
-let toggle_ext = false, toggle_sym = false
+let toggle_extend = false, toggle_shift = false, toggle_symbol = false
 const span_key = document.querySelectorAll('.key')
-const span_ext = document.querySelectorAll('.ext')
-const span_sym = document.querySelectorAll('.sym')
-const ext = document.querySelector('#keyboard>span:nth-child(59)')
-const sym = document.querySelector('#keyboard>span:nth-child(57)')
+const span_extend = document.querySelectorAll('.extend')
+const span_shift = document.querySelectorAll('.shift')
+const span_symbol = document.querySelectorAll('.symbol')
+const extend = document.querySelector('#keyboard>span:nth-child(59)')
+const shift = document.querySelector('#keyboard>span:nth-child(57)')
+const symbol = document.querySelector('#keyboard>span:nth-child(29)')
 
-ext.addEventListener('click', () => {
-  toggle_ext = !toggle_ext
-  if (toggle_ext) {
-    span_ext.forEach(key => {
+extend.addEventListener('click', () => {
+  toggle_extend = !toggle_extend
+  if (toggle_extend) {
+    span_extend.forEach(key => {
       key.style.opacity = 1
     });
-    span_sym.forEach(key => {
+    span_shift.forEach(key => {
       key.style.opacity = 0
     })
     span_key.forEach(key => {
       key.style.opacity = 0
     })
+    span_symbol.forEach(key => {
+      key.style.opacity = 0
+    })
   } else {
-    span_ext.forEach(key => {
+    span_extend.forEach(key => {
       key.style.opacity = 0
     });
-    span_sym.forEach(key => {
+    span_shift.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_symbol.forEach(key => {
       key.style.opacity = 0
     })
     span_key.forEach(key => {
@@ -192,25 +214,61 @@ ext.addEventListener('click', () => {
   }
 })
 
-sym.addEventListener('click', () => {
-  toggle_sym = !toggle_sym
-  if (toggle_sym) {
-    span_sym.forEach(key => {
+shift.addEventListener('click', () => {
+  toggle_shift = !toggle_shift
+  if (toggle_shift) {
+    span_shift.forEach(key => {
       key.style.opacity = 1
     })
-    span_ext.forEach(key => {
+    span_extend.forEach(key => {
       key.style.opacity = 0
     });
     span_key.forEach(key => {
       key.style.opacity = 0
     })
-  } else {
-    span_sym.forEach(key => {
+    span_symbol.forEach(key => {
       key.style.opacity = 0
     })
-    span_ext.forEach(key => {
+  } else {
+    span_shift.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_extend.forEach(key => {
       key.style.opacity = 0
     });
+    span_symbol.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_key.forEach(key => {
+      key.style.opacity = 1
+    })
+  }
+})
+symbol.addEventListener('click', () => {
+  toggle_symbol = !toggle_symbol
+  if (toggle_symbol) {
+    span_shift.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_extend.forEach(key => {
+      key.style.opacity = 0
+    });
+    span_key.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_symbol.forEach(key => {
+      key.style.opacity = 1
+    })
+  } else {
+    span_shift.forEach(key => {
+      key.style.opacity = 0
+    })
+    span_extend.forEach(key => {
+      key.style.opacity = 0
+    });
+    span_symbol.forEach(key => {
+      key.style.opacity = 0
+    })
     span_key.forEach(key => {
       key.style.opacity = 1
     })
