@@ -55,7 +55,7 @@ const keys = [
   ['Lshift', ['LAlt', 'Alt']],
   ["SC056", ['LAlt', 'Alt']],
   ["z", "x", ['XButton1', '↞'], ['', 'X'], '~'],
-  ["x", "c", ['XButton2', '↠'], ['', 'C'], '`'],
+  ["x", "c", ['XButton2', '↠'], ['', 'C'], ['``','`']],
   ["c", "d", ['speedSlow', 'Ⅰ'], ['', 'D'], '&'],
   ["v", "", ['speedNormal', 'Ⅱ'], ['', 'V'], '|'],
   ["b", "z", ['speedFast', 'Ⅲ'], ['', 'Z']],

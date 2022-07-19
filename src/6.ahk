@@ -102,7 +102,7 @@ SetCapsLockState, AlwaysOff
 		return
 	F23 & z::SendInput {~}
 		return
-	F23 & x::SendInput {`}
+	F23 & x::SendInput {``}
 		return
 	F23 & c::SendInput {&}
 		return
