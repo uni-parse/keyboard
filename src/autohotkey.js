@@ -113,7 +113,7 @@ SetCapsLockState, AlwaysOff\n\n`
 		else if GetKeyState("${mouseL}","P")
 			MouseMove, -%x%, -%y%, 0, R
 		else if GetKeyState("${mouseR}","P")
-			MouseMove, %x% -%y%, 0, R
+			MouseMove, %x%, -%y%, 0, R
 		return\n`
   output += '#If\n\n'
 

@@ -166,7 +166,7 @@ SetCapsLockState, AlwaysOff
 		else if GetKeyState("s","P")
 			MouseMove, -%x%, -%y%, 0, R
 		else if GetKeyState("f","P")
-			MouseMove, %x% -%y%, 0, R
+			MouseMove, %x%, -%y%, 0, R
 		return
 #If
 
