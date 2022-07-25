@@ -21,6 +21,7 @@ $shift: hsl(60, 83%, 57%);
 $extend: hsl(80, 100%, 50%);
 $symbol: darkorange;
 $symbol2: pink;
+$lightness:-8%;
 div#keyboardCtx {
   overflow: auto;
 }
@@ -92,61 +93,96 @@ div#keyboard {
     &:nth-child(58) {
       flex-basis: 41%; //space
     }
-    @include nth(1, 2, 13, 14, 16, 26, 27, 30, 40, 41) {
+    @include nth(16, 26, 27, 30, 40, 41) {
       background-color: $pincky;
     }
-    @include nth(3, 12, 17, 25, 31, 39, 44, 53) {
+    @include nth(1, 2, 13, 14) {
+      background-color: color.adjust($pincky, $lightness: $lightness);
+    }
+    @include nth(17, 25, 31, 39, 44, 53) {
       background-color: $ring;
+    }
+    @include nth(3, 12) {
+      background-color: color.adjust($ring, $lightness: $lightness);
     }
     &:nth-child(4) {
       background-image: radial-gradient(
           transparent 20%,
           rgba(0, 0, 0, 0.562)
         ),
-        linear-gradient(90deg, $ring 60%, $middle);
+        linear-gradient(
+          90deg,
+          color.adjust($ring, $lightness: $lightness) 60%,
+          color.adjust($middle, $lightness: $lightness)
+        );
     }
-    @include nth(5, 10, 18, 24, 32, 38, 45, 52) {
+    @include nth(18, 24, 32, 38, 45, 52) {
       background-color: $middle;
+    }
+    @include nth(5, 10) {
+      background-color: color.adjust($middle, $lightness: $lightness);
     }
     &:nth-child(11) {
       background-image: radial-gradient(
           transparent 20%,
           rgba(0, 0, 0, 0.562)
         ),
-        linear-gradient(90deg, $middle 60%, $ring);
+        linear-gradient(
+          90deg,
+          color.adjust($middle, $lightness: $lightness) 60%,
+          color.adjust($ring, $lightness: $lightness)
+        );
     }
-    @include nth(6, 7, 19, 20, 33, 34, 46, 47) {
+    @include nth(19, 20, 33, 34, 46, 47) {
       background-color: $indexL;
     }
-    @include nth(9, 22, 23, 36, 37, 50, 51) {
+    @include nth(6, 7) {
+      background-color: color.adjust($indexL, $lightness: $lightness);
+    }
+    @include nth(22, 23, 36, 37, 50, 51) {
       background-color: $indexR;
     }
+    &:nth-child(9) {
+      background-color: color.adjust($indexR, $lightness: $lightness);
+    }
     &:nth-child(48) {
-      background-color: color.adjust($indexL, $lightness: -10%);
+      background-color: color.adjust($indexL, $lightness: $lightness);
     }
     &:nth-child(49) {
-      background-color: color.adjust($indexR, $lightness: -10%);
+      background-color: color.adjust($indexR, $lightness: $lightness);
     }
     &:nth-child(8) {
-      background: linear-gradient(
-        90deg,
-        color.adjust($indexL, $lightness: -10%),
-        color.adjust($indexR, $lightness: -10%) 40%
-      );
+      background: radial-gradient(
+          transparent 20%,
+          rgba(0, 0, 0, 0.562)
+        ),
+        linear-gradient(
+          90deg,
+          color.adjust($indexL, $lightness: $lightness),
+          color.adjust($indexR, $lightness: $lightness) 40%
+        );
     }
     @include nth(21) {
-      background: linear-gradient(
-        90deg,
-        color.adjust($indexL, $lightness: -10%) 60%,
-        color.adjust($indexR, $lightness: -10%)
-      );
+      background: radial-gradient(
+          transparent 20%,
+          rgba(0, 0, 0, 0.562)
+        ),
+        linear-gradient(
+          90deg,
+          color.adjust($indexL, $lightness: $lightness) 60%,
+          color.adjust($indexR, $lightness: $lightness)
+        );
     }
     @include nth(35) {
-      background: linear-gradient(
-        90deg,
-        color.adjust($indexL, $lightness: -10%) 30%,
-        color.adjust($indexR, $lightness: -10%) 70%
-      );
+      background: radial-gradient(
+          transparent 20%,
+          rgba(0, 0, 0, 0.562)
+        ),
+        linear-gradient(
+          90deg,
+          color.adjust($indexL, $lightness: $lightness) 30%,
+          color.adjust($indexR, $lightness: $lightness) 70%
+        );
     }
     @include nth(30, 31, 32, 33, 37, 38, 39, 40, 46, 51) {
       border: solid thin black;
@@ -206,7 +242,7 @@ div#keyboard {
         bottom: 0;
         right: 0;
       }
-      &.symbol2{
+      &.symbol2 {
         position: absolute;
         color: $symbol2;
         bottom: 0;

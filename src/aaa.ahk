@@ -38,6 +38,8 @@ toggle = 0
 	`;::i
 	'::o
 	\::`;
+	Lshift::LAlt
+	SC056::LAlt
 	z::x
 	x::c
 	c::d
@@ -47,6 +49,8 @@ toggle = 0
 	,::h
 	.::,
 	/::.
+	RShift::RAlt
+	LAlt::LShift
 	RWin::Return
 
 
@@ -80,8 +84,6 @@ SetCapsLockState, AlwaysOff
 	F23 & l::5
 	F23 & `;::6
 	F23 & '::0
-	F23 & z::~
-	F23 & x::`
 	F23 & c::&
 	F23 & v::|
 	F23 & m::*
@@ -94,30 +96,18 @@ SetCapsLockState, AlwaysOff
 #If GetKeyState("RAlt", "P") && !GetKeyState("CapsLock", "P")
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	F24 & q::Esc
-	F24 & w::SendInput {Blind}{WheelDown}
+	F24 & 2::Media_Prev
+	F24 & 3::Media_Next
+	F24 & 4::Browser_Search
+	F24 & 9::^NumpadAdd
+	F24 & 0::^NumpadSub
+	F24 & -::^Numpad0
+	F24 & =::F11
+	F24 & Bs::F12
+	F24 & q::SendInput {Blind}{WheelUp}
 		return
-	F24 & r::SendInput {Blind}{WheelUp}
-		return
-	F24 & y::Media_Prev
-	F24 & u::PgUp
-	F24 & i::Home
-	F24 & o::Up
-	F24 & p::End
-	F24 & [::Volume_Down
-	F24 & ]::Volume_Up
-	F24 & a::Bs
-	F24 & g::Del
-	F24 & h::Media_Next
-	F24 & j::PgDn
-	F24 & k::Left
-	F24 & l::Down
-	F24 & `;::Right
-	F24 & '::Enter
-	F24 & \::Media_Play_Pause
-	F24 & z::XButton1
-	F24 & x::XButton2
-	F24 & c::
+	F24 & w::Esc
+	F24 & r::
 		toggle := !toggle
 		If toggle
 		{
@@ -130,8 +120,27 @@ SetCapsLockState, AlwaysOff
 			y := y2
 		}
 		return
-	F24 & v::Run explorer
-	F24 & n::PrintScreen
+	F24 & u::PgUp
+	F24 & i::Home
+	F24 & o::Up
+	F24 & p::End
+	F24 & [::Volume_Down
+	F24 & ]::Volume_Up
+	F24 & a::SendInput {Blind}{WheelDown}
+		return
+	F24 & g::AppsKey
+	F24 & j::PgDn
+	F24 & k::Left
+	F24 & l::Down
+	F24 & `;::Right
+	F24 & '::Enter
+	F24 & \::Media_Play_Pause
+	F24 & z::XButton1
+	F24 & x::XButton2
+	F24 & c::Bs
+	F24 & v::Del
+	F24 & b::PrintScreen
+	F24 & n::Run explorer
 	F24 & m::Tab
 	F24 & ,::LButton
 	F24 & .::MButton
@@ -172,6 +181,15 @@ SetCapsLockState, AlwaysOff
 
 ;symbol2 layer
 #If GetKeyState("RAlt", "P") && GetKeyState("CapsLock", "P")
+	1::⋆
+	2::▪
+	3::▫
+	4::▸
+	5::▹
+	9::•
+	0::◦
+	-::»
+	=::›
 	e::↑
 	r::π
 	i::F7
@@ -179,8 +197,7 @@ SetCapsLockState, AlwaysOff
 	p::F9
 	[::F11
 	]::F12
-	s::←
-	d::Browser_Search
+	s::√
 	f::→
 	g::Ø
 	k::F4
