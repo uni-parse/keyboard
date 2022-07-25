@@ -28,13 +28,10 @@ function layout(keys, keyboard) {
       addSpan(2, 'extend')
     }
     if (key[3]) {
-      addSpan(3, 'shift')
+      addSpan(3, 'symbol')
     }
     if (key[4]) {
-      addSpan(4, 'symbol')
-    }
-    if (key[5]) {
-      addSpan(5, 'symbol2')
+      addSpan(4, 'symbol2')
     }
     keyboard.appendChild(keySpan)
   })

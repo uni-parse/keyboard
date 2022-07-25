@@ -27,24 +27,6 @@ x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\n\n
 #Persistent
 SetCapsLockState, AlwaysOff\n\n`
 
-  // symbol layer
-  output += `;symbol layer\n#If !GetKeyState("${extendKey}", "P") && GetKeyState("${symbolKey}", "P")\n`
-  keys.forEach(key => {
-    if (typeof key[4] == 'object' && key[4][0]) {
-      if ((typeof key[4][0] == 'number') || key[4][0] == '0') {
-        output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
-          `\tF23 & ${key[0]}::${typeof key[4] == 'object' ? key[4][0] : key[4]}\n` : ''}`
-      } else {
-        output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
-          `\tF23 & ${key[0]}::${typeof key[4] == 'object' ? key[4][0] : key[4]}\n` : ''}`
-      }
-
-    } else if (key[4]) {
-      output += `\tF23 & ${key[0]}::${key[4]}\n`
-    }
-  })
-  output += '#If\n\n'
-
   // extend layer
   output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")\n`
   keys.forEach(key => {
@@ -117,14 +99,32 @@ SetCapsLockState, AlwaysOff\n\n`
 		return\n`
   output += '#If\n\n'
 
+  // symbol layer
+  output += `;symbol layer\n#If !GetKeyState("${extendKey}", "P") && GetKeyState("${symbolKey}", "P")\n`
+  keys.forEach(key => {
+    if (typeof key[3] == 'object' && key[3][0]) {
+      if ((typeof key[3][0] == 'number') || key[3][0] == '0') {
+        output += `${key[3] && !(typeof key[3] == 'object' && !key[3][0]) ?
+          `\tF23 & ${key[0]}::${typeof key[3] == 'object' ? key[3][0] : key[3]}\n` : ''}`
+      } else {
+        output += `${key[3] && !(typeof key[3] == 'object' && !key[3][0]) ?
+          `\tF23 & ${key[0]}::${typeof key[3] == 'object' ? key[3][0] : key[3]}\n` : ''}`
+      }
+
+    } else if (key[3]) {
+      output += `\tF23 & ${key[0]}::${key[3]}\n`
+    }
+  })
+  output += '#If\n\n'
+
   // symbol2 layer
   output += `;symbol2 layer\n#If GetKeyState("${extendKey}", "P") && GetKeyState("${symbolKey}", "P")\n`
   keys.forEach(key => {
-    if (typeof key[5] == 'object' && key[5][0]) {
-      output += `${key[5] && !(typeof key[5] == 'object' && !key[5][0]) ?
-        `\t${key[0]}::${((typeof key[5] == 'object') ? (key[5][0]) : key[5])}\n` : ''}`
-    } else if (key[5]) {
-      output += `\t${key[0]}::${key[5]}\n`
+    if (typeof key[4] == 'object' && key[4][0]) {
+      output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
+        `\t${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
+    } else if (key[4]) {
+      output += `\t${key[0]}::${key[4]}\n`
     }
   })
   output += '#If'
