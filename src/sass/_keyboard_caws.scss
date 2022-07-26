@@ -94,7 +94,7 @@ div#keyboard {
     @include nth(16, 26, 27, 30, 40, 41) {
       background-color: $pincky;
     }
-    @include nth(1, 2, 13, 14) {
+    @include nth(1, 2, 13) {
       background-color: color.adjust(
         $pincky,
         $lightness: $lightness

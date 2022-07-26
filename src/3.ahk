@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High
@@ -26,7 +26,7 @@ toggle = 0
 	i::l
 	o::u
 	p::y
-	[::`;
+	[::'
 	]::=
 	CapsLock::LAlt
 	s::r
@@ -38,7 +38,7 @@ toggle = 0
 	l::e
 	`;::i
 	'::o
-	\::'
+	\::`;
 	SC056::LShift
 	z::x
 	x::c
@@ -64,14 +64,11 @@ SetCapsLockState, AlwaysOff
 #If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P")
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	F24 & 2::Media_Prev
-	F24 & 3::Media_Next
 	F24 & 4::Browser_Search
-	F24 & 9::^NumpadAdd
-	F24 & 0::^NumpadSub
-	F24 & -::^Numpad0
-	F24 & =::F11
-	F24 & Bs::F12
+	F24 & 9::Media_Prev
+	F24 & 0::Media_Next
+	F24 & -::Media_Stop
+	F24 & =::Volume_Mute
 	F24 & q::SendInput {Blind}{WheelUp}
 		return
 	F24 & w::Esc
@@ -155,27 +152,31 @@ SetCapsLockState, AlwaysOff
 	F23 & r::SendInput {`%}
 		return
 	F23 & t::^
+	F23 & y::,
+	F23 & u::,
 	F23 & i::7
 	F23 & o::8
 	F23 & p::9
-	F23 & [::\
+	F23 & [::`
 	F23 & ]::~
 	F23 & a::!
 	F23 & s::[
 	F23 & d::{
 	F23 & f::(
 	F23 & g::)
+	F23 & h::,
 	F23 & j::*
 	F23 & k::4
 	F23 & l::5
 	F23 & `;::6
 	F23 & '::0
-	F23 & \::`
+	F23 & \::\
 	F23 & z::]
 	F23 & x::}
 	F23 & c::&
 	F23 & v::|
 	F23 & b::?
+	F23 & n::,
 	F23 & m::/
 	F23 & ,::1
 	F23 & .::2
@@ -193,25 +194,38 @@ SetCapsLockState, AlwaysOff
 	0::◦
 	-::»
 	=::›
+	q::▶
+	w::▶
 	e::↑
 	r::π
+	t::▶
+	y::▶
+	u::F12
 	i::F7
 	o::F8
 	p::F9
-	[::F11
-	]::F12
+	[::^NumpadSub
+	]::^NumpadAdd
+	a::▶
 	s::√
+	d::▶
 	f::→
-	g::Ø
+	g::💀
+	h::💀
+	j::F11
 	k::F4
 	l::F5
 	`;::F6
-	'::F10
+	'::💀
+	\::^Numpad0
 	z::✗
 	x::©
 	c::Ⓓ
 	v::✓
+	b::💀
+	n::💀
+	m::F10
 	,::F1
 	.::F2
-	/::F3
+	/::💀
 #If
