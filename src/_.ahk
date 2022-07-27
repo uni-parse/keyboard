@@ -55,7 +55,7 @@ mousePreDelay = 200
 	/::.
 	LWin::LAlt
 	RWin::RAlt
-	
+
 
 ;config layers
 #InputLevel 1
@@ -114,20 +114,20 @@ SetCapsLockState, AlwaysOff
 			y := y2
 		}
 		return
-	F24 & u::Volume_Up
+	F24 & t::PgUp
 	F24 & i::Home
 	F24 & o::Up
 	F24 & p::End
-	F24 & [::PgDn
-	F24 & ]::PgUp
+	F24 & [::Volume_Down
+	F24 & ]::Volume_Up
 	F24 & a::
     While GetKeyState("a","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelDown}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
-	F24 & g::AppsKey
-	F24 & j::Volume_Down
+	F24 & g::PgDn
+	F24 & j::AppsKey
 	F24 & k::Left
 	F24 & l::Down
 	F24 & `;::Right
@@ -227,20 +227,20 @@ SetCapsLockState, AlwaysOff
 			y := y2
 		}
 		return
-	u::Volume_Up
+	t::PgUp
 	i::Home
 	o::Up
 	p::End
-	[::PgDn
-	]::PgUp
+	[::Volume_Down
+	]::Volume_Up
 	a::
     While l1 && GetKeyState("a","P"){
       SendInput {Blind}{WheelDown}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
-	g::AppsKey
-	j::Volume_Down
+	g::PgDn
+	j::AppsKey
 	k::Left
 	l::Down
 	`;::Right
@@ -312,11 +312,11 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer
 #If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !l3
-	F23 & q::SendRaw @
+	F23 & q::SendRaw $
 		return
-	F23 & w::SendRaw #
+	F23 & w::SendRaw {
 		return
-	F23 & e::SendRaw $
+	F23 & e::SendRaw }
 		return
 	F23 & r::SendRaw `%
 		return
@@ -330,15 +330,15 @@ SetCapsLockState, AlwaysOff
 	F23 & [::`
 	F23 & ]::SendRaw ~
 		return
-	F23 & a::SendRaw !
+	F23 & a::SendRaw #
 		return
-	F23 & s::SendRaw [
+	F23 & s::SendRaw (
 		return
-	F23 & d::SendRaw {
+	F23 & d::SendRaw )
 		return
-	F23 & f::SendRaw (
+	F23 & f::SendRaw !
 		return
-	F23 & g::SendRaw &
+	F23 & g::SendRaw @
 		return
 	F23 & j::SendRaw *
 		return
@@ -347,11 +347,11 @@ SetCapsLockState, AlwaysOff
 	F23 & `;::6
 	F23 & '::0
 	F23 & \::\
-	F23 & z::SendRaw ]
+	F23 & z::SendRaw [
 		return
-	F23 & x::SendRaw }
+	F23 & x::SendRaw ]
 		return
-	F23 & c::SendRaw )
+	F23 & c::SendRaw &
 		return
 	F23 & v::SendRaw |
 		return
@@ -386,8 +386,8 @@ SetCapsLockState, AlwaysOff
 	F23 & i::F7
 	F23 & o::F8
 	F23 & p::F9
-	F23 & [::F10
-	F23 & ]::F11
+	F23 & [::F11
+	F23 & ]::F12
 	F23 & a::SendRaw •
 		return
 	F23 & s::SendRaw ▸
@@ -403,7 +403,7 @@ SetCapsLockState, AlwaysOff
 	F23 & k::F4
 	F23 & l::F5
 	F23 & `;::F6
-	F23 & '::F12
+	F23 & '::F10
 	F23 & \::SendRaw ≠
 		return
 	F23 & z::SendRaw ✗
@@ -413,6 +413,8 @@ SetCapsLockState, AlwaysOff
 	F23 & c::SendRaw Ⓓ
 		return
 	F23 & v::SendRaw ✓
+		return
+	F23 & m::SendRaw ≈
 		return
 	F23 & ,::F1
 	F23 & .::F2
@@ -442,8 +444,8 @@ SetCapsLockState, AlwaysOff
 	F24 & i::F7
 	F24 & o::F8
 	F24 & p::F9
-	F24 & [::F10
-	F24 & ]::F11
+	F24 & [::F11
+	F24 & ]::F12
 	F24 & a::SendRaw •
 		return
 	F24 & s::SendRaw ▸
@@ -459,7 +461,7 @@ SetCapsLockState, AlwaysOff
 	F24 & k::F4
 	F24 & l::F5
 	F24 & `;::F6
-	F24 & '::F12
+	F24 & '::F10
 	F24 & \::SendRaw ≠
 		return
 	F24 & z::SendRaw ✗
@@ -469,6 +471,8 @@ SetCapsLockState, AlwaysOff
 	F24 & c::SendRaw Ⓓ
 		return
 	F24 & v::SendRaw ✓
+		return
+	F24 & m::SendRaw ≈
 		return
 	F24 & ,::F1
 	F24 & .::F2
