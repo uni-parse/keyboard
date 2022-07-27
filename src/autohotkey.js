@@ -1,7 +1,7 @@
 function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
     output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.\n; #Warn  ; Enable warnings to assist with detecting common errors.\nSetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.\nProcess, Priority,, High\n
-x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nl3 = 0\nl1 = 0\n\n`
+x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nl3 = 0\nl1 = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\n\n`
 
   // standard remapint
   output += ';standard layer\n'
@@ -51,7 +51,12 @@ SetCapsLockState, AlwaysOff
       if (key[2][0].includes('Button')) {
         output += `\tF24 & ${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\tF24 & ${key[0]}::SendInput {Blind}{${key[2][0]}}\n\t\treturn\n`
+        output += `\tF24 & ${key[0]}::
+    While GetKeyState("${key[0]}","P") && GetKeyState("${extendKey}","P"){
+      SendInput {Blind}{${key[2][0]}}
+      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+    }
+    return\n`
       } else if (key[2][0] == 'Capslock') {
         output += `\tF24 & ${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
       } else if (key[2][0] == 'mouseL') {
@@ -83,44 +88,69 @@ SetCapsLockState, AlwaysOff
     }
   })
   output += `\tF24 & ${mouseL}::
-		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  MouseMove, -%x%, 0, 0, R
-		else if GetKeyState("${mouseU}","P")
-			MouseMove, -%x%, -%y%, 0, R
-		else if GetKeyState("${mouseD}","P")
-			MouseMove, -%x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseL}","P") && GetKeyState("${extendKey}", "P"){
+      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
+        MouseMove, -%x%, 0, 0, R
+      else if GetKeyState("${mouseU}","P")
+        MouseMove, -%x%, -%y%, 0, R
+      else if GetKeyState("${mouseD}","P")
+      {
+        MouseMove, -%x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	F24 & ${mouseR}::
-		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  MouseMove, %x%, 0, 0, R
-		else if GetKeyState("${mouseU}","P")
-			MouseMove, %x%, -%y%, 0, R
-		else if GetKeyState("${mouseD}","P")
-			MouseMove, %x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseR}","P") && GetKeyState("${extendKey}", "P"){
+      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
+        MouseMove, %x%, 0, 0, R
+      else if GetKeyState("${mouseU}","P")
+        MouseMove, %x%, -%y%, 0, R
+      else if GetKeyState("${mouseD}","P")
+      {
+        MouseMove, %x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	F24 & ${mouseD}::
-		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  MouseMove, 0, %y%, 0, R
-		else if GetKeyState("${mouseL}","P")
-			MouseMove, -%x%, %y%, 0, R
-		else if GetKeyState("${mouseR}","P")
-			MouseMove, %x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseD}","P") && GetKeyState("${extendKey}", "P"){
+      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
+        MouseMove, 0, %y%, 0, R
+      else if GetKeyState("${mouseL}","P")
+        MouseMove, -%x%, %y%, 0, R
+      else if GetKeyState("${mouseR}","P")
+      {
+        MouseMove, %x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	F24 & ${mouseU}::
-		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  MouseMove, 0, -%y%, 0, R
-		else if GetKeyState("${mouseL}","P")
-			MouseMove, -%x%, -%y%, 0, R
-		else if GetKeyState("${mouseR}","P")
-			MouseMove, %x%, -%y%, 0, R
-		return\n`
+		While GetKeyState("${mouseU}","P") && GetKeyState("${extendKey}", "P"){
+      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
+        MouseMove, 0, -%y%, 0, R
+      else if GetKeyState("${mouseL}","P")
+        MouseMove, -%x%, -%y%, 0, R
+      else if GetKeyState("${mouseR}","P")
+      {
+        MouseMove, %x%, -%y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return\n`
   output += '#If\n#If l1\n'
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\t${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\t${key[0]}::SendInput {Blind}{${key[2][0]}}\n\t\treturn\n`
+        output += `\t${key[0]}::
+    While l1 && GetKeyState("${key[0]}","P"){
+      SendInput {Blind}{${key[2][0]}}
+      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+    }
+    return\n`
       } else if (key[2][0] == 'Capslock') {
         output += `\t${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
       } else if (key[2][0] == 'mouseL') {
@@ -152,38 +182,58 @@ SetCapsLockState, AlwaysOff
     }
   })
   output += `\t${mouseL}::
-		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  MouseMove, -%x%, 0, 0, R
-		else if GetKeyState("${mouseU}","P")
-			MouseMove, -%x%, -%y%, 0, R
-		else if GetKeyState("${mouseD}","P")
-			MouseMove, -%x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseL}","P"){
+      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
+        MouseMove, -%x%, 0, 0, R
+      else if GetKeyState("${mouseU}","P")
+        MouseMove, -%x%, -%y%, 0, R
+      else if GetKeyState("${mouseD}","P")
+      {
+        MouseMove, -%x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	${mouseR}::
-		If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-		  MouseMove, %x%, 0, 0, R
-		else if GetKeyState("${mouseU}","P")
-			MouseMove, %x%, -%y%, 0, R
-		else if GetKeyState("${mouseD}","P")
-			MouseMove, %x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseR}","P"){
+      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
+        MouseMove, %x%, 0, 0, R
+      else if GetKeyState("${mouseU}","P")
+        MouseMove, %x%, -%y%, 0, R
+      else if GetKeyState("${mouseD}","P")
+      {
+        MouseMove, %x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	${mouseD}::
-		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  MouseMove, 0, %y%, 0, R
-		else if GetKeyState("${mouseL}","P")
-			MouseMove, -%x%, %y%, 0, R
-		else if GetKeyState("${mouseR}","P")
-			MouseMove, %x%, %y%, 0, R
-		return
+		While GetKeyState("${mouseD}","P"){
+      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
+        MouseMove, 0, %y%, 0, R
+      else if GetKeyState("${mouseL}","P")
+        MouseMove, -%x%, %y%, 0, R
+      else if GetKeyState("${mouseR}","P")
+      {
+        MouseMove, %x%, %y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	${mouseU}::
-		If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-		  MouseMove, 0, -%y%, 0, R
-		else if GetKeyState("${mouseL}","P")
-			MouseMove, -%x%, -%y%, 0, R
-		else if GetKeyState("${mouseR}","P")
-			MouseMove, %x%, -%y%, 0, R
-		return\n`
-  output +='#If\n\n'
+		While GetKeyState("${mouseU}","P"){
+      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
+        MouseMove, 0, -%y%, 0, R
+      else if GetKeyState("${mouseL}","P")
+        MouseMove, -%x%, -%y%, 0, R
+      else if GetKeyState("${mouseR}","P")
+      {
+        MouseMove, %x%, -%y%, 0, R
+      }
+      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return\n`
+  output += '#If\n\n'
 
   // symbol layer
   output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !l3\n`
@@ -191,7 +241,7 @@ SetCapsLockState, AlwaysOff
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/') {
         output += `\tF23 & ${key[0]}::${key[3][0]}\n`
-      } else if (key[3][0]){
+      } else if (key[3][0]) {
         output += `\tF23 & ${key[0]}::SendRaw ${key[3][0]}\n\t\treturn\n`
       }
     } else if (typeof key[3] == 'number' || key[3] == '`' || key[3] == '\\' || key[3] == '/') {

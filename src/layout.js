@@ -24,9 +24,9 @@ function layout(keys, keyboard) {
       keySpan.appendChild(kbd)
     }
 
-    if (key[0] == 'Bs' || key[0] == 'Enter' || key[0] == 'RShift' || key[0] == 'LShift' || key[0] == 'SC056' || key[0] == 'LCtrl' || key[0] == 'RCtrl' || key[0] == 'AppsKey' || key[0] == 'LWin' || key[0] == 'RWin' || key[0] == 'CapsLock' || key[0] == 'Tab' || key[0] == 'LAlt' || key[0] == 'RAlt') {
+    if (key[0] == 'Bs' || key[0] == 'Enter' || key[0] == 'RShift' || key[0] == 'LShift' || key[0] == 'SC056' || key[0] == 'LCtrl' || key[0] == 'RCtrl' || key[0] == 'AppsKey' || key[0] == 'LWin' || key[0] == 'RWin' || key[0] == 'CapsLock' || key[0] == 'Tab' || key[0] == 'LAlt' || key[0] == 'RAlt' || key[0] == 'Space') {
       addSpan(1, 'modifier')
-    } else if (!key[1] || key[1] == 'return') {
+    } else if (!key[1]) {
       addSpan(0, 'key')
     } else {
       addSpan(1, 'key')
