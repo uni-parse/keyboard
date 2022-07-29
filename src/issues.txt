@@ -1,0 +1,71 @@
+⋆combination:
+  ▪extend & ^del = alt ctrl del, expected ^del
+    ▫fix: l1\ ^del
+  ▪modifiers:
+    ▫altGr missing
+    ▫win e = logOut, expected open explorer
+      ▸fix use colemak layout instead of qwerty
+  ▪mousing:
+    ▫speed switchs
+    ▫wheel speed
+
+colemak //back to qwerty, not today!!
+  advantages
+    fast
+    comfortable
+    wide: pain killer
+  disadvantages
+    not in boot console, rare cases
+    no developer understud it, qwerty fallback, rare cases
+    required reboot, just once & rare cases
+    bad for programs shortcutes, not realy
+    bad for default programs expectation including system, install the package.exe rather than remap.ahk
+qwerty //king
+  ++
+    standard & global layout
+    compatibal with all programes
+    all devs use it.
+    boot console.
+  --
+    slow
+    uncomfortable, pain on right pinky finger
+
+qwerty wide //back to qwerty
+  ++
+    comfortable
+    no right pinky finger pain
+    right alt,shift,enter,bs accessible
+    fast ti rnack
+      -     .7
+      =     .9
+      [     .6
+      ]     1.1
+      ;     .3
+      '     1.8
+      \     1.4
+      ,     .6
+      .     .3
+      /     .6
+      Shift 1.3
+      Enter .9
+      bs    .7
+      altGr +
+  --
+    hard to reach
+      y     
+      h     
+      n
+
+
+
+extend/symols
+  advantages
+    fast, numbers & symbols & F1~F12 & extra characters
+    comfortable
+    hands movement & mousing killer
+  disadvantages
+    required modifier in order to be enabled
+    hold down pain
+  final decition: keep it.
+
+

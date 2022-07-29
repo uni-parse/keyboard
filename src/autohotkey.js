@@ -94,9 +94,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseU}","P")
         MouseMove, -%x%, -%y%, 0, R
       else if GetKeyState("${mouseD}","P")
-      {
         MouseMove, -%x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -107,9 +105,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseU}","P")
         MouseMove, %x%, -%y%, 0, R
       else if GetKeyState("${mouseD}","P")
-      {
         MouseMove, %x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -120,9 +116,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseL}","P")
         MouseMove, -%x%, %y%, 0, R
       else if GetKeyState("${mouseR}","P")
-      {
         MouseMove, %x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -133,9 +127,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseL}","P")
         MouseMove, -%x%, -%y%, 0, R
       else if GetKeyState("${mouseR}","P")
-      {
         MouseMove, %x%, -%y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return\n`
@@ -188,9 +180,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseU}","P")
         MouseMove, -%x%, -%y%, 0, R
       else if GetKeyState("${mouseD}","P")
-      {
         MouseMove, -%x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -201,9 +191,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseU}","P")
         MouseMove, %x%, -%y%, 0, R
       else if GetKeyState("${mouseD}","P")
-      {
         MouseMove, %x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -214,9 +202,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseL}","P")
         MouseMove, -%x%, %y%, 0, R
       else if GetKeyState("${mouseR}","P")
-      {
         MouseMove, %x%, %y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
@@ -227,9 +213,7 @@ SetCapsLockState, AlwaysOff
       else if GetKeyState("${mouseL}","P")
         MouseMove, -%x%, -%y%, 0, R
       else if GetKeyState("${mouseR}","P")
-      {
         MouseMove, %x%, -%y%, 0, R
-      }
       sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return\n`
