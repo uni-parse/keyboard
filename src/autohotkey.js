@@ -223,12 +223,12 @@ SetCapsLockState, AlwaysOff
   output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !l3\n`
   keys.forEach(key => {
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
-      if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/') {
+      if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
         output += `\tF23 & ${key[0]}::${key[3][0]}\n`
       } else if (key[3][0]) {
         output += `\tF23 & ${key[0]}::SendRaw ${key[3][0]}\n\t\treturn\n`
       }
-    } else if (typeof key[3] == 'number' || key[3] == '`' || key[3] == '\\' || key[3] == '/') {
+    } else if (typeof key[3] == 'number' || key[3] == '`' || key[3] == '\\' || key[3] == '/' || key[3] == '=' || key[3] == '[' || key[3] == ']') {
       output += `\tF23 & ${key[0]}::${key[3]}\n`
     } else if (key[3]) {
       output += `\tF23 & ${key[0]}::SendRaw ${key[3]}\n\t\treturn\n`

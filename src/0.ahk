@@ -275,8 +275,7 @@ SetCapsLockState, AlwaysOff
 	F23 & u::8
 	F23 & y::9
 	F23 & '::`
-	F23 & -::SendRaw ~
-		return
+	F23 & -::=
 	F23 & a::SendRaw #
 		return
 	F23 & r::SendRaw (
@@ -294,10 +293,8 @@ SetCapsLockState, AlwaysOff
 	F23 & i::6
 	F23 & o::0
 	F23 & `;::\
-	F23 & x::SendRaw [
-		return
-	F23 & c::SendRaw ]
-		return
+	F23 & x::[
+	F23 & c::]
 	F23 & d::SendRaw &
 		return
 	F23 & v::SendRaw |
@@ -361,8 +358,6 @@ SetCapsLockState, AlwaysOff
 		return
 	F23 & v::SendRaw ✓
 		return
-	F23 & k::SendRaw ≈
-		return
 	F23 & h::F1
 	F23 & ,::F2
 	F23 & .::F3
@@ -418,8 +413,6 @@ SetCapsLockState, AlwaysOff
 	F24 & d::SendRaw Ⓓ
 		return
 	F24 & v::SendRaw ✓
-		return
-	F24 & k::SendRaw ≈
 		return
 	F24 & h::F1
 	F24 & ,::F2
