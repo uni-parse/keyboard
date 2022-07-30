@@ -242,23 +242,37 @@ div#keyboard {
       }
       &.symbol {
         color: $symbol;
-        &.shift {
-          color: $shift;
-          white-space: nowrap;
-          word-spacing: -0.55em;
-          font-size: 0.9em;
-          &::first-letter {
-            font-size: 1.1em;
-            color: $symbol;
-          }
-        }
       }
       &.symbol2 {
         color: $symbol2;
         &.f {
           font-size: 0.8em;
-          letter-spacing: -.1em;
+          letter-spacing: -0.1em;
         }
+      }
+      &.shift {
+        position: relative;
+        &::after {
+          content: attr(data-shift);
+          color: $shift;
+          font-size: 0.8em;
+          position: absolute;
+          top: 20%;
+        }
+        &.key::after {
+          right: -0.1em;
+        }
+        &.symbol::after {
+          right: 0;
+        }
+      }
+    }
+    @include nth(5,13,27) {
+      & kbd.key::after {
+        right: -0.3em;
+      }
+      & kbd.symbol::after {
+        right: -0.2em;
       }
     }
   }

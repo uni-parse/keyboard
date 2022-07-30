@@ -49,14 +49,14 @@ SetCapsLockState, AlwaysOff
 #If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !l3
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	F24 & 1::Media_Stop
-	F24 & 2::Media_Prev
-	F24 & 3::Media_Next
-	F24 & 4::Browser_Search
-	F24 & 8::^NumpadAdd
-	F24 & 9::^NumpadSub
-	F24 & 0::^Numpad0
-	F24 & =::Volume_Mute
+	F24 & 1::Browser_Search
+	F24 & 2::Media_Stop
+	F24 & 3::Media_Prev
+	F24 & 4::Media_Next
+	F24 & 9::^NumpadAdd
+	F24 & 0::^NumpadSub
+	F24 & =::^Numpad0
+	F24 & Bs::Volume_Mute
 	F24 & q::
     While GetKeyState("q","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelUp}
@@ -90,7 +90,7 @@ SetCapsLockState, AlwaysOff
     }
     return
 	F24 & g::PgDn
-	F24 & m::AppsKey
+	F24 & m::Tab
 	F24 & n::Left
 	F24 & e::Down
 	F24 & i::Right
@@ -102,7 +102,7 @@ SetCapsLockState, AlwaysOff
 	F24 & v::Del
 	F24 & z::PrintScreen
 	F24 & /::Run calc
-	F24 & k::Tab
+	F24 & k::AppsKey
 	F24 & h::LButton
 	F24 & ,::MButton
 	F24 & .::RButton
@@ -154,14 +154,14 @@ SetCapsLockState, AlwaysOff
 #If l1
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	1::Media_Stop
-	2::Media_Prev
-	3::Media_Next
-	4::Browser_Search
-	8::^NumpadAdd
-	9::^NumpadSub
-	0::^Numpad0
-	=::Volume_Mute
+	1::Browser_Search
+	2::Media_Stop
+	3::Media_Prev
+	4::Media_Next
+	9::^NumpadAdd
+	0::^NumpadSub
+	=::^Numpad0
+	Bs::Volume_Mute
 	q::
     While l1 && GetKeyState("q","P"){
       SendInput {Blind}{WheelUp}
@@ -195,7 +195,7 @@ SetCapsLockState, AlwaysOff
     }
     return
 	g::PgDn
-	m::AppsKey
+	m::Tab
 	n::Left
 	e::Down
 	i::Right
@@ -207,7 +207,7 @@ SetCapsLockState, AlwaysOff
 	v::Del
 	z::PrintScreen
 	/::Run calc
-	k::Tab
+	k::AppsKey
 	h::LButton
 	,::MButton
 	.::RButton
@@ -259,50 +259,22 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer
 #If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !l3
-	F23 & q::SendRaw $
-		return
-	F23 & w::SendRaw {
-		return
-	F23 & f::SendRaw }
-		return
-	F23 & p::SendRaw `%
-		return
-	F23 & b::SendRaw ^
-		return
-	F23 & j::SendRaw ?
-		return
-	F23 & l::7
-	F23 & u::8
-	F23 & y::9
 	F23 & '::`
 	F23 & -::=
-	F23 & a::SendRaw #
-		return
-	F23 & r::SendRaw (
-		return
-	F23 & s::SendRaw )
-		return
-	F23 & t::SendRaw !
-		return
-	F23 & g::SendRaw @
-		return
-	F23 & m::SendRaw *
-		return
-	F23 & n::4
-	F23 & e::5
-	F23 & i::6
+	F23 & a::1
+	F23 & r::2
+	F23 & s::3
+	F23 & t::4
+	F23 & g::[
+	F23 & m::]
+	F23 & n::7
+	F23 & e::8
+	F23 & i::9
 	F23 & o::0
 	F23 & `;::\
-	F23 & x::[
-	F23 & c::]
-	F23 & d::SendRaw &
-		return
-	F23 & v::SendRaw |
-		return
+	F23 & d::5
 	F23 & k::/
-	F23 & h::1
-	F23 & ,::2
-	F23 & .::3
+	F23 & h::6
 #If
 
 ;symbol2 layer
@@ -315,52 +287,20 @@ SetCapsLockState, AlwaysOff
 		return
 	F23 & =::SendRaw ±
 		return
-	F23 & q::SendRaw ◦
-		return
-	F23 & w::SendRaw ▹
-		return
-	F23 & f::SendRaw ▫
-		return
-	F23 & p::SendRaw →
-		return
-	F23 & [::SendRaw π
-		return
-	F23 & j::SendRaw Ø
-		return
-	F23 & l::F7
-	F23 & u::F8
-	F23 & y::F9
 	F23 & '::F11
 	F23 & -::F12
-	F23 & a::SendRaw •
-		return
-	F23 & r::SendRaw ▸
-		return
-	F23 & s::SendRaw ▪
-		return
-	F23 & t::SendRaw ⋆
-		return
-	F23 & ]::SendRaw √
-		return
-	F23 & m::SendRaw ≈
-		return
-	F23 & n::F4
-	F23 & e::F5
-	F23 & i::F6
+	F23 & a::F1
+	F23 & r::F2
+	F23 & s::F3
+	F23 & t::F4
+	F23 & n::F7
+	F23 & e::F8
+	F23 & i::F9
 	F23 & o::F10
 	F23 & `;::SendRaw ≠
 		return
-	F23 & x::SendRaw ✗
-		return
-	F23 & c::SendRaw ©
-		return
-	F23 & d::SendRaw Ⓓ
-		return
-	F23 & v::SendRaw ✓
-		return
-	F23 & h::F1
-	F23 & ,::F2
-	F23 & .::F3
+	F23 & d::F5
+	F23 & h::F6
 #If
 #If l3 && GetKeyState("RAlt", "P")
 	F24 & 8::SendRaw ≤
@@ -371,50 +311,18 @@ SetCapsLockState, AlwaysOff
 		return
 	F24 & =::SendRaw ±
 		return
-	F24 & q::SendRaw ◦
-		return
-	F24 & w::SendRaw ▹
-		return
-	F24 & f::SendRaw ▫
-		return
-	F24 & p::SendRaw →
-		return
-	F24 & [::SendRaw π
-		return
-	F24 & j::SendRaw Ø
-		return
-	F24 & l::F7
-	F24 & u::F8
-	F24 & y::F9
 	F24 & '::F11
 	F24 & -::F12
-	F24 & a::SendRaw •
-		return
-	F24 & r::SendRaw ▸
-		return
-	F24 & s::SendRaw ▪
-		return
-	F24 & t::SendRaw ⋆
-		return
-	F24 & ]::SendRaw √
-		return
-	F24 & m::SendRaw ≈
-		return
-	F24 & n::F4
-	F24 & e::F5
-	F24 & i::F6
+	F24 & a::F1
+	F24 & r::F2
+	F24 & s::F3
+	F24 & t::F4
+	F24 & n::F7
+	F24 & e::F8
+	F24 & i::F9
 	F24 & o::F10
 	F24 & `;::SendRaw ≠
 		return
-	F24 & x::SendRaw ✗
-		return
-	F24 & c::SendRaw ©
-		return
-	F24 & d::SendRaw Ⓓ
-		return
-	F24 & v::SendRaw ✓
-		return
-	F24 & h::F1
-	F24 & ,::F2
-	F24 & .::F3
+	F24 & d::F5
+	F24 & h::F6
 #If
