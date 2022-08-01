@@ -10,51 +10,15 @@ y2 = 18
 x := x2
 y := y2
 toggle = 0
-l3 = 0
-l1 = 0
+symbil2Layer = 0
+extendLayer = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
 
 ;standard layer
-	7::\
-	8::7
-	9::8
-	0::9
-	-::0
-	=::-
-	e::f
-	r::p
-	t::b
-	y::]
-	u::j
-	i::l
-	o::u
-	p::y
-	[::'
-	]::=
-	CapsLock::LWin
-	s::r
-	d::s
-	f::t
-	h::[
-	j::m
-	k::n
-	l::e
-	`;::i
-	'::o
-	\::`;
+	CapsLock::LAlt
 	SC056::LShift
-	z::x
-	x::c
-	c::d
-	b::z
-	n::/
-	m::k
-	,::h
-	.::,
-	/::.
-	LWin::LAlt
-	RWin::RAlt
+	AppsKey::Alt
 
 
 ;config layers
@@ -64,36 +28,50 @@ mousePreDelay = 200
 #InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
-#If !l1
-  F24 & F23::
-		l3 = 0
-    l1 = 1
-    KeyWait RAlt
-    KeyWait RAlt, D
-    l1 = 0
-    Return
+#If !extendLayer
+  F24::
+    if extend_presses > 0
+    {
+      extend_presses += 1
+      return
+    }
+    extend_presses := 1
+    SetTimer, KeyF24, -300
+    return
+    KeyF24:
+      if extend_presses = 2
+      {
+        symbil2Layer = 0
+        extendLayer = 1
+        KeyWait RAlt
+        KeyWait RAlt, D
+        extendLayer = 0
+      }
+    extend_presses := 0
+    return
 #if
-#If !l3
+#If !symbil2Layer
 	F23 & F24::
-		l1 = 0
-    l3 = 1
+		extendLayer = 0
+    symbil2Layer = 1
     KeyWait LAlt
-    l3 = 0
+    symbil2Layer = 0
     Return
 #If
 
 ;extend layer
-#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !l3
+#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !symbil2Layer
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	F24 & 1::Media_Stop
-	F24 & 2::Media_Prev
-	F24 & 3::Media_Next
-	F24 & 4::Browser_Search
+	F24 & 1::Browser_Search
+	F24 & 2::Media_Stop
+	F24 & 3::Media_Prev
+	F24 & 4::Media_Next
 	F24 & 9::^NumpadAdd
 	F24 & 0::^NumpadSub
-	F24 & -::^Numpad0
-	F24 & =::Volume_Mute
+	F24 & =::^Numpad0
+	F24 & Bs::Volume_Mute
+	q::WheelUp
 	F24 & q::
     While GetKeyState("q","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelUp}
@@ -101,7 +79,7 @@ SetCapsLockState, AlwaysOff
     }
     return
 	F24 & w::Esc
-	F24 & r::
+	F24 & p::
 		toggle := !toggle
 		If toggle
 		{
@@ -114,12 +92,13 @@ SetCapsLockState, AlwaysOff
 			y := y2
 		}
 		return
-	F24 & t::PgUp
-	F24 & i::Home
-	F24 & o::Up
-	F24 & p::End
-	F24 & [::Volume_Down
-	F24 & ]::Volume_Up
+	F24 & b::PgUp
+	F24 & l::Home
+	F24 & u::Up
+	F24 & y::End
+	F24 & '::Volume_Down
+	F24 & -::Volume_Up
+	a::WheelDown
 	F24 & a::
     While GetKeyState("a","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelDown}
@@ -127,94 +106,113 @@ SetCapsLockState, AlwaysOff
     }
     return
 	F24 & g::PgDn
-	F24 & j::AppsKey
-	F24 & k::Left
-	F24 & l::Down
-	F24 & `;::Right
-	F24 & '::Enter
-	F24 & \::Media_Play_Pause
-	F24 & z::XButton1
-	F24 & x::XButton2
-	F24 & c::Bs
+	F24 & m::AppsKey
+	F24 & n::Left
+	F24 & e::Down
+	F24 & i::Right
+	F24 & o::Enter
+	F24 & `;::Media_Play_Pause
+	F24 & x::XButton1
+	F24 & c::XButton2
+	F24 & d::Bs
 	F24 & v::Del
-	F24 & b::PrintScreen
-	F24 & n::Run explorer
-	F24 & m::Tab
-	F24 & ,::LButton
-	F24 & .::MButton
-	F24 & /::RButton
+	F24 & z::PrintScreen
+	F24 & /::Run calc
+	F24 & k::Tab
+	F24 & h::LButton
+	F24 & ,::MButton
+	F24 & .::RButton
+	F24 & r::
+		if keyR_presses > 0
+		{
+			keyR_presses += 1
+			return
+		}
+		keyR_presses := 1
+		SetTimer, KeyR, -200
+		return
+		KeyR:
+			If keyR_presses = 1
+			{
+				While GetKeyState("r","P") && GetKeyState("RAlt", "P"){
+			If !GetKeyState("f","P") && !GetKeyState("s","P")
+				MouseMove, -%x%, 0, 0, R
+			else if GetKeyState("f","P")
+				MouseMove, -%x%, -%y%, 0, R
+			else if GetKeyState("s","P")
+				MouseMove, -%x%, %y%, 0, R
+			sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
+			}
+			}
+			else if keyR_presses = 2
+			{
+				While GetKeyState("r","P") && GetKeyState("RAlt", "P"){
+					If !GetKeyState("f","P") && !GetKeyState("s","P")
+						MouseMove, -50, 0, 0, R
+					else if GetKeyState("f","P")
+						MouseMove, -50, -50, 0, R
+					else if GetKeyState("s","P")
+						MouseMove, -50, 50, 0, R
+					sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
+				}
+			}
+			keyR_presses := 0
+			Return
+    return
+	F24 & t::
+		While GetKeyState("t","P") && GetKeyState("RAlt", "P"){
+      If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, %x%, 0, 0, R
+      else if GetKeyState("f","P")
+        MouseMove, %x%, -%y%, 0, R
+      else if GetKeyState("s","P")
+        MouseMove, %x%, %y%, 0, R
+      sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	F24 & s::
 		While GetKeyState("s","P") && GetKeyState("RAlt", "P"){
-      If !GetKeyState("e","P") && !GetKeyState("d","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("e","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("d","P")
-      {
+      If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, %y%, 0, R
+      else if GetKeyState("r","P")
         MouseMove, -%x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("e","P") && !GetKeyState("d","P") ? mousePreDelay : mouseDelaySpeed
+      else if GetKeyState("t","P")
+        MouseMove, %x%, %y%, 0, R
+      sleep A_Index = 1 && !GetKeyState("r","P") && !GetKeyState("t","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
 	F24 & f::
 		While GetKeyState("f","P") && GetKeyState("RAlt", "P"){
-      If !GetKeyState("e","P") && !GetKeyState("d","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("e","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("d","P")
-      {
-        MouseMove, %x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("e","P") && !GetKeyState("d","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	F24 & d::
-		While GetKeyState("d","P") && GetKeyState("RAlt", "P"){
-      If !GetKeyState("s","P") && !GetKeyState("f","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("f","P")
-      {
-        MouseMove, %x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("s","P") && !GetKeyState("f","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	F24 & e::
-		While GetKeyState("e","P") && GetKeyState("RAlt", "P"){
-      If !GetKeyState("s","P") && !GetKeyState("f","P")
+      If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("s","P")
+      else if GetKeyState("r","P")
         MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("f","P")
-      {
+      else if GetKeyState("t","P")
         MouseMove, %x%, -%y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("s","P") && !GetKeyState("f","P") ? mousePreDelay : mouseDelaySpeed
+      sleep A_Index = 1 && !GetKeyState("r","P") && !GetKeyState("t","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
 #If
-#If l1
+#If extendLayer
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	1::Media_Stop
-	2::Media_Prev
-	3::Media_Next
-	4::Browser_Search
+	1::Browser_Search
+	2::Media_Stop
+	3::Media_Prev
+	4::Media_Next
 	9::^NumpadAdd
 	0::^NumpadSub
-	-::^Numpad0
-	=::Volume_Mute
+	=::^Numpad0
+	Bs::Volume_Mute
+	q::WheelUp
 	q::
-    While l1 && GetKeyState("q","P"){
+    While extendLayer && GetKeyState("q","P"){
       SendInput {Blind}{WheelUp}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
 	w::Esc
-	r::
+	p::
 		toggle := !toggle
 		If toggle
 		{
@@ -227,254 +225,140 @@ SetCapsLockState, AlwaysOff
 			y := y2
 		}
 		return
-	t::PgUp
-	i::Home
-	o::Up
-	p::End
-	[::Volume_Down
-	]::Volume_Up
+	b::PgUp
+	l::Home
+	u::Up
+	y::End
+	'::Volume_Down
+	-::Volume_Up
+	a::WheelDown
 	a::
-    While l1 && GetKeyState("a","P"){
+    While extendLayer && GetKeyState("a","P"){
       SendInput {Blind}{WheelDown}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
 	g::PgDn
-	j::AppsKey
-	k::Left
-	l::Down
-	`;::Right
-	'::Enter
-	\::Media_Play_Pause
-	z::XButton1
-	x::XButton2
-	c::Bs
+	m::AppsKey
+	n::Left
+	e::Down
+	i::Right
+	o::Enter
+	`;::Media_Play_Pause
+	x::XButton1
+	c::XButton2
+	d::Bs
 	v::Del
-	b::PrintScreen
-	n::Run explorer
-	m::Tab
-	,::LButton
-	.::MButton
-	/::RButton
+	z::PrintScreen
+	/::Run calc
+	k::Tab
+	h::LButton
+	,::MButton
+	.::RButton
+	r::
+		While GetKeyState("r","P"){
+      If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, -%x%, 0, 0, R
+      else if GetKeyState("f","P")
+        MouseMove, -%x%, -%y%, 0, R
+      else if GetKeyState("s","P")
+        MouseMove, -%x%, %y%, 0, R
+      sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
+	t::
+		While GetKeyState("t","P"){
+      If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, %x%, 0, 0, R
+      else if GetKeyState("f","P")
+        MouseMove, %x%, -%y%, 0, R
+      else if GetKeyState("s","P")
+        MouseMove, %x%, %y%, 0, R
+      sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
+    }
+    return
 	s::
 		While GetKeyState("s","P"){
-      If !GetKeyState("e","P") && !GetKeyState("d","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("e","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("d","P")
-      {
+      If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, %y%, 0, R
+      else if GetKeyState("r","P")
         MouseMove, -%x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("e","P") && !GetKeyState("d","P") ? mousePreDelay : mouseDelaySpeed
+      else if GetKeyState("t","P")
+        MouseMove, %x%, %y%, 0, R
+      sleep A_Index = 1 && !GetKeyState("r","P") && !GetKeyState("t","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
 	f::
 		While GetKeyState("f","P"){
-      If !GetKeyState("e","P") && !GetKeyState("d","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("e","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("d","P")
-      {
-        MouseMove, %x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("e","P") && !GetKeyState("d","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	d::
-		While GetKeyState("d","P"){
-      If !GetKeyState("s","P") && !GetKeyState("f","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("f","P")
-      {
-        MouseMove, %x%, %y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("s","P") && !GetKeyState("f","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	e::
-		While GetKeyState("e","P"){
-      If !GetKeyState("s","P") && !GetKeyState("f","P")
+      If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("s","P")
+      else if GetKeyState("r","P")
         MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("f","P")
-      {
+      else if GetKeyState("t","P")
         MouseMove, %x%, -%y%, 0, R
-      }
-      sleep A_Index = 1 && !GetKeyState("s","P") && !GetKeyState("f","P") ? mousePreDelay : mouseDelaySpeed
+      sleep A_Index = 1 && !GetKeyState("r","P") && !GetKeyState("t","P") ? mousePreDelay : mouseDelaySpeed
     }
     return
 #If
 
 ;symbol layer
-#If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !l3
-	F23 & q::SendRaw $
-		return
+#If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !symbil2Layer
 	F23 & w::SendRaw {
 		return
-	F23 & e::SendRaw }
+	F23 & f::SendRaw }
 		return
-	F23 & r::SendRaw `%
+	F23 & u::SendRaw )
 		return
-	F23 & t::SendRaw ^
+	F23 & y::SendRaw (
 		return
-	F23 & u::SendRaw ?
+	F23 & '::`
+	F23 & -::=
+	F23 & a::1
+	F23 & r::2
+	F23 & s::3
+	F23 & t::4
+	F23 & m::SendRaw *
 		return
-	F23 & i::7
-	F23 & o::8
-	F23 & p::9
-	F23 & [::`
-	F23 & ]::SendRaw ~
+	F23 & n::7
+	F23 & e::8
+	F23 & i::9
+	F23 & o::0
+	F23 & `;::SendRaw :
 		return
-	F23 & a::SendRaw #
+	F23 & x::[
+	F23 & c::]
+	F23 & d::5
+	F23 & v::\
+	F23 & k::/
+	F23 & h::6
+	F23 & ,::SendRaw <
 		return
-	F23 & s::SendRaw (
+	F23 & .::SendRaw >
 		return
-	F23 & d::SendRaw )
-		return
-	F23 & f::SendRaw !
-		return
-	F23 & g::SendRaw @
-		return
-	F23 & j::SendRaw *
-		return
-	F23 & k::4
-	F23 & l::5
-	F23 & `;::6
-	F23 & '::0
-	F23 & \::\
-	F23 & z::SendRaw [
-		return
-	F23 & x::SendRaw ]
-		return
-	F23 & c::SendRaw &
-		return
-	F23 & v::SendRaw |
-		return
-	F23 & m::/
-	F23 & ,::1
-	F23 & .::2
-	F23 & /::3
 #If
 
 ;symbol2 layer
-#If l3 && GetKeyState("LAlt", "P")
-	F23 & 9::SendRaw ≤
-		return
-	F23 & 0::SendRaw ≥
-		return
-	F23 & -::SendRaw …
+#If symbil2Layer && GetKeyState("LAlt", "P")
+	F23 & 0::SendRaw …
 		return
 	F23 & =::SendRaw ±
 		return
-	F23 & q::SendRaw ◦
+	F23 & '::F11
+	F23 & -::F12
+	F23 & a::F1
+	F23 & r::F2
+	F23 & s::F3
+	F23 & t::F4
+	F23 & n::F7
+	F23 & e::F8
+	F23 & i::F9
+	F23 & o::F10
+	F23 & `;::SendRaw ≠
 		return
-	F23 & w::SendRaw ▹
+	F23 & d::F5
+	F23 & h::F6
+	F23 & ,::SendRaw ≤
 		return
-	F23 & e::SendRaw ▫
+	F23 & .::SendRaw ≥
 		return
-	F23 & r::SendRaw →
-		return
-	F23 & y::SendRaw π
-		return
-	F23 & u::SendRaw Ø
-		return
-	F23 & i::F7
-	F23 & o::F8
-	F23 & p::F9
-	F23 & [::F11
-	F23 & ]::F12
-	F23 & a::SendRaw •
-		return
-	F23 & s::SendRaw ▸
-		return
-	F23 & d::SendRaw ▪
-		return
-	F23 & f::SendRaw ⋆
-		return
-	F23 & h::SendRaw √
-		return
-	F23 & j::SendRaw ≈
-		return
-	F23 & k::F4
-	F23 & l::F5
-	F23 & `;::F6
-	F23 & '::F10
-	F23 & \::SendRaw ≠
-		return
-	F23 & z::SendRaw ✗
-		return
-	F23 & x::SendRaw ©
-		return
-	F23 & c::SendRaw Ⓓ
-		return
-	F23 & v::SendRaw ✓
-		return
-	F23 & m::SendRaw ≈
-		return
-	F23 & ,::F1
-	F23 & .::F2
-	F23 & /::F3
-#If
-#If l3 && GetKeyState("RAlt", "P")
-	F24 & 9::SendRaw ≤
-		return
-	F24 & 0::SendRaw ≥
-		return
-	F24 & -::SendRaw …
-		return
-	F24 & =::SendRaw ±
-		return
-	F24 & q::SendRaw ◦
-		return
-	F24 & w::SendRaw ▹
-		return
-	F24 & e::SendRaw ▫
-		return
-	F24 & r::SendRaw →
-		return
-	F24 & y::SendRaw π
-		return
-	F24 & u::SendRaw Ø
-		return
-	F24 & i::F7
-	F24 & o::F8
-	F24 & p::F9
-	F24 & [::F11
-	F24 & ]::F12
-	F24 & a::SendRaw •
-		return
-	F24 & s::SendRaw ▸
-		return
-	F24 & d::SendRaw ▪
-		return
-	F24 & f::SendRaw ⋆
-		return
-	F24 & h::SendRaw √
-		return
-	F24 & j::SendRaw ≈
-		return
-	F24 & k::F4
-	F24 & l::F5
-	F24 & `;::F6
-	F24 & '::F10
-	F24 & \::SendRaw ≠
-		return
-	F24 & z::SendRaw ✗
-		return
-	F24 & x::SendRaw ©
-		return
-	F24 & c::SendRaw Ⓓ
-		return
-	F24 & v::SendRaw ✓
-		return
-	F24 & m::SendRaw ≈
-		return
-	F24 & ,::F1
-	F24 & .::F2
-	F24 & /::F3
 #If

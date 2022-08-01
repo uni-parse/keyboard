@@ -1,7 +1,7 @@
 function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
     output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.\n; #Warn  ; Enable warnings to assist with detecting common errors.\nSetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.\nProcess, Priority,, High\n
-x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nl3 = 0\nl1 = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\n\n`
+x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nsymbil2Layer = 0\nextendLayer = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\n\n`
 
   // standard remapint
   output += ';standard layer\n'
@@ -26,32 +26,45 @@ x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nl3
 #InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
-#If !l1
-  F24 & F23::
-		l3 = 0
-    l1 = 1
-    KeyWait ${extendKey}
-    KeyWait ${extendKey}, D
-    l1 = 0
-    Return
+#If !extendLayer
+  F24::
+    if extend_presses > 0
+    {
+      extend_presses += 1
+      return
+    }
+    extend_presses := 1
+    SetTimer, KeyF24, -300
+    return
+    KeyF24:
+      if extend_presses = 2
+      {
+        symbil2Layer = 0
+        extendLayer = 1
+        KeyWait RAlt
+        KeyWait RAlt, D
+        extendLayer = 0
+      }
+    extend_presses := 0
+    return
 #if
-#If !l3
+#If !symbil2Layer
 	F23 & F24::
-		l1 = 0
-    l3 = 1
+		extendLayer = 0
+    symbil2Layer = 1
     KeyWait ${symbolKey}
-    l3 = 0
+    symbil2Layer = 0
     Return
 #If\n\n`
 
   // extend layer
-  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !l3\n`
+  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbil2Layer\n`
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\tF24 & ${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\tF24 & ${key[0]}::
+        output += `\t${key[0]}::${key[2][0]}\n\tF24 & ${key[0]}::
     While GetKeyState("${key[0]}","P") && GetKeyState("${extendKey}","P"){
       SendInput {Blind}{${key[2][0]}}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
@@ -131,14 +144,14 @@ SetCapsLockState, AlwaysOff
       sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
     }
     return\n`
-  output += '#If\n#If l1\n'
+  output += '#If\n#If extendLayer\n'
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\t${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\t${key[0]}::
-    While l1 && GetKeyState("${key[0]}","P"){
+        output += `\t${key[0]}::${key[2][0]}\n\t${key[0]}::
+    While extendLayer && GetKeyState("${key[0]}","P"){
       SendInput {Blind}{${key[2][0]}}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
@@ -220,7 +233,7 @@ SetCapsLockState, AlwaysOff
   output += '#If\n\n'
 
   // symbol layer
-  output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !l3\n`
+  output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !symbil2Layer\n`
   keys.forEach(key => {
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -238,7 +251,7 @@ SetCapsLockState, AlwaysOff
 
   // symbol2 layer
   output += `;symbol2 layer
-#If l3 && GetKeyState("${symbolKey}", "P")\n`
+#If symbil2Layer && GetKeyState("${symbolKey}", "P")\n`
   keys.forEach(key => {
     if (typeof key[4] == 'object' && key[4][0]) {
       output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
@@ -248,20 +261,6 @@ SetCapsLockState, AlwaysOff
         output += `\tF23 & ${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
       } else {
         output += `\tF23 & ${key[0]}::${key[4]}\n`
-      }
-    }
-  })
-  output += `#If
-#If l3 && GetKeyState("${extendKey}", "P")\n`
-  keys.forEach(key => {
-    if (typeof key[4] == 'object' && key[4][0]) {
-      output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
-        `\tF24 & ${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
-    } else if (key[4]) {
-      if (!key[4].startsWith('F') && !key[4].startsWith('^')) {
-        output += `\tF24 & ${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
-      } else {
-        output += `\tF24 & ${key[0]}::${key[4]}\n`
       }
     }
   })

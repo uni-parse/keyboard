@@ -54,7 +54,7 @@ extend.addEventListener('click', () => {
 symbol.addEventListener('click', () => {
   toggle_symbol = !toggle_symbol
   if (!toggle_extend && toggle_symbol) {
-    display(1, 0, 1)
+    display(0, 0, 1)
   } else if (toggle_extend && toggle_symbol) {
     display(0, 0, 0, 1)
   } else if (toggle_extend && !toggle_symbol) {
