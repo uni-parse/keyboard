@@ -41,6 +41,12 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
     {
       ${mouseDirection}_${combination}_presses = 1
       SetTimer, Key_${combination}_${mouseDirection}, -200
+      	If False
+          {
+            Key_${combination}_${mouseDirection}:
+              ${mouseDirection}_${combination}_presses = 0
+              Return
+          }
     }
 		While GetKeyState("${mouseDirection}","P"){
       If !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseD : mouseR}","P")
@@ -50,29 +56,19 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
       else if GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseD : mouseR}","P")
         MouseMove, ${coordr(mouseDirection, 2)}, ${speed}, R
       sleep mouseDelaySpeed
-			If False
-			{
-				Key_${combination}_${mouseDirection}:
-          ${mouseDirection}_${combination}_presses = 0
-				  Return
-			}
 		}
-    If speedx3
+    If speedx3 && (!GetKeyState("${mouseU}", "P") || !GetKeyState("${mouseD}", "P")|| !GetKeyState("${mouseL}", "P")|| !GetKeyState("${mouseR}", "P"))
     {
-      KeyWait ${mouseDirection}
-      If !GetKeyState("${mouseU}", "P") || !GetKeyState("${mouseD}", "P")|| !GetKeyState("${mouseL}", "P")|| !GetKeyState("${mouseR}", "P")
+      speedx3 = 0
+      If toggle
       {
-        speedx3 = 0
-        If toggle
-        {
-          x := x1
-          y := y1
-        }
-        Else
-        {
-          x := x2
-          y := y2
-        }
+        x := x1
+        y := y1
+      }
+      Else
+      {
+        x := x2
+        y := y2
       }
     }
       return\n`
