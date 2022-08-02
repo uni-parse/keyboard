@@ -2,7 +2,7 @@ import mouse from "./mouse"
 function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
     output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.\n; #Warn  ; Enable warnings to assist with detecting common errors.\nSetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.\nProcess, Priority,, High\n
-x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nsymbil2Layer = 0\nextendLayer = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\n\n`
+x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nsymbil2Layer = 0\nextendLayer = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\nspeedx3 = 0\n\n`
 
   // standard remapint
   output += ';standard layer\n'

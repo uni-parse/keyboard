@@ -32,10 +32,16 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
     }
     return `\t${combination ? combination + ' & ' : ''}${mouseDirection}::
 		if ${mouseDirection}_${combination}_presses
-			${mouseDirection}_${combination}_presses = 2
-		Else
-		  ${mouseDirection}_${combination}_presses = 1
-		SetTimer, Key_${combination}_${mouseDirection}, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      ${mouseDirection}_${combination}_presses = 1
+      SetTimer, Key_${combination}_${mouseDirection}, -200
+    }
 		While GetKeyState("${mouseDirection}","P"){
       If !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseD : mouseR}","P")
         MouseMove, ${coordr(mouseDirection)}, ${speed}, R
@@ -47,27 +53,29 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
 			If False
 			{
 				Key_${combination}_${mouseDirection}:
-				if ${mouseDirection}_${combination}_presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        ${mouseDirection}_${combination}_presses = 0
-				Return
+          ${mouseDirection}_${combination}_presses = 0
+				  Return
 			}
 		}
-		KeyWait ${mouseDirection}
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return\n`
+    If speedx3
+    {
+      KeyWait ${mouseDirection}
+      If !GetKeyState("${mouseU}", "P") || !GetKeyState("${mouseD}", "P")|| !GetKeyState("${mouseL}", "P")|| !GetKeyState("${mouseR}", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return\n`
   }
   return mouseKey(mouseU) + mouseKey(mouseD) + mouseKey(mouseR) + mouseKey(mouseL)
 }

@@ -14,6 +14,7 @@ symbil2Layer = 0
 extendLayer = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
+speedx3 = 0
 
 ;standard layer
 	CapsLock::LAlt
@@ -143,10 +144,16 @@ SetCapsLockState, AlwaysOff
 	F24 & .::RButton
 	F24 & f::
 		if f_F24_presses
-			f_F24_presses = 2
-		Else
-		  f_F24_presses = 1
-		SetTimer, Key_F24_f, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      f_F24_presses = 1
+      SetTimer, Key_F24_f, -200
+    }
 		While GetKeyState("f","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, -%y%, 0, R
@@ -158,33 +165,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key_F24_f:
-				if f_F24_presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        f_F24_presses = 0
-				Return
+          f_F24_presses = 0
+				  Return
 			}
 		}
-		KeyWait f
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait f
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	F24 & s::
 		if s_F24_presses
-			s_F24_presses = 2
-		Else
-		  s_F24_presses = 1
-		SetTimer, Key_F24_s, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      s_F24_presses = 1
+      SetTimer, Key_F24_s, -200
+    }
 		While GetKeyState("s","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, %y%, 0, R
@@ -196,33 +211,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key_F24_s:
-				if s_F24_presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        s_F24_presses = 0
-				Return
+          s_F24_presses = 0
+				  Return
 			}
 		}
-		KeyWait s
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait s
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	F24 & t::
 		if t_F24_presses
-			t_F24_presses = 2
-		Else
-		  t_F24_presses = 1
-		SetTimer, Key_F24_t, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      t_F24_presses = 1
+      SetTimer, Key_F24_t, -200
+    }
 		While GetKeyState("t","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
         MouseMove, %x%, 0, 0, R
@@ -234,33 +257,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key_F24_t:
-				if t_F24_presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        t_F24_presses = 0
-				Return
+          t_F24_presses = 0
+				  Return
 			}
 		}
-		KeyWait t
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait t
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	F24 & r::
 		if r_F24_presses
-			r_F24_presses = 2
-		Else
-		  r_F24_presses = 1
-		SetTimer, Key_F24_r, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      r_F24_presses = 1
+      SetTimer, Key_F24_r, -200
+    }
 		While GetKeyState("r","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
         MouseMove, -%x%, 0, 0, R
@@ -272,27 +303,29 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key_F24_r:
-				if r_F24_presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        r_F24_presses = 0
-				Return
+          r_F24_presses = 0
+				  Return
 			}
 		}
-		KeyWait r
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait r
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 #If
 #If extendLayer
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
@@ -360,10 +393,16 @@ SetCapsLockState, AlwaysOff
 	.::RButton
 	f::
 		if f__presses
-			f__presses = 2
-		Else
-		  f__presses = 1
-		SetTimer, Key__f, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      f__presses = 1
+      SetTimer, Key__f, -200
+    }
 		While GetKeyState("f","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, -%y%, 0, R
@@ -375,33 +414,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key__f:
-				if f__presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        f__presses = 0
-				Return
+          f__presses = 0
+				  Return
 			}
 		}
-		KeyWait f
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait f
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	s::
 		if s__presses
-			s__presses = 2
-		Else
-		  s__presses = 1
-		SetTimer, Key__s, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      s__presses = 1
+      SetTimer, Key__s, -200
+    }
 		While GetKeyState("s","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
         MouseMove, 0, %y%, 0, R
@@ -413,33 +460,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key__s:
-				if s__presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        s__presses = 0
-				Return
+          s__presses = 0
+				  Return
 			}
 		}
-		KeyWait s
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait s
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	t::
 		if t__presses
-			t__presses = 2
-		Else
-		  t__presses = 1
-		SetTimer, Key__t, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      t__presses = 1
+      SetTimer, Key__t, -200
+    }
 		While GetKeyState("t","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
         MouseMove, %x%, 0, 0, R
@@ -451,33 +506,41 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key__t:
-				if t__presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        t__presses = 0
-				Return
+          t__presses = 0
+				  Return
 			}
 		}
-		KeyWait t
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait t
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 	r::
 		if r__presses
-			r__presses = 2
-		Else
-		  r__presses = 1
-		SetTimer, Key__r, -250
+    {
+      speedx3 = 1
+      x *= 3
+      y *= 3
+    }
+		Else if !speedx3
+    {
+      r__presses = 1
+      SetTimer, Key__r, -200
+    }
 		While GetKeyState("r","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
         MouseMove, -%x%, 0, 0, R
@@ -489,27 +552,29 @@ SetCapsLockState, AlwaysOff
 			If False
 			{
 				Key__r:
-				if r__presses = 2
-				{
-					x *= 3
-					y *= 3
-				}
-        r__presses = 0
-				Return
+          r__presses = 0
+				  Return
 			}
 		}
-		KeyWait r
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
-    return
+    If speedx3
+    {
+      KeyWait r
+      If !GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P")
+      {
+        speedx3 = 0
+        If toggle
+        {
+          x := x1
+          y := y1
+        }
+        Else
+        {
+          x := x2
+          y := y2
+        }
+      }
+    }
+      return
 #If
 
 ;symbol layer
