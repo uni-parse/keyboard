@@ -153,12 +153,12 @@ SetCapsLockState, AlwaysOff
     {
       f_F24_presses = 1
       SetTimer, Key_F24_f, -200
-      	If False
-          {
-            Key_F24_f:
-              f_F24_presses = 0
-              Return
-          }
+      If False
+      {
+        Key_F24_f:
+          f_F24_presses = 0
+          Return
+      }
     }
 		While GetKeyState("f","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
@@ -195,12 +195,12 @@ SetCapsLockState, AlwaysOff
     {
       s_F24_presses = 1
       SetTimer, Key_F24_s, -200
-      	If False
-          {
-            Key_F24_s:
-              s_F24_presses = 0
-              Return
-          }
+      If False
+      {
+        Key_F24_s:
+          s_F24_presses = 0
+          Return
+      }
     }
 		While GetKeyState("s","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
@@ -237,12 +237,12 @@ SetCapsLockState, AlwaysOff
     {
       t_F24_presses = 1
       SetTimer, Key_F24_t, -200
-      	If False
-          {
-            Key_F24_t:
-              t_F24_presses = 0
-              Return
-          }
+      If False
+      {
+        Key_F24_t:
+          t_F24_presses = 0
+          Return
+      }
     }
 		While GetKeyState("t","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
@@ -279,12 +279,12 @@ SetCapsLockState, AlwaysOff
     {
       r_F24_presses = 1
       SetTimer, Key_F24_r, -200
-      	If False
-          {
-            Key_F24_r:
-              r_F24_presses = 0
-              Return
-          }
+      If False
+      {
+        Key_F24_r:
+          r_F24_presses = 0
+          Return
+      }
     }
 		While GetKeyState("r","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
@@ -386,12 +386,12 @@ SetCapsLockState, AlwaysOff
     {
       f__presses = 1
       SetTimer, Key__f, -200
-      	If False
-          {
-            Key__f:
-              f__presses = 0
-              Return
-          }
+      If False
+      {
+        Key__f:
+          f__presses = 0
+          Return
+      }
     }
 		While GetKeyState("f","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
@@ -428,12 +428,12 @@ SetCapsLockState, AlwaysOff
     {
       s__presses = 1
       SetTimer, Key__s, -200
-      	If False
-          {
-            Key__s:
-              s__presses = 0
-              Return
-          }
+      If False
+      {
+        Key__s:
+          s__presses = 0
+          Return
+      }
     }
 		While GetKeyState("s","P"){
       If !GetKeyState("r","P") && !GetKeyState("t","P")
@@ -470,12 +470,12 @@ SetCapsLockState, AlwaysOff
     {
       t__presses = 1
       SetTimer, Key__t, -200
-      	If False
-          {
-            Key__t:
-              t__presses = 0
-              Return
-          }
+      If False
+      {
+        Key__t:
+          t__presses = 0
+          Return
+      }
     }
 		While GetKeyState("t","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")
@@ -512,12 +512,12 @@ SetCapsLockState, AlwaysOff
     {
       r__presses = 1
       SetTimer, Key__r, -200
-      	If False
-          {
-            Key__r:
-              r__presses = 0
-              Return
-          }
+      If False
+      {
+        Key__r:
+          r__presses = 0
+          Return
+      }
     }
 		While GetKeyState("r","P"){
       If !GetKeyState("f","P") && !GetKeyState("s","P")

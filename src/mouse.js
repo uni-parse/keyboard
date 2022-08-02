@@ -41,12 +41,12 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
     {
       ${mouseDirection}_${combination}_presses = 1
       SetTimer, Key_${combination}_${mouseDirection}, -200
-      	If False
-          {
-            Key_${combination}_${mouseDirection}:
-              ${mouseDirection}_${combination}_presses = 0
-              Return
-          }
+      If False
+      {
+        Key_${combination}_${mouseDirection}:
+          ${mouseDirection}_${combination}_presses = 0
+          Return
+      }
     }
 		While GetKeyState("${mouseDirection}","P"){
       If !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${mouseDirection == mouseL || mouseDirection == mouseR ? mouseD : mouseR}","P")
