@@ -14,6 +14,7 @@ symbil2Layer = 0
 extendLayer = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
+keyR_presses = 0
 
 ;standard layer
 	CapsLock::LAlt
@@ -123,15 +124,69 @@ SetCapsLockState, AlwaysOff
 	F24 & ,::MButton
 	F24 & .::RButton
 	F24 & r::
+		;MsgBox, presses1 %keyR_presses%
+		if keyR_presses = 1
+			keyR_presses = 2
+		Else
+		{
+		keyR_presses := 1
+		}
+		
+		
+		SetTimer, KeyR, -200
+		
 		While GetKeyState("r","P") && GetKeyState("RAlt", "P"){
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("f","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, -%x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("f","P") && !GetKeyState("s","P") ? mousePreDelay : mouseDelaySpeed
-    }
+			If !GetKeyState("f","P") && !GetKeyState("s","P")
+				MouseMove, -%x%, 0, 0, R
+			else if GetKeyState("f","P")
+				MouseMove, -%x%, -%y%, 0, R
+			else if GetKeyState("s","P")
+			{
+				MouseMove, -%x%, %y%, 0, R
+			}
+			sleep mouseDelaySpeed
+
+			If A_Index = 0
+			{
+				;MsgBox, index1
+				KeyR:
+				;MsgBox, presses2 %keyR_presses%
+				;MsgBox, labelStart
+				if keyR_presses = 1
+				{
+					keyR_presses := 0
+					;MsgBox, continue_
+					;Continue
+				}	
+				else if keyR_presses = 2
+				{
+					keyR_presses := 0
+					x *= 3
+					y *= 3
+					;MsgBox, break_
+					Continue
+				}
+				;MsgBox, labelEnd
+				Return
+			}
+			if A_Index = 1
+			{
+				
+			}
+				;MsgBox, 1
+				;sleep mousePreDelay
+		}
+		KeyWait r
+		If toggle
+		{
+			x := x1
+			y := y1
+		}
+		Else
+		{
+			x := x2
+			y := y2
+		}
     return
 	F24 & t::
 		While GetKeyState("t","P") && GetKeyState("RAlt", "P"){

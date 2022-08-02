@@ -22,12 +22,12 @@ $symbol: darkorange;
 $shift: hsl(46, 100%, 50%);
 $symbol2: pink;
 $lightness: -8%;
-div#keyboardCtx {
+#keyboardCtx {
   overflow: auto;
 }
-div#keyboard {
+#keyboard {
   background-color: #333;
-  min-width: clamp(47rem, 100%, 58.5rem);
+  min-width: clamp(52rem, 100%, 58.5rem);
   overflow: auto;
   display: flex;
   place-content: space-evenly;
@@ -267,13 +267,13 @@ div#keyboard {
         }
       }
     }
-    @include nth(5,13,27) {
-      & kbd.key::after {
-        right: -0.3em;
-      }
-      & kbd.symbol::after {
-        right: -0.2em;
-      }
-    }
+    // @include nth(5,13,27) {
+    //   & kbd.key::after {
+    //     right: -0.2em;
+    //   }
+    //   & kbd.symbol::after {
+    //     right: -0.2em;
+    //   }
+    // }
   }
 }

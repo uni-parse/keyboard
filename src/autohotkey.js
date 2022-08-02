@@ -1,3 +1,4 @@
+import mouse from "./mouse"
 function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
     output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.\n; #Warn  ; Enable warnings to assist with detecting common errors.\nSetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.\nProcess, Priority,, High\n
@@ -27,33 +28,54 @@ x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nsy
 #Persistent
 SetCapsLockState, AlwaysOff
 #If !extendLayer
+  F24 & F23::
+    symbil2Layer = 0
+    extendLayer = 1
+    KeyWait ${extendKey}
+    KeyWait ${extendKey}, D
+    extendLayer = 0
+    return
   F24::
-    if extend_presses > 0
+    if extend_presses
     {
-      extend_presses += 1
-      return
+      symbil2Layer = 0
+      extendLayer = 1
+      KeyWait ${extendKey}
+      KeyWait ${extendKey}, D
+      extendLayer = 0
     }
-    extend_presses := 1
+    Else
+      extend_presses = 1
     SetTimer, KeyF24, -300
     return
     KeyF24:
-      if extend_presses = 2
-      {
-        symbil2Layer = 0
-        extendLayer = 1
-        KeyWait RAlt
-        KeyWait RAlt, D
-        extendLayer = 0
-      }
-    extend_presses := 0
-    return
+      extend_presses = 0
+      return
+    Return
 #if
 #If !symbil2Layer
-	F23 & F24::
-		extendLayer = 0
+  F23 & F24::
+    extendLayer = 0
     symbil2Layer = 1
     KeyWait ${symbolKey}
     symbil2Layer = 0
+    return
+  F23::
+    if symbol_presses
+      {
+        extendLayer = 0
+        symbil2Layer = 1
+        KeyWait ${symbolKey}
+        KeyWait ${symbolKey}, D
+        symbil2Layer = 0
+      }
+    Else
+      symbol_presses = 1
+    SetTimer, KeyF23, -300
+    Return
+    KeyF23:
+      symbol_presses = 0
+      Return
     Return
 #If\n\n`
 
@@ -64,7 +86,7 @@ SetCapsLockState, AlwaysOff
       if (key[2][0].includes('Button')) {
         output += `\tF24 & ${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\t${key[0]}::${key[2][0]}\n\tF24 & ${key[0]}::
+        output += `\tF24 & ${key[0]}::
     While GetKeyState("${key[0]}","P") && GetKeyState("${extendKey}","P"){
       SendInput {Blind}{${key[2][0]}}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
@@ -100,58 +122,17 @@ SetCapsLockState, AlwaysOff
       }
     }
   })
-  output += `\tF24 & ${mouseL}::
-		While GetKeyState("${mouseL}","P") && GetKeyState("${extendKey}", "P"){
-      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("${mouseU}","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("${mouseD}","P")
-        MouseMove, -%x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	F24 & ${mouseR}::
-		While GetKeyState("${mouseR}","P") && GetKeyState("${extendKey}", "P"){
-      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("${mouseU}","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("${mouseD}","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	F24 & ${mouseD}::
-		While GetKeyState("${mouseD}","P") && GetKeyState("${extendKey}", "P"){
-      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("${mouseL}","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("${mouseR}","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	F24 & ${mouseU}::
-		While GetKeyState("${mouseU}","P") && GetKeyState("${extendKey}", "P"){
-      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-        MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("${mouseL}","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("${mouseR}","P")
-        MouseMove, %x%, -%y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return\n`
+  output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
   output += '#If\n#If extendLayer\n'
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\t${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `\t${key[0]}::${key[2][0]}\n\t${key[0]}::
-    While extendLayer && GetKeyState("${key[0]}","P"){
+        output += `\t${key[0]}::${key[2][0]}
+  ${key[0]} Up::Return
+  ${key[0]}::
+    While GetKeyState("${key[0]}","P"){
       SendInput {Blind}{${key[2][0]}}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
@@ -186,50 +167,7 @@ SetCapsLockState, AlwaysOff
       }
     }
   })
-  output += `\t${mouseL}::
-		While GetKeyState("${mouseL}","P"){
-      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("${mouseU}","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("${mouseD}","P")
-        MouseMove, -%x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	${mouseR}::
-		While GetKeyState("${mouseR}","P"){
-      If !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("${mouseU}","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("${mouseD}","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseU}","P") && !GetKeyState("${mouseD}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	${mouseD}::
-		While GetKeyState("${mouseD}","P"){
-      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("${mouseL}","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("${mouseR}","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return
-	${mouseU}::
-		While GetKeyState("${mouseU}","P"){
-      If !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P")
-        MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("${mouseL}","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("${mouseR}","P")
-        MouseMove, %x%, -%y%, 0, R
-      sleep A_Index = 1 && !GetKeyState("${mouseL}","P") && !GetKeyState("${mouseR}","P") ? mousePreDelay : mouseDelaySpeed
-    }
-    return\n`
+  output += mouse(mouseU, mouseR, mouseD, mouseL)
   output += '#If\n\n'
 
   // symbol layer
@@ -251,16 +189,16 @@ SetCapsLockState, AlwaysOff
 
   // symbol2 layer
   output += `;symbol2 layer
-#If symbil2Layer && GetKeyState("${symbolKey}", "P")\n`
+#If symbil2Layer\n`
   keys.forEach(key => {
     if (typeof key[4] == 'object' && key[4][0]) {
       output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
-        `\tF23 & ${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
+        `\t${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
     } else if (key[4]) {
       if (!key[4].startsWith('F') && !key[4].startsWith('^')) {
-        output += `\tF23 & ${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
+        output += `\t${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
       } else {
-        output += `\tF23 & ${key[0]}::${key[4]}\n`
+        output += `\t${key[0]}::${key[4]}\n`
       }
     }
   })
