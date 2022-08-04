@@ -1,8 +1,35 @@
 import mouse from "./mouse"
 function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
-    output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.\n; #Warn  ; Enable warnings to assist with detecting common errors.\nSetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.\nProcess, Priority,, High\n
-x1 = ${x1}\ny1 = ${y1}\nx2 = ${x2}\ny2 = ${y2}\nx := x2\ny := y2\ntoggle = 0\nsymbil2Layer = 0\nextendLayer = 0\nmouseDelaySpeed = 50\nmousePreDelay = 200\nspeedx3 = 0\n\n`
+    output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+Process, Priority,, High\n
+x1 = 4
+y1 := x1
+x2 = 18
+y2 := x2
+x_multiple_fast = 3
+y_multiple_fast = 3
+x := x2
+y := y2
+toggle = 0
+symbil2Layer = 0
+extendLayer = 0
+mouseDelaySpeed = 50
+mousePreDelay = 200
+speedx3 = 0
+holdOverride = 0
+resetSpeed(){
+  global
+  If toggle {
+    x := x1
+    y := y1
+  } Else {
+    x := x2
+    y := y2
+  }
+}\n\n`
 
   // standard remapint
   output += ';standard layer\n'
@@ -105,16 +132,7 @@ SetCapsLockState, AlwaysOff
       } else if (key[2][0] == 'speed') {
         output += `\tF24 & ${key[0]}::
 		toggle := !toggle
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
+		resetSpeed()
 		return\n`
       } else {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
@@ -150,16 +168,7 @@ SetCapsLockState, AlwaysOff
       } else if (key[2][0] == 'speed') {
         output += `\t${key[0]}::
 		toggle := !toggle
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
+		resetSpeed()
 		return\n`
       } else {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?

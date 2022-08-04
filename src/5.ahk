@@ -4,9 +4,11 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High
 
 x1 = 4
-y1 = 4
+y1 := x1
 x2 = 18
-y2 = 18
+y2 := x2
+x_multiple_fast = 3
+y_multiple_fast = 3
 x := x2
 y := y2
 toggle = 0
@@ -15,6 +17,17 @@ extendLayer = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
 speedx3 = 0
+holdOverride = 0
+resetSpeed(){
+  global
+  If toggle {
+    x := x1
+    y := y1
+  } Else {
+    x := x2
+    y := y2
+  }
+}
 
 ;standard layer
 	CapsLock::LAlt
@@ -102,16 +115,7 @@ SetCapsLockState, AlwaysOff
 	F24 & w::Esc
 	F24 & p::
 		toggle := !toggle
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
+		resetSpeed()
 		return
 	F24 & b::PgUp
 	F24 & l::Home
@@ -126,7 +130,7 @@ SetCapsLockState, AlwaysOff
     }
     return
 	F24 & g::PgDn
-	F24 & m::AppsKey
+	F24 & m::RButton
 	F24 & n::Left
 	F24 & e::Down
 	F24 & i::Right
@@ -138,178 +142,342 @@ SetCapsLockState, AlwaysOff
 	F24 & v::Del
 	F24 & z::PrintScreen
 	F24 & /::Run calc
-	F24 & k::Tab
+	F24 & k::MButton
 	F24 & h::LButton
-	F24 & ,::MButton
-	F24 & .::RButton
+	F24 & ,::Tab
+	F24 & .::AppsKey
 	F24 & f::
-		if f_F24_presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      f_F24_presses = 1
-      SetTimer, Key_F24_f, -200
-      If False
-      {
-        Key_F24_f:
-          f_F24_presses = 0
-          Return
+    If !hold_F24_f {
+
+
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
+
+
+        If press_F24_f
+          press_F24_f = 2
+        Else {
+          press_F24_f = 1
+          SetTimer, fast_F24_f_timer, -250
+        }
+        MouseMove, 0, -y,, R
+
+
+        
+        KeyWait, f, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold_F24_f := holdOverride + 1
+          holdOverride++
+          If fast_F24_f {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast_F24_f = 0
+          }
+          SetTimer, hold_F24_f_timer, %A_MouseDelay%
+        } Else
+          fast_F24_f = 0
+      
+      
+      } else {
+        hold_F24_f := holdOverride + 1
+        holdOverride++
+        SetTimer, hold_F24_f_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("f","P"){
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("r","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("t","P")
-        MouseMove, %x%, -%y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold_F24_f_timer:
+    If GetKeyState("f","P") && GetKeyState("RAlt","P") {
+      if (hold_F24_f = holdOverride){
+        If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, -y,, R
+        else if GetKeyState("r","P")
+        MouseMove, -x, -y,, R
+        else if GetKeyState("t","P")
+        MouseMove, x, -y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold_F24_f = 1) {
+          if hold_F24_r > 1
+            hold_F24_r--
+          if hold_F24_t > 1
+            hold_F24_t--
+          if hold_F24_s > 1
+            hold_F24_s--
+        }Else if (hold=F24_f = 2) {
+          if hold_F24_r > 2
+            hold_F24_r--
+          if hold_F24_t > 2
+            hold_F24_t--
+          if hold_F24_s > 2
+            hold_F24_s--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold_F24_f = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast_F24_f_timer:
+    if(press_F24_f = 2) {
+      fast_F24_f = 1
+    }
+    press_F24_f = 0
+    Return
 	F24 & s::
-		if s_F24_presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      s_F24_presses = 1
-      SetTimer, Key_F24_s, -200
-      If False
-      {
-        Key_F24_s:
-          s_F24_presses = 0
-          Return
+    If !hold_F24_s {
+
+
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
+
+
+        If press_F24_s
+          press_F24_s = 2
+        Else {
+          press_F24_s = 1
+          SetTimer, fast_F24_s_timer, -250
+        }
+        MouseMove, 0, y,, R
+
+
+        
+        KeyWait, s, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold_F24_s := holdOverride + 1
+          holdOverride++
+          If fast_F24_s {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast_F24_s = 0
+          }
+          SetTimer, hold_F24_s_timer, %A_MouseDelay%
+        } Else
+          fast_F24_s = 0
+      
+      
+      } else {
+        hold_F24_s := holdOverride + 1
+        holdOverride++
+        SetTimer, hold_F24_s_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("s","P"){
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("r","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("t","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold_F24_s_timer:
+    If GetKeyState("s","P") && GetKeyState("RAlt","P") {
+      if (hold_F24_s = holdOverride){
+        If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, y,, R
+        else if GetKeyState("r","P")
+        MouseMove, -x, y,, R
+        else if GetKeyState("t","P")
+        MouseMove, x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold_F24_s = 1) {
+          if hold_F24_r > 1
+            hold_F24_r--
+          if hold_F24_t > 1
+            hold_F24_t--
+          if hold_F24_f > 1
+            hold_F24_f--
+        }Else if (hold=F24_s = 2) {
+          if hold_F24_r > 2
+            hold_F24_r--
+          if hold_F24_t > 2
+            hold_F24_t--
+          if hold_F24_f > 2
+            hold_F24_f--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold_F24_s = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast_F24_s_timer:
+    if(press_F24_s = 2) {
+      fast_F24_s = 1
+    }
+    press_F24_s = 0
+    Return
 	F24 & t::
-		if t_F24_presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      t_F24_presses = 1
-      SetTimer, Key_F24_t, -200
-      If False
-      {
-        Key_F24_t:
-          t_F24_presses = 0
-          Return
+    If !hold_F24_t {
+
+
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
+
+
+        If press_F24_t
+          press_F24_t = 2
+        Else {
+          press_F24_t = 1
+          SetTimer, fast_F24_t_timer, -250
+        }
+        MouseMove, x, 0,, R
+
+
+        
+        KeyWait, t, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold_F24_t := holdOverride + 1
+          holdOverride++
+          If fast_F24_t {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast_F24_t = 0
+          }
+          SetTimer, hold_F24_t_timer, %A_MouseDelay%
+        } Else
+          fast_F24_t = 0
+      
+      
+      } else {
+        hold_F24_t := holdOverride + 1
+        holdOverride++
+        SetTimer, hold_F24_t_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("t","P"){
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("f","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold_F24_t_timer:
+    If GetKeyState("t","P") && GetKeyState("RAlt","P") {
+      if (hold_F24_t = holdOverride){
+        If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, x, 0,, R
+        else if GetKeyState("f","P")
+        MouseMove, x, -y,, R
+        else if GetKeyState("s","P")
+        MouseMove, x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold_F24_t = 1) {
+          if hold_F24_f > 1
+            hold_F24_f--
+          if hold_F24_s > 1
+            hold_F24_s--
+          if hold_F24_r > 1
+            hold_F24_r--
+        }Else if (hold=F24_t = 2) {
+          if hold_F24_f > 2
+            hold_F24_f--
+          if hold_F24_s > 2
+            hold_F24_s--
+          if hold_F24_r > 2
+            hold_F24_r--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold_F24_t = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast_F24_t_timer:
+    if(press_F24_t = 2) {
+      fast_F24_t = 1
+    }
+    press_F24_t = 0
+    Return
 	F24 & r::
-		if r_F24_presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      r_F24_presses = 1
-      SetTimer, Key_F24_r, -200
-      If False
-      {
-        Key_F24_r:
-          r_F24_presses = 0
-          Return
+    If !hold_F24_r {
+
+
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
+
+
+        If press_F24_r
+          press_F24_r = 2
+        Else {
+          press_F24_r = 1
+          SetTimer, fast_F24_r_timer, -250
+        }
+        MouseMove, -x, 0,, R
+
+
+        
+        KeyWait, r, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold_F24_r := holdOverride + 1
+          holdOverride++
+          If fast_F24_r {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast_F24_r = 0
+          }
+          SetTimer, hold_F24_r_timer, %A_MouseDelay%
+        } Else
+          fast_F24_r = 0
+      
+      
+      } else {
+        hold_F24_r := holdOverride + 1
+        holdOverride++
+        SetTimer, hold_F24_r_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("r","P"){
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("f","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, -%x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold_F24_r_timer:
+    If GetKeyState("r","P") && GetKeyState("RAlt","P") {
+      if (hold_F24_r = holdOverride){
+        If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, -x, 0,, R
+        else if GetKeyState("f","P")
+        MouseMove, -x, -y,, R
+        else if GetKeyState("s","P")
+        MouseMove, -x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold_F24_r = 1) {
+          if hold_F24_f > 1
+            hold_F24_f--
+          if hold_F24_s > 1
+            hold_F24_s--
+          if hold_F24_t > 1
+            hold_F24_t--
+        }Else if (hold=F24_r = 2) {
+          if hold_F24_f > 2
+            hold_F24_f--
+          if hold_F24_s > 2
+            hold_F24_s--
+          if hold_F24_t > 2
+            hold_F24_t--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold_F24_r = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast_F24_r_timer:
+    if(press_F24_r = 2) {
+      fast_F24_r = 1
+    }
+    press_F24_r = 0
+    Return
 #If
 #If extendLayer
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
@@ -333,16 +501,7 @@ SetCapsLockState, AlwaysOff
 	w::Esc
 	p::
 		toggle := !toggle
-		If toggle
-		{
-			x := x1
-			y := y1
-		}
-		Else
-		{
-			x := x2
-			y := y2
-		}
+		resetSpeed()
 		return
 	b::PgUp
 	l::Home
@@ -359,7 +518,7 @@ SetCapsLockState, AlwaysOff
     }
     return
 	g::PgDn
-	m::AppsKey
+	m::RButton
 	n::Left
 	e::Down
 	i::Right
@@ -371,178 +530,342 @@ SetCapsLockState, AlwaysOff
 	v::Del
 	z::PrintScreen
 	/::Run calc
-	k::Tab
+	k::MButton
 	h::LButton
-	,::MButton
-	.::RButton
+	,::Tab
+	.::AppsKey
 	f::
-		if f__presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      f__presses = 1
-      SetTimer, Key__f, -200
-      If False
-      {
-        Key__f:
-          f__presses = 0
-          Return
+    If !hold__f {
+
+
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
+
+
+        If press__f
+          press__f = 2
+        Else {
+          press__f = 1
+          SetTimer, fast__f_timer, -250
+        }
+        MouseMove, 0, -y,, R
+
+
+        
+        KeyWait, f, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold__f := holdOverride + 1
+          holdOverride++
+          If fast__f {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast__f = 0
+          }
+          SetTimer, hold__f_timer, %A_MouseDelay%
+        } Else
+          fast__f = 0
+      
+      
+      } else {
+        hold__f := holdOverride + 1
+        holdOverride++
+        SetTimer, hold__f_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("f","P"){
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove, 0, -%y%, 0, R
-      else if GetKeyState("r","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("t","P")
-        MouseMove, %x%, -%y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold__f_timer:
+    If GetKeyState("f","P") {
+      if (hold__f = holdOverride){
+        If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, -y,, R
+        else if GetKeyState("r","P")
+        MouseMove, -x, -y,, R
+        else if GetKeyState("t","P")
+        MouseMove, x, -y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold__f = 1) {
+          if hold__r > 1
+            hold__r--
+          if hold__t > 1
+            hold__t--
+          if hold__s > 1
+            hold__s--
+        }Else if (hold=_f = 2) {
+          if hold__r > 2
+            hold__r--
+          if hold__t > 2
+            hold__t--
+          if hold__s > 2
+            hold__s--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold__f = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast__f_timer:
+    if(press__f = 2) {
+      fast__f = 1
+    }
+    press__f = 0
+    Return
 	s::
-		if s__presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      s__presses = 1
-      SetTimer, Key__s, -200
-      If False
-      {
-        Key__s:
-          s__presses = 0
-          Return
+    If !hold__s {
+
+
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
+
+
+        If press__s
+          press__s = 2
+        Else {
+          press__s = 1
+          SetTimer, fast__s_timer, -250
+        }
+        MouseMove, 0, y,, R
+
+
+        
+        KeyWait, s, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold__s := holdOverride + 1
+          holdOverride++
+          If fast__s {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast__s = 0
+          }
+          SetTimer, hold__s_timer, %A_MouseDelay%
+        } Else
+          fast__s = 0
+      
+      
+      } else {
+        hold__s := holdOverride + 1
+        holdOverride++
+        SetTimer, hold__s_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("s","P"){
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove, 0, %y%, 0, R
-      else if GetKeyState("r","P")
-        MouseMove, -%x%, %y%, 0, R
-      else if GetKeyState("t","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold__s_timer:
+    If GetKeyState("s","P") {
+      if (hold__s = holdOverride){
+        If !GetKeyState("r","P") && !GetKeyState("t","P")
+        MouseMove, 0, y,, R
+        else if GetKeyState("r","P")
+        MouseMove, -x, y,, R
+        else if GetKeyState("t","P")
+        MouseMove, x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold__s = 1) {
+          if hold__r > 1
+            hold__r--
+          if hold__t > 1
+            hold__t--
+          if hold__f > 1
+            hold__f--
+        }Else if (hold=_s = 2) {
+          if hold__r > 2
+            hold__r--
+          if hold__t > 2
+            hold__t--
+          if hold__f > 2
+            hold__f--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold__s = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast__s_timer:
+    if(press__s = 2) {
+      fast__s = 1
+    }
+    press__s = 0
+    Return
 	t::
-		if t__presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      t__presses = 1
-      SetTimer, Key__t, -200
-      If False
-      {
-        Key__t:
-          t__presses = 0
-          Return
+    If !hold__t {
+
+
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
+
+
+        If press__t
+          press__t = 2
+        Else {
+          press__t = 1
+          SetTimer, fast__t_timer, -250
+        }
+        MouseMove, x, 0,, R
+
+
+        
+        KeyWait, t, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold__t := holdOverride + 1
+          holdOverride++
+          If fast__t {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast__t = 0
+          }
+          SetTimer, hold__t_timer, %A_MouseDelay%
+        } Else
+          fast__t = 0
+      
+      
+      } else {
+        hold__t := holdOverride + 1
+        holdOverride++
+        SetTimer, hold__t_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("t","P"){
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove, %x%, 0, 0, R
-      else if GetKeyState("f","P")
-        MouseMove, %x%, -%y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, %x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold__t_timer:
+    If GetKeyState("t","P") {
+      if (hold__t = holdOverride){
+        If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, x, 0,, R
+        else if GetKeyState("f","P")
+        MouseMove, x, -y,, R
+        else if GetKeyState("s","P")
+        MouseMove, x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold__t = 1) {
+          if hold__f > 1
+            hold__f--
+          if hold__s > 1
+            hold__s--
+          if hold__r > 1
+            hold__r--
+        }Else if (hold=_t = 2) {
+          if hold__f > 2
+            hold__f--
+          if hold__s > 2
+            hold__s--
+          if hold__r > 2
+            hold__r--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold__t = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast__t_timer:
+    if(press__t = 2) {
+      fast__t = 1
+    }
+    press__t = 0
+    Return
 	r::
-		if r__presses
-    {
-      speedx3 = 1
-      x *= 3
-      y *= 3
-    }
-		Else if !speedx3
-    {
-      r__presses = 1
-      SetTimer, Key__r, -200
-      If False
-      {
-        Key__r:
-          r__presses = 0
-          Return
+    If !hold__r {
+
+
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
+
+
+        If press__r
+          press__r = 2
+        Else {
+          press__r = 1
+          SetTimer, fast__r_timer, -250
+        }
+        MouseMove, -x, 0,, R
+
+
+        
+        KeyWait, r, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          hold__r := holdOverride + 1
+          holdOverride++
+          If fast__r {
+            x *= x_multiple_fast
+            y *= y_multiple_fast
+            fast__r = 0
+          }
+          SetTimer, hold__r_timer, %A_MouseDelay%
+        } Else
+          fast__r = 0
+      
+      
+      } else {
+        hold__r := holdOverride + 1
+        holdOverride++
+        SetTimer, hold__r_timer, %A_MouseDelay%
       }
     }
-		While GetKeyState("r","P"){
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove, -%x%, 0, 0, R
-      else if GetKeyState("f","P")
-        MouseMove, -%x%, -%y%, 0, R
-      else if GetKeyState("s","P")
-        MouseMove, -%x%, %y%, 0, R
-      sleep mouseDelaySpeed
-		}
-    If speedx3 && (!GetKeyState("f", "P") || !GetKeyState("s", "P")|| !GetKeyState("r", "P")|| !GetKeyState("t", "P"))
-    {
-      speedx3 = 0
-      If toggle
-      {
-        x := x1
-        y := y1
+    return
+
+  hold__r_timer:
+    If GetKeyState("r","P") {
+      if (hold__r = holdOverride){
+        If !GetKeyState("f","P") && !GetKeyState("s","P")
+        MouseMove, -x, 0,, R
+        else if GetKeyState("f","P")
+        MouseMove, -x, -y,, R
+        else if GetKeyState("s","P")
+        MouseMove, -x, y,, R
+      } ;else do nothing
+    }Else {
+      if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P"){
+        resetSpeed()
+        holdOverride = 0
+      }Else {
+        holdOverride--
+        if (hold__r = 1) {
+          if hold__f > 1
+            hold__f--
+          if hold__s > 1
+            hold__s--
+          if hold__t > 1
+            hold__t--
+        }Else if (hold=_r = 2) {
+          if hold__f > 2
+            hold__f--
+          if hold__s > 2
+            hold__s--
+          if hold__t > 2
+            hold__t--
+        }
       }
-      Else
-      {
-        x := x2
-        y := y2
-      }
+        hold__r = 0
+      SetTimer,, Off
     }
-      return
+    Return
+
+  fast__r_timer:
+    if(press__r = 2) {
+      fast__r = 1
+    }
+    press__r = 0
+    Return
 #If
 
 ;symbol layer
@@ -596,13 +919,13 @@ SetCapsLockState, AlwaysOff
 	n::F7
 	e::F8
 	i::F9
-	o::F10
-	`;::SendRaw ≠
-		return
-	d::F5
-	h::F6
-	,::SendRaw ≤
-		return
-	.::SendRaw ≥
-		return
+  o::F10
+  `;::SendRaw ≠
+    return
+  d::F5
+  h::F6
+  ,::SendRaw ≤
+    return
+  .::SendRaw ≥
+    return
 #If
