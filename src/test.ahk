@@ -3,7 +3,9 @@ press = 0
 
 RAlt & PgUp:: 
 PgUp::
-    send 1
+    
+	k::MButton
+		F24 & k::MButton
   Return
 PgDn::
     send 1

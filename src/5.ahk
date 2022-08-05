@@ -86,97 +86,213 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;extend layer
-#If (GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !symbolLayer) || extendLayer
-	`::
+#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !symbolLayer
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
-	1::
 	F24 & 1::Browser_Search
-	2::
 	F24 & 2::Media_Stop
-	3::
 	F24 & 3::Media_Prev
-	4::
 	F24 & 4::Media_Next
-	8::
 	F24 & 8::^Numpad0
-	9::
 	F24 & 9::^NumpadAdd
-	0::
 	F24 & 0::^NumpadSub
-	=::
 	F24 & =::Volume_Mute
-q::WheelUp
-  q Up::Return
-	q::
 	F24 & q::
-    While GetKeyState("q","P") && (extendLayer ? 1 : GetKeyState("RAlt","P")){
+    While GetKeyState("q","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelUp}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
-	w::
 	F24 & w::Esc
-	p::
 	F24 & p::
 		toggle := !toggle
 		resetSpeed()
 		return
-	b::
 	F24 & b::PgUp
-	l::
 	F24 & l::Home
-	u::
 	F24 & u::Up
-	y::
 	F24 & y::End
-	'::
 	F24 & '::Volume_Down
-	-::
 	F24 & -::Volume_Up
-a::WheelDown
-  a Up::Return
-	a::
 	F24 & a::
-    While GetKeyState("a","P") && (extendLayer ? 1 : GetKeyState("RAlt","P")){
+    While GetKeyState("a","P") && GetKeyState("RAlt","P"){
       SendInput {Blind}{WheelDown}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return
-	g::
 	F24 & g::PgDn
-	m::
 	F24 & m::RButton
-	n::
 	F24 & n::Left
-	e::
 	F24 & e::Down
-	i::
 	F24 & i::Right
-	o::
 	F24 & o::Enter
-	`;::
 	F24 & `;::Media_Play_Pause
-	x::
 	F24 & x::XButton1
-	c::
 	F24 & c::XButton2
-	d::
 	F24 & d::Bs
-	v::
 	F24 & v::Del
-	z::
 	F24 & z::PrintScreen
-	/::
 	F24 & /::Run calc
-	k::
 	F24 & k::MButton
-	h::
 	F24 & h::LButton
-	,::
 	F24 & ,::Tab
-	.::
 	F24 & .::AppsKey
+#If
+#If extendLayer
+	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+		return
+	1::Browser_Search
+	2::Media_Stop
+	3::Media_Prev
+	4::Media_Next
+	8::^Numpad0
+	9::^NumpadAdd
+	0::^NumpadSub
+	=::Volume_Mute
+	q::WheelUp
+  q Up::Return
+  q::
+    While GetKeyState("q","P"){
+      SendInput {Blind}{WheelUp}
+      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+    }
+    return
+	w::Esc
+	p::
+		toggle := !toggle
+		resetSpeed()
+		return
+	b::PgUp
+	l::Home
+	u::Up
+	y::End
+	'::Volume_Down
+	-::Volume_Up
+	a::WheelDown
+  a Up::Return
+  a::
+    While GetKeyState("a","P"){
+      SendInput {Blind}{WheelDown}
+      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+    }
+    return
+	g::PgDn
+	m::RButton
+	n::Left
+	e::Down
+	i::Right
+	o::Enter
+	`;::Media_Play_Pause
+	x::XButton1
+	c::XButton2
+	d::Bs
+	v::Del
+	z::PrintScreen
+	/::Run calc
+	k::MButton
+	h::LButton
+	,::Tab
+	.::AppsKey
+#If
+
+;symbol layer
+#If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !symbol2Layer
+	F23 & w::SendRaw {
+		return
+	F23 & f::SendRaw }
+		return
+	F23 & u::SendRaw )
+		return
+	F23 & y::SendRaw (
+		return
+	F23 & '::`
+	F23 & -::=
+	F23 & a::1
+	F23 & r::2
+	F23 & s::3
+	F23 & t::4
+	F23 & m::SendRaw *
+		return
+	F23 & n::7
+	F23 & e::8
+	F23 & i::9
+	F23 & o::0
+	F23 & `;::SendRaw :
+		return
+	F23 & x::[
+	F23 & c::]
+	F23 & d::5
+	F23 & v::\
+	F23 & k::/
+	F23 & h::6
+	F23 & ,::SendRaw <
+		return
+	F23 & .::SendRaw >
+		return
+#If
+#If symbolLayer
+	w::SendRaw {
+		return
+	f::SendRaw }
+		return
+	u::SendRaw )
+		return
+	y::SendRaw (
+		return
+	'::`
+	-::=
+	a::1
+	r::2
+	s::3
+	t::4
+	m::SendRaw *
+		return
+	n::7
+	e::8
+	i::9
+	o::0
+	`;::SendRaw :
+		return
+	x::[
+	c::]
+	d::5
+	v::\
+	k::/
+	h::6
+	,::SendRaw <
+		return
+	.::SendRaw >
+		return
+#If
+
+;symbol2 layer
+#If symbol2Layer
+	F23 & 0::SendRaw …
+		return
+	F23 & =::SendRaw ±
+		return
+	F23 & '::F11
+	F23 & -::F12
+	F23 & a::F1
+	F23 & r::F2
+	F23 & s::F3
+	F23 & t::F4
+	F23 & n::F7
+	F23 & e::F8
+	F23 & i::F9
+	F23 & o::F10
+	F23 & `;::SendRaw ≠
+		return
+	F23 & d::F5
+	F23 & h::F6
+	F23 & ,::SendRaw ≤
+		return
+	F23 & .::SendRaw ≥
+		return
+#If
+
+;mouse in extend layer
+#If extendLayer || (GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !symbolLayer)
 	f::
   F24 & f::
     If !hold_f {
@@ -469,66 +585,4 @@ a::WheelDown
     }
     press_r = 0
     Return
-#If
-
-;symbol layer
-#If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !symbol2Layer
-	F23 & w::SendRaw {
-		return
-	F23 & f::SendRaw }
-		return
-	F23 & u::SendRaw )
-		return
-	F23 & y::SendRaw (
-		return
-	F23 & '::`
-	F23 & -::=
-	F23 & a::1
-	F23 & r::2
-	F23 & s::3
-	F23 & t::4
-	F23 & m::SendRaw *
-		return
-	F23 & n::7
-	F23 & e::8
-	F23 & i::9
-	F23 & o::0
-	F23 & `;::SendRaw :
-		return
-	F23 & x::[
-	F23 & c::]
-	F23 & d::5
-	F23 & v::\
-	F23 & k::/
-	F23 & h::6
-	F23 & ,::SendRaw <
-		return
-	F23 & .::SendRaw >
-		return
-#If
-
-;symbol2 layer
-#If symbol2Layer
-	0::SendRaw …
-		return
-	=::SendRaw ±
-		return
-	'::F11
-	-::F12
-	a::F1
-	r::F2
-	s::F3
-	t::F4
-	n::F7
-	e::F8
-	i::F9
-	o::F10
-	`;::SendRaw ≠
-		return
-	d::F5
-	h::F6
-	,::SendRaw ≤
-		return
-	.::SendRaw ≥
-		return
 #If

@@ -98,22 +98,20 @@ SetCapsLockState, AlwaysOff
 #If\n\n`
 
   // extend layer
-  output += `;extend layer\n#If (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbolLayer) || extendLayer\n`
+  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbolLayer\n`
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
-        output += `\t${key[0]}::\n\tF24 & ${key[0]}::${key[2][0]}\n`
+        output += `\tF24 & ${key[0]}::${key[2][0]}\n`
       } else if (key[2][0].includes('Wheel')) {
-        output += `${key[0]}::${key[2][0]}
-  ${key[0]} Up::Return
-\t${key[0]}::\n\tF24 & ${key[0]}::
-    While GetKeyState("${key[0]}","P") && (extendLayer ? 1 : GetKeyState("${extendKey}","P")){
+        output += `\tF24 & ${key[0]}::
+    While GetKeyState("${key[0]}","P") && GetKeyState("${extendKey}","P"){
       SendInput {Blind}{${key[2][0]}}
       sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
     }
     return\n`
       } else if (key[2][0] == 'Capslock') {
-        output += `\t${key[0]}::\n\tF24 & ${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
+        output += `\tF24 & ${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
       } else if (key[2][0] == 'mouseL') {
         mouseL = key[0]
       } else if (key[2][0] == 'mouseR') {
@@ -123,17 +121,51 @@ SetCapsLockState, AlwaysOff
       } else if (key[2][0] == 'mouseD') {
         mouseD = key[0]
       } else if (key[2][0] == 'speed') {
-        output += `\t${key[0]}::\n\tF24 & ${key[0]}::
+        output += `\tF24 & ${key[0]}::
 		toggle := !toggle
 		resetSpeed()
 		return\n`
       } else {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
-          `\t${key[0]}::\n\tF24 & ${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
+          `\tF24 & ${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
       }
     }
   })
-  output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
+  output += '#If\n#If extendLayer\n'
+  keys.forEach(key => {
+    if (typeof key[2] == 'object' && key[2][0]) {
+      if (key[2][0].includes('Button')) {
+        output += `\t${key[0]}::${key[2][0]}\n`
+      } else if (key[2][0].includes('Wheel')) {
+        output += `\t${key[0]}::${key[2][0]}
+  ${key[0]} Up::Return
+  ${key[0]}::
+    While GetKeyState("${key[0]}","P"){
+      SendInput {Blind}{${key[2][0]}}
+      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+    }
+    return\n`
+      } else if (key[2][0] == 'Capslock') {
+        output += `\t${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
+      } else if (key[2][0] == 'mouseL') {
+        mouseL = key[0]
+      } else if (key[2][0] == 'mouseR') {
+        mouseR = key[0]
+      } else if (key[2][0] == 'mouseU') {
+        mouseU = key[0]
+      } else if (key[2][0] == 'mouseD') {
+        mouseD = key[0]
+      } else if (key[2][0] == 'speed') {
+        output += `\t${key[0]}::
+		toggle := !toggle
+		resetSpeed()
+		return\n`
+      } else {
+        output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
+          `\t${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
+      }
+    }
+  })
   output += '#If\n\n'
 
   // symbol layer
@@ -151,6 +183,20 @@ SetCapsLockState, AlwaysOff
       output += `\tF23 & ${key[0]}::SendRaw ${key[3]}\n\t\treturn\n`
     }
   })
+  output += '#If\n#If symbolLayer\n'
+  keys.forEach(key => {
+    if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
+      if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
+        output += `\t${key[0]}::${key[3][0]}\n`
+      } else if (key[3][0]) {
+        output += `\t${key[0]}::SendRaw ${key[3][0]}\n\t\treturn\n`
+      }
+    } else if (typeof key[3] == 'number' || key[3] == '`' || key[3] == '\\' || key[3] == '/' || key[3] == '=' || key[3] == '[' || key[3] == ']') {
+      output += `\t${key[0]}::${key[3]}\n`
+    } else if (key[3]) {
+      output += `\t${key[0]}::SendRaw ${key[3]}\n\t\treturn\n`
+    }
+  })
   output += '#If\n\n'
 
   // symbol2 layer
@@ -159,15 +205,20 @@ SetCapsLockState, AlwaysOff
   keys.forEach(key => {
     if (typeof key[4] == 'object' && key[4][0]) {
       output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
-        `\t${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
+        `\tF23 & ${key[0]}::${((typeof key[4] == 'object') ? (key[4][0]) : key[4])}\n` : ''}`
     } else if (key[4]) {
       if (!key[4].startsWith('F') && !key[4].startsWith('^')) {
-        output += `\t${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
+        output += `\tF23 & ${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
       } else {
-        output += `\t${key[0]}::${key[4]}\n`
+        output += `\tF23 & ${key[0]}::${key[4]}\n`
       }
     }
   })
+  output += `#If\n\n`
+
+  // mouse
+  output += `;mouse in extend layer\n#If extendLayer || (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbolLayer)\n`
+  output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
   output += `#If`
 
   //console.log(output)

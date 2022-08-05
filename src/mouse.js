@@ -1,5 +1,5 @@
 
-function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
+function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
   function mouseKey(key) {
     function coords(mouseDirection, cross = 0) {
       if (!cross) {
