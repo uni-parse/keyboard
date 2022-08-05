@@ -44,7 +44,7 @@ resetSpeed() {
   })
 
   // config layers
-  output += `\n\n;config layers
+  output += `\n\n;config
 #InputLevel 1
   ${extendKey}::F24
   ${symbolKey}::F23
@@ -54,6 +54,7 @@ SetCapsLockState, AlwaysOff
 
 #If !extendLayer
   F24 & F23::
+    symbolLayer = 0
     extendLayer = 1
     KeyWait ${extendKey}
     KeyWait ${extendKey}, D
@@ -77,6 +78,7 @@ SetCapsLockState, AlwaysOff
 
 #If !symbolLayer
   F23 & F24::
+    extendLayer = 0
     symbol2Layer = 1
     KeyWait ${symbolKey}
     symbol2Layer = 0
@@ -98,7 +100,7 @@ SetCapsLockState, AlwaysOff
 #If\n\n`
 
   // extend layer
-  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbolLayer\n`
+  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")\n`
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {

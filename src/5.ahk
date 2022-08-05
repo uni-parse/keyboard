@@ -32,7 +32,7 @@ resetSpeed() {
 	AppsKey::Alt
 
 
-;config layers
+;config
 #InputLevel 1
   RAlt::F24
   LAlt::F23
@@ -42,6 +42,7 @@ SetCapsLockState, AlwaysOff
 
 #If !extendLayer
   F24 & F23::
+    symbolLayer = 0
     extendLayer = 1
     KeyWait RAlt
     KeyWait RAlt, D
@@ -65,6 +66,7 @@ SetCapsLockState, AlwaysOff
 
 #If !symbolLayer
   F23 & F24::
+    extendLayer = 0
     symbol2Layer = 1
     KeyWait LAlt
     symbol2Layer = 0
@@ -86,7 +88,7 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;extend layer
-#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !symbolLayer
+#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P")
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
 	F24 & 1::Browser_Search
