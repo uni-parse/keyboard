@@ -41,39 +41,40 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
         return mouseU
       }
     }
-    return `\t${combination ? combination + ' & ' : ''}${key}::
-    If !hold_${combination}_${key} {
+    return `\t${key}::
+  ${combination} & ${key}::
+    If !hold_${key} {
       if !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P") && !GetKeyState("${opposite(key)}","P") {
-        If press_${combination}_${key}
-          press_${combination}_${key} = 2
+        If press_${key}
+          press_${key} = 2
         Else {
-          press_${combination}_${key} = 1
-          SetTimer, fast_${combination}_${key}_timer, -300
+          press_${key} = 1
+          SetTimer, fast_${key}_timer, -300
         }
         MouseMove, ${coords(key)},, R
         KeyWait, ${key}, T.2
         if ErrorLevel {
           ErrorLevel = 0
-          hold_${combination}_${key} := holdOverride + 1
+          hold_${key} := holdOverride + 1
           holdOverride++
-          If fast_${combination}_${key} {
+          If fast_${key} {
             x *= x_multiple_fast
             y *= y_multiple_fast
-            fast_${combination}_${key} = 0
+            fast_${key} = 0
           }
-          SetTimer, hold_${combination}_${key}_timer, %A_MouseDelay%
+          SetTimer, hold_${key}_timer, %A_MouseDelay%
         } Else
-          fast_${combination}_${key} = 0
+          fast_${key} = 0
       } else {
-        hold_${combination}_${key} := holdOverride + 1
+        hold_${key} := holdOverride + 1
         holdOverride++
-        SetTimer, hold_${combination}_${key}_timer, %A_MouseDelay%
+        SetTimer, hold_${key}_timer, %A_MouseDelay%
       }
     }
     return
-  hold_${combination}_${key}_timer:
-    If GetKeyState("${key}","P") ${combination ? `&& GetKeyState("RAlt","P") ` : ''}{
-      if (hold_${combination}_${key} = holdOverride) {
+  hold_${key}_timer:
+    If GetKeyState("${key}","P") && (extendLayer ? 1 : GetKeyState("RAlt","P")) {
+      if (hold_${key} = holdOverride) {
         If !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P")
           MouseMove, ${coords(key)},, R
         else if GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P")
@@ -87,31 +88,31 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination = '', speed = 0) {
         holdOverride = 0
       }Else {
         holdOverride--
-        if (hold_${combination}_${key} = 1) {
-          if hold_${combination}_${key == mouseL || key == mouseR ? mouseU : mouseL} > 1
-            hold_${combination}_${key == mouseL || key == mouseR ? mouseU : mouseL}--
-          if hold_${combination}_${key == mouseL || key == mouseR ? mouseD : mouseR} > 1
-            hold_${combination}_${key == mouseL || key == mouseR ? mouseD : mouseR}--
-          if hold_${combination}_${opposite(key)} > 1
-            hold_${combination}_${opposite(key)}--
-        }Else if (hold_${combination}_${key} = 2) {
-          if hold_${combination}_${key == mouseL || key == mouseR ? mouseU : mouseL} > 2
-            hold_${combination}_${key == mouseL || key == mouseR ? mouseU : mouseL}--
-          if hold_${combination}_${key == mouseL || key == mouseR ? mouseD : mouseR} > 2
-            hold_${combination}_${key == mouseL || key == mouseR ? mouseD : mouseR}--
-          if hold_${combination}_${opposite(key)} > 2
-            hold_${combination}_${opposite(key)}--
+        if (hold_${key} = 1) {
+          if hold_${key == mouseL || key == mouseR ? mouseU : mouseL} > 1
+            hold_${key == mouseL || key == mouseR ? mouseU : mouseL}--
+          if hold_${key == mouseL || key == mouseR ? mouseD : mouseR} > 1
+            hold_${key == mouseL || key == mouseR ? mouseD : mouseR}--
+          if hold_${opposite(key)} > 1
+            hold_${opposite(key)}--
+        }Else if (hold_${key} = 2) {
+          if hold_${key == mouseL || key == mouseR ? mouseU : mouseL} > 2
+            hold_${key == mouseL || key == mouseR ? mouseU : mouseL}--
+          if hold_${key == mouseL || key == mouseR ? mouseD : mouseR} > 2
+            hold_${key == mouseL || key == mouseR ? mouseD : mouseR}--
+          if hold_${opposite(key)} > 2
+            hold_${opposite(key)}--
         }
       }
-        hold_${combination}_${key} = 0
+        hold_${key} = 0
       SetTimer,, Off
     }
     Return
-  fast_${combination}_${key}_timer:
-    if(press_${combination}_${key} = 2) {
-      fast_${combination}_${key} = 1
+  fast_${key}_timer:
+    if(press_${key} = 2) {
+      fast_${key} = 1
     }
-    press_${combination}_${key} = 0
+    press_${key} = 0
     Return\n`
     
   }
