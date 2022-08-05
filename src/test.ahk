@@ -1,73 +1,126 @@
 
-x1 = 4
-y1 = 4
-x2 = 18
-y2 = 18
-x := x1
-y := y1
-toggle = 0
-resetSpeed(){
-  global
-  If !toggle {
-    x := x1
-    y := y1
-  } Else {
-    x := x2
-    y := y2
-  }
-}
-mouseDir(){
-  global
-  If !hold && (anyOtherHold) {
-    ;no delay
-  }
-  else If !hold { ;prevent auto key loop
+    if !hold_F23 {
+      hold_F23 = 1
+      If press_F23
+        press_F23 = 2
+      Else {
+        press_F23 = 1
+        SetTimer, double_F23_timer, -200
+      }
+
+      KeyWait, LAlt, T.2
+      if ErrorLevel {
+        ErrorLevel = 0
+        If double_F23 {
+
+          double_F23 = 0
+          ;MsgBox, double_F23 activated
+           extendLayer = 0
+           symbil2Layer = 1
+          KeyWait, LAlt
+          hold_F23 = 0
+          ;MsgBox, 0 hold double
+           symbil2Layer = 0
+        }Else{
+          KeyWait, LAlt
+          hold_F23 = 0
+          ;MsgBox, 0 hold no double
+        }
+      } Else {
+        double_F23 = 0
+        KeyWait, LAlt
+        hold_F23 = 0
+        ;MsgBox, 0 click
+      }
+    }
+
+
+
+
+  [::
+    if !hold_F23 {
+      hold_F23 = 1
+      If press_F23
+        press_F23 = 2
+      Else {
+        press_F23 = 1
+        SetTimer, double_F23_timer, -200
+      }
+
+      KeyWait, [, T.2
+      if ErrorLevel {
+        ErrorLevel = 0
+        If double_F23 {
+
+          double_F23 = 0
+          ;MsgBox, double_F23 activated
+          ; extendLayer = 0
+          ; symbil2Layer = 1
+          KeyWait, [
+          hold_F23 = 0
+          MsgBox, 0 hold double
+          ; symbil2Layer = 0
+        }Else{
+          KeyWait, [
+          hold_F23 = 0
+          MsgBox, 0 hold no double
+        }
+      } Else {
+        double_F23 = 0
+        KeyWait, [
+        hold_F23 = 0
+        ;MsgBox, 0 click
+      }
+    }
+    return
+
+  double_F23_timer:
+    if press_F23 = 2
+      double_F23 = 1
+    press_F23 = 0
+    Return
+    
+    Return
+
+  ]::
+  if !hold{
+    hold = 1
     If press
       press = 2
     Else {
       press = 1
-      SetTimer, double, -200
+      SetTimer, double_timer, -200
     }
-    MouseMove, -%x%, 0,, R
-    KeyWait, [, T.2
+
+    KeyWait, ], T.2
     if ErrorLevel {
       ErrorLevel = 0
-      hold = 1
-      If (double){
-        x *= 3
-        y *= 3
-        ;MsgBox, double activated
+      If double {
+        
         double = 0
+        MsgBox, double activated
+        ; extendLayer = 0
+        ; symbil2Layer = 1
+        KeyWait, ]
+        hold = 0
+        ; symbil2Layer = 0
+      }Else{
+        KeyWait, ]
+        hold = 0
       }
-      SetTimer, hold, %A_MouseDelay%
-    } Else
+    } Else {
       double = 0
-  }
-
-  if 0 {
-    hold:
-    If GetKeyState("[","P")
-      MouseMove, -%x%, 0,, R
-    Else {
-      resetSpeed()
+      KeyWait, ]
       hold = 0
-      SetTimer,, Off
     }
-    Return
-    double:
+  }
+    return
+
+  double_timer:
     if(press = 2) {
+
       double = 1
+
     }
     press = 0
     Return
-  }
-}
-
-  [::
-    mouseDir()
-    Return
-
-  ]::
-    If !hold {
-      
-    }

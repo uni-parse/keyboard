@@ -1,7 +1,7 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾ ⤿⥁🔍
 
 import './sass/main.scss'
-import { keys, x1, y1, x2, y2 } from './keys'
+import keys from './keys'
 import autohotkey from './autohotkey'
 import layout from './layout'
 
@@ -22,7 +22,7 @@ main.appendChild(keyboardCtx)
 main.appendChild(script)
 document.body.appendChild(main)
 
-autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator)
+autohotkey(keys, pre, btn, navigator)
 layout(keys, keyboard)
 
 let toggle_extend = false, toggle_symbol = false

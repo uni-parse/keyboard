@@ -1,5 +1,5 @@
-import mouse from "./mouse"
-function autohotkey(keys, x1, y1, x2, y2, pre, btn, navigator) {
+import { mouse, wheel } from "./mouse"
+function autohotkey(keys, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
     output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
@@ -14,13 +14,10 @@ y_multiple_fast = 3
 x := x2
 y := y2
 toggle = 0
-symbil2Layer = 0
-extendLayer = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
-speedx3 = 0
 holdOverride = 0
-resetSpeed(){
+resetSpeed() {
   global
   If toggle {
     x := x1
@@ -54,6 +51,7 @@ resetSpeed(){
 #InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
+
 #If !extendLayer
   F24 & F23::
     symbil2Layer = 0
@@ -63,23 +61,21 @@ SetCapsLockState, AlwaysOff
     extendLayer = 0
     return
   F24::
-    if extend_presses
-    {
+    if extend_presses {
       symbil2Layer = 0
       extendLayer = 1
       KeyWait ${extendKey}
       KeyWait ${extendKey}, D
       extendLayer = 0
-    }
-    Else
+    } Else
       extend_presses = 1
-    SetTimer, KeyF24, -300
+    SetTimer, KeyF24timer, -300
     return
-    KeyF24:
-      extend_presses = 0
-      return
-    Return
+  KeyF24timer:
+    extend_presses = 0
+    return
 #if
+
 #If !symbil2Layer
   F23 & F24::
     extendLayer = 0
@@ -88,21 +84,18 @@ SetCapsLockState, AlwaysOff
     symbil2Layer = 0
     return
   F23::
-    if symbol_presses
-      {
+    if symbol_presses {
         extendLayer = 0
         symbil2Layer = 1
         KeyWait ${symbolKey}
         KeyWait ${symbolKey}, D
         symbil2Layer = 0
-      }
-    Else
+    } Else
       symbol_presses = 1
-    SetTimer, KeyF23, -300
+    SetTimer, KeyF23timer, -300
     Return
-    KeyF23:
-      symbol_presses = 0
-      Return
+  KeyF23timer:
+    symbol_presses = 0
     Return
 #If\n\n`
 
