@@ -5,26 +5,26 @@ function autohotkey(keys, pre, btn, navigator) {
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High\n
-x1 = 4
-y1 := x1
-x2 = 18
-y2 := x2
-x_multiple_fast = 3
-y_multiple_fast = 3
-x := x2
-y := y2
-toggle = 0
+x_slow = 4
+y_slow := x_slow
+x_default = 18
+y_default := x_default
+x_multiplayer = 3
+y_multiplayer := x_multiplayer
+x := x_default
+y := y_default
+speed_switcher = 0
 mouseDelaySpeed = 50
 mousePreDelay = 200
-holdOverride = 0
+move__nth = 0
 resetSpeed() {
   global
-  If toggle {
-    x := x1
-    y := y1
+  If speed_switcher {
+    x := x_slow
+    y := y_slow
   } Else {
-    x := x2
-    y := y2
+    x := x_default
+    y := y_default
   }
 }\n\n`
 
@@ -52,50 +52,50 @@ resetSpeed() {
 #Persistent
 SetCapsLockState, AlwaysOff
 
-#If !extendLayer
+#If !layer_ext
   F24 & F23::
-    symbolLayer = 0
-    extendLayer = 1
+    layer_sym = 0
+    layer_ext = 1
     KeyWait ${extendKey}
     KeyWait ${extendKey}, D
-    extendLayer = 0
+    layer_ext = 0
     return
   F24::
-    if extend_presses {
-      symbolLayer = 0
-      extendLayer = 1
+    if press_F24 {
+      layer_sym = 0
+      layer_ext = 1
       KeyWait ${extendKey}
       KeyWait ${extendKey}, D
-      extendLayer = 0
+      layer_ext = 0
     } Else
-      extend_presses = 1
+      press_F24 = 1
     SetTimer, KeyF24timer, -300
     return
   KeyF24timer:
-    extend_presses = 0
+    press_F24 = 0
     return
 #if
 
-#If !symbolLayer
+#If !layer_sym
   F23 & F24::
-    extendLayer = 0
-    symbol2Layer = 1
+    layer_ext = 0
+    layer_sym2 = 1
     KeyWait ${symbolKey}
-    symbol2Layer = 0
+    layer_sym2 = 0
     return
   F23::
-    if symbol_presses {
-        extendLayer = 0
-        symbolLayer = 1
+    if press_F23 {
+        layer_ext = 0
+        layer_sym = 1
         KeyWait ${symbolKey}
         KeyWait ${symbolKey}, D
-        symbolLayer = 0
+        layer_sym = 0
     } Else
-      symbol_presses = 1
+      press_F23 = 1
     SetTimer, KeyF23timer, -300
     Return
   KeyF23timer:
-    symbol_presses = 0
+    press_F23 = 0
     Return
 #If\n\n`
 
@@ -124,7 +124,7 @@ SetCapsLockState, AlwaysOff
         mouseD = key[0]
       } else if (key[2][0] == 'speed') {
         output += `\tF24 & ${key[0]}::
-		toggle := !toggle
+		speed_switcher := !speed_switcher
 		resetSpeed()
 		return\n`
       } else {
@@ -133,7 +133,7 @@ SetCapsLockState, AlwaysOff
       }
     }
   })
-  output += '#If\n#If extendLayer\n'
+  output += '#If\n#If layer_ext\n'
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
@@ -149,20 +149,12 @@ SetCapsLockState, AlwaysOff
     return\n`
       } else if (key[2][0] == 'Capslock') {
         output += `\t${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
-      } else if (key[2][0] == 'mouseL') {
-        mouseL = key[0]
-      } else if (key[2][0] == 'mouseR') {
-        mouseR = key[0]
-      } else if (key[2][0] == 'mouseU') {
-        mouseU = key[0]
-      } else if (key[2][0] == 'mouseD') {
-        mouseD = key[0]
       } else if (key[2][0] == 'speed') {
         output += `\t${key[0]}::
-		toggle := !toggle
+		speed_switcher := !speed_switcher
 		resetSpeed()
 		return\n`
-      } else {
+      } else if (!key[2][0].includes('mouse')) {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
           `\t${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
       }
@@ -171,7 +163,7 @@ SetCapsLockState, AlwaysOff
   output += '#If\n\n'
 
   // symbol layer
-  output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !symbol2Layer\n`
+  output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !layer_sym2\n`
   keys.forEach(key => {
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -185,7 +177,7 @@ SetCapsLockState, AlwaysOff
       output += `\tF23 & ${key[0]}::SendRaw ${key[3]}\n\t\treturn\n`
     }
   })
-  output += '#If\n#If symbolLayer\n'
+  output += '#If\n#If layer_sym\n'
   keys.forEach(key => {
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -203,7 +195,7 @@ SetCapsLockState, AlwaysOff
 
   // symbol2 layer
   output += `;symbol2 layer
-#If symbol2Layer\n`
+#If layer_sym2\n`
   keys.forEach(key => {
     if (typeof key[4] == 'object' && key[4][0]) {
       output += `${key[4] && !(typeof key[4] == 'object' && !key[4][0]) ?
@@ -219,7 +211,7 @@ SetCapsLockState, AlwaysOff
   output += `#If\n\n`
 
   // mouse
-  output += `;mouse in extend layer\n#If extendLayer || (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !symbolLayer)\n`
+  output += `;mouse in extend layer\n#If layer_ext || (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !layer_sym)\n`
   output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
   output += `#If`
 
