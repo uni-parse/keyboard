@@ -82,11 +82,11 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
         else if GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P")
           MouseMove, ${coords(key, 2)},, R
       } ;else do nothing
-    }Else {
+    } Else {
       if !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P") && !GetKeyState("${opposite(key)}","P"){
         resetSpeed()
         holdOverride = 0
-      }Else {
+      } Else {
         holdOverride--
         if (hold_${key} = 1) {
           if hold_${key == mouseL || key == mouseR ? mouseU : mouseL} > 1
@@ -95,7 +95,7 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
             hold_${key == mouseL || key == mouseR ? mouseD : mouseR}--
           if hold_${opposite(key)} > 1
             hold_${opposite(key)}--
-        }Else if (hold_${key} = 2) {
+        } Else if (hold_${key} = 2) {
           if hold_${key == mouseL || key == mouseR ? mouseU : mouseL} > 2
             hold_${key == mouseL || key == mouseR ? mouseU : mouseL}--
           if hold_${key == mouseL || key == mouseR ? mouseD : mouseR} > 2
@@ -104,14 +104,13 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
             hold_${opposite(key)}--
         }
       }
-        hold_${key} = 0
+      hold_${key} = 0
       SetTimer,, Off
     }
     Return
   fast_${key}_timer:
-    if(press_${key} = 2) {
+    if press_${key} = 2
       fast_${key} = 1
-    }
     press_${key} = 0
     Return\n`
     

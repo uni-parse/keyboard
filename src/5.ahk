@@ -334,11 +334,11 @@ SetCapsLockState, AlwaysOff
         else if GetKeyState("t","P")
           MouseMove, x, -y,, R
       } ;else do nothing
-    }Else {
+    } Else {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P"){
         resetSpeed()
         holdOverride = 0
-      }Else {
+      } Else {
         holdOverride--
         if (hold_f = 1) {
           if hold_r > 1
@@ -347,7 +347,7 @@ SetCapsLockState, AlwaysOff
             hold_t--
           if hold_s > 1
             hold_s--
-        }Else if (hold_f = 2) {
+        } Else if (hold_f = 2) {
           if hold_r > 2
             hold_r--
           if hold_t > 2
@@ -356,14 +356,13 @@ SetCapsLockState, AlwaysOff
             hold_s--
         }
       }
-        hold_f = 0
+      hold_f = 0
       SetTimer,, Off
     }
     Return
   fast_f_timer:
-    if(press_f = 2) {
+    if press_f = 2
       fast_f = 1
-    }
     press_f = 0
     Return
 	s::
@@ -407,11 +406,11 @@ SetCapsLockState, AlwaysOff
         else if GetKeyState("t","P")
           MouseMove, x, y,, R
       } ;else do nothing
-    }Else {
+    } Else {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P"){
         resetSpeed()
         holdOverride = 0
-      }Else {
+      } Else {
         holdOverride--
         if (hold_s = 1) {
           if hold_r > 1
@@ -420,7 +419,7 @@ SetCapsLockState, AlwaysOff
             hold_t--
           if hold_f > 1
             hold_f--
-        }Else if (hold_s = 2) {
+        } Else if (hold_s = 2) {
           if hold_r > 2
             hold_r--
           if hold_t > 2
@@ -429,14 +428,13 @@ SetCapsLockState, AlwaysOff
             hold_f--
         }
       }
-        hold_s = 0
+      hold_s = 0
       SetTimer,, Off
     }
     Return
   fast_s_timer:
-    if(press_s = 2) {
+    if press_s = 2
       fast_s = 1
-    }
     press_s = 0
     Return
 	t::
@@ -480,11 +478,11 @@ SetCapsLockState, AlwaysOff
         else if GetKeyState("s","P")
           MouseMove, x, y,, R
       } ;else do nothing
-    }Else {
+    } Else {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P"){
         resetSpeed()
         holdOverride = 0
-      }Else {
+      } Else {
         holdOverride--
         if (hold_t = 1) {
           if hold_f > 1
@@ -493,7 +491,7 @@ SetCapsLockState, AlwaysOff
             hold_s--
           if hold_r > 1
             hold_r--
-        }Else if (hold_t = 2) {
+        } Else if (hold_t = 2) {
           if hold_f > 2
             hold_f--
           if hold_s > 2
@@ -502,14 +500,13 @@ SetCapsLockState, AlwaysOff
             hold_r--
         }
       }
-        hold_t = 0
+      hold_t = 0
       SetTimer,, Off
     }
     Return
   fast_t_timer:
-    if(press_t = 2) {
+    if press_t = 2
       fast_t = 1
-    }
     press_t = 0
     Return
 	r::
@@ -553,11 +550,11 @@ SetCapsLockState, AlwaysOff
         else if GetKeyState("s","P")
           MouseMove, -x, y,, R
       } ;else do nothing
-    }Else {
+    } Else {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P"){
         resetSpeed()
         holdOverride = 0
-      }Else {
+      } Else {
         holdOverride--
         if (hold_r = 1) {
           if hold_f > 1
@@ -566,7 +563,7 @@ SetCapsLockState, AlwaysOff
             hold_s--
           if hold_t > 1
             hold_t--
-        }Else if (hold_r = 2) {
+        } Else if (hold_r = 2) {
           if hold_f > 2
             hold_f--
           if hold_s > 2
@@ -575,14 +572,13 @@ SetCapsLockState, AlwaysOff
             hold_t--
         }
       }
-        hold_r = 0
+      hold_r = 0
       SetTimer,, Off
     }
     Return
   fast_r_timer:
-    if(press_r = 2) {
+    if press_r = 2
       fast_r = 1
-    }
     press_r = 0
     Return
 #If
