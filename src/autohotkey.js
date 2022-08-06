@@ -28,6 +28,8 @@ resetSpeed() {
   }
 }\n\n`
 
+
+
   // standard remapint
   output += ';standard layer\n'
   keys.forEach(key => {
@@ -42,6 +44,8 @@ resetSpeed() {
         `\t${key[0]}::${(typeof key[1] == 'object' ? key[1][0] : key[1])}\n` : ''}`
     }
   })
+
+
 
   // config layers
   output += `\n\n;config
@@ -99,19 +103,14 @@ SetCapsLockState, AlwaysOff
     Return
 #If\n\n`
 
+
+
   // extend layer
   output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")\n`
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\tF24 & ${key[0]}::${key[2][0]}\n`
-      } else if (key[2][0].includes('Wheel')) {
-        output += `\tF24 & ${key[0]}::
-    While GetKeyState("${key[0]}","P") && GetKeyState("${extendKey}","P"){
-      SendInput {Blind}{${key[2][0]}}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return\n`
       } else if (key[2][0] == 'Capslock') {
         output += `\tF24 & ${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
       } else if (key[2][0] == 'mouseL') {
@@ -127,7 +126,7 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return\n`
-      } else {
+      } else if (!key[2][0].includes('Wheel')) {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
           `\tF24 & ${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
       }
@@ -138,15 +137,6 @@ SetCapsLockState, AlwaysOff
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
         output += `\t${key[0]}::${key[2][0]}\n`
-      } else if (key[2][0].includes('Wheel')) {
-        output += `\t${key[0]}::${key[2][0]}
-  ${key[0]} Up::Return
-  ${key[0]}::
-    While GetKeyState("${key[0]}","P"){
-      SendInput {Blind}{${key[2][0]}}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return\n`
       } else if (key[2][0] == 'Capslock') {
         output += `\t${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
       } else if (key[2][0] == 'speed') {
@@ -154,13 +144,15 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return\n`
-      } else if (!key[2][0].includes('mouse')) {
+      } else if (!key[2][0].includes('mouse') && !key[2][0].includes('Wheel')) {
         output += `${key[2] && !(typeof key[2] == 'object' && !key[2][0]) ?
           `\t${key[0]}::${typeof key[2] == 'object' ? key[2][0] : key[2]}\n` : ''}`
       }
     }
   })
   output += '#If\n\n'
+
+
 
   // symbol layer
   output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !layer_sym2\n`
@@ -193,6 +185,8 @@ SetCapsLockState, AlwaysOff
   })
   output += '#If\n\n'
 
+
+
   // symbol2 layer
   output += `;symbol2 layer
 #If layer_sym2\n`
@@ -210,9 +204,13 @@ SetCapsLockState, AlwaysOff
   })
   output += `#If\n\n`
 
+
+
   // mouse
   output += `;mouse in extend layer\n#If layer_ext || (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !layer_sym)\n`
   output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
+  output += wheel('wheelUp', 'q', 'F24')
+  output += wheel('wheelDown', 'a', 'F24')
   output += `#If`
 
   //console.log(output)

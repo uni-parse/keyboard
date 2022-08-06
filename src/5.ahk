@@ -99,12 +99,6 @@ SetCapsLockState, AlwaysOff
 	F24 & 9::^NumpadAdd
 	F24 & 0::^NumpadSub
 	F24 & =::Volume_Mute
-	F24 & q::
-    While GetKeyState("q","P") && GetKeyState("RAlt","P"){
-      SendInput {Blind}{WheelUp}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return
 	F24 & w::Esc
 	F24 & p::
 		speed_switcher := !speed_switcher
@@ -116,12 +110,6 @@ SetCapsLockState, AlwaysOff
 	F24 & y::End
 	F24 & '::Volume_Down
 	F24 & -::Volume_Up
-	F24 & a::
-    While GetKeyState("a","P") && GetKeyState("RAlt","P"){
-      SendInput {Blind}{WheelDown}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return
 	F24 & g::PgDn
 	F24 & m::AppsKey
 	F24 & n::Left
@@ -135,9 +123,9 @@ SetCapsLockState, AlwaysOff
 	F24 & v::Del
 	F24 & z::PrintScreen
 	F24 & /::Run calc
-	F24 & k::Tab
+	F24 & k::MButton
 	F24 & h::LButton
-	F24 & ,::MButton
+	F24 & ,::Tab
 	F24 & .::RButton
 #If
 #If layer_ext
@@ -151,14 +139,6 @@ SetCapsLockState, AlwaysOff
 	9::^NumpadAdd
 	0::^NumpadSub
 	=::Volume_Mute
-	q::WheelUp
-  q Up::Return
-  q::
-    While GetKeyState("q","P"){
-      SendInput {Blind}{WheelUp}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return
 	w::Esc
 	p::
 		speed_switcher := !speed_switcher
@@ -170,14 +150,6 @@ SetCapsLockState, AlwaysOff
 	y::End
 	'::Volume_Down
 	-::Volume_Up
-	a::WheelDown
-  a Up::Return
-  a::
-    While GetKeyState("a","P"){
-      SendInput {Blind}{WheelDown}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
-    }
-    return
 	g::PgDn
 	m::AppsKey
 	n::Left
@@ -191,9 +163,9 @@ SetCapsLockState, AlwaysOff
 	v::Del
 	z::PrintScreen
 	/::Run calc
-	k::Tab
+	k::MButton
 	h::LButton
-	,::MButton
+	,::Tab
 	.::RButton
 #If
 
@@ -583,4 +555,56 @@ SetCapsLockState, AlwaysOff
       speed_r = 1
     press_r = 0
     Return
+	*q::
+    F24 & q::
+    if !scroll_q {
+
+      SendInput {Blind}{wheelUp}
+
+      KeyWait, q, T.2
+      if ErrorLevel {
+        ErrorLevel = 0
+        scroll_q = 1
+        setTimer, scroll_q_timer, 50
+      }
+
+    }
+    return
+
+  scroll_q_timer:
+    if GetKeyState("q","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+
+      SendInput {Blind}{wheelUp}
+    } Else {
+      scroll_q = 0
+      setTimer,, Off
+    }
+    return
+
+	*a::
+    F24 & a::
+    if !scroll_a {
+
+      SendInput {Blind}{wheelDown}
+
+      KeyWait, a, T.2
+      if ErrorLevel {
+        ErrorLevel = 0
+        scroll_a = 1
+        setTimer, scroll_a_timer, 50
+      }
+
+    }
+    return
+
+  scroll_a_timer:
+    if GetKeyState("a","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+
+      SendInput {Blind}{wheelDown}
+    } Else {
+      scroll_a = 0
+      setTimer,, Off
+    }
+    return
+
 #If

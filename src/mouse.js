@@ -120,31 +120,29 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
 
 
 function wheel(dir, key, combination) {
-  return `\t${combination ? combination + ' & ' : ''}${key}::
-    if !move_${combination}_${key} {
-      SendInput {Blind}{Wheel${dir}}
+  return `\t*${key}::
+    ${combination} & ${key}::
+    if !scroll_${key} {
+
+      SendInput {Blind}{${dir}}
+
       KeyWait, ${key}, T.2
       if ErrorLevel {
         ErrorLevel = 0
-        move_${combination}_${key} = 1
-        setTimer, move_${combination}_${key}_timer, 50
+        scroll_${key} = 1
+        setTimer, scroll_${key}_timer, 50
       }
 
     }
     return
 
-    move_${combination}_${key}_timer:
-      if GetKeyState("${key}","P") ${combination ? `&& GetKeyState("RAlt","P") ` : ''}{
+  scroll_${key}_timer:
+    if GetKeyState("${key}","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
 
-        SendInput {Blind}{Wheel${dir}}
-      } Else
-        move_${combination}_${key} = 0
-      return
-
-
-    While GetKeyState("q","P") && GetKeyState("RAlt","P"){
-      SendInput {Blind}{WheelUp}
-      sleep A_Index = 1 ? mousePreDelay : mouseDelaySpeed
+      SendInput {Blind}{${dir}}
+    } Else {
+      scroll_${key} = 0
+      setTimer,, Off
     }
     return
 
