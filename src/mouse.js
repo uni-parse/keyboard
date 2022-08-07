@@ -58,8 +58,8 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
           move_${key} := move__nth + 1
           move__nth++
           If speed_${key} {
-            x *= x_multiplayer
-            y *= y_multiplayer
+            x *= x_multiplier
+            y *= y_multiplier
             speed_${key} = 0
           }
           SetTimer, move_${key}_timer, %A_MouseDelay%
@@ -73,7 +73,7 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
     }
     return
   move_${key}_timer:
-    If GetKeyState("${key}","P") && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+    If GetKeyState("${key}","P") && (layer_ext ? 1 : GetKeyState("${combination}","P")) {
       if (move_${key} = move__nth) {
         If !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P")
           MouseMove, ${coords(key)},, R
@@ -113,7 +113,7 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
       speed_${key} = 1
     press_${key} = 0
     Return\n`
-    
+
   }
   return mouseKey(mouseU) + mouseKey(mouseD) + mouseKey(mouseR) + mouseKey(mouseL)
 }
@@ -123,30 +123,41 @@ function wheel(dir, key, combination) {
   return `\t*${key}::
     ${combination} & ${key}::
     if !scroll_${key} {
-
+      If press_${key}
+        press_${key} = 2
+      Else {
+        press_${key} = 1
+        SetTimer, speed_${key}_timer, -300
+      }
       SendInput {Blind}{${dir}}
-
       KeyWait, ${key}, T.2
       if ErrorLevel {
         ErrorLevel = 0
         scroll_${key} = 1
-        setTimer, scroll_${key}_timer, 50
-      }
-
+        scroll_speed := scroll_defualt_speed
+        If speed_${key} {
+          scroll_speed *= scroll_speed_multiplier
+          speed_${key} = 0
+        }
+        setTimer, scroll_${key}_timer, %scroll_speed%
+      } Else
+          speed_${key} = 0
     }
     return
-
   scroll_${key}_timer:
-    if GetKeyState("${key}","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
-
+    if GetKeyState("${key}","P")  && (layer_ext ? 1 : GetKeyState("${combination}","P"))
       SendInput {Blind}{${dir}}
-    } Else {
+    Else {
+      scroll_speed := scroll_defualt_speed
       scroll_${key} = 0
       setTimer,, Off
     }
     return
-
-`
+  speed_${key}_timer:
+    if press_${key} = 2
+      speed_${key} = 1
+    press_${key} = 0
+    Return\n`
 }
 export default mouse
 export { mouse, wheel }

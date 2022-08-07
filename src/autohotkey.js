@@ -1,7 +1,14 @@
 import { mouse, wheel } from "./mouse"
 function autohotkey(keys, pre, btn, navigator) {
   let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
-    output = `#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+    output = `;
+;
+;   made by UniParse
+;   github.com/TheUniParse
+;   twitter.com/UniParse
+;
+;
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 Process, Priority,, High\n
@@ -9,14 +16,15 @@ x_slow = 4
 y_slow := x_slow
 x_default = 18
 y_default := x_default
-x_multiplayer = 3
-y_multiplayer := x_multiplayer
+x_multiplier = 3
+y_multiplier := x_multiplier
 x := x_default
 y := y_default
+scroll_defualt_speed = 40
+scroll_speed_multiplier = .25
 speed_switcher = 0
-mouseDelaySpeed = 50
-mousePreDelay = 200
 move__nth = 0
+
 resetSpeed() {
   global
   If speed_switcher {
@@ -29,30 +37,8 @@ resetSpeed() {
 }\n\n`
 
 
-
-  // standard remapint
-  output += ';standard layer\n'
-  keys.forEach(key => {
-    if (key[1][0] == 'F24') {
-      extendKey = key[0]
-    } else if (key[1][0] == 'F23') {
-      symbolKey = key[0]
-    } else if (0 && (key[1][0] == 'RAlt' || key[1][0] == 'LAlt' || key[1][0] == 'LShift' || key[1][0] == 'RCtrl' || key[1][0] == 'LCtrl' || key[1][0] == 'RWin' || key[1][0] == 'LWin')) {
-      output += `\t${key[0]}::\n\t\tSendInput {Blind}{${key[1][0]} Down}\n\t\tKeyWait ${key[0]}\n\t\tSendInput {${key[1][0]} Up}\n\t\treturn\n`
-    } else {
-      output += `${key[1] && !(typeof key[1] == 'object' && !key[1][0]) ?
-        `\t${key[0]}::${(typeof key[1] == 'object' ? key[1][0] : key[1])}\n` : ''}`
-    }
-  })
-
-
-
-  // config layers
+  // ⚙️ config layers
   output += `\n\n;config
-#InputLevel 1
-  ${extendKey}::F24
-  ${symbolKey}::F23
-#InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
 
@@ -60,16 +46,16 @@ SetCapsLockState, AlwaysOff
   F24 & F23::
     layer_sym = 0
     layer_ext = 1
-    KeyWait ${extendKey}
-    KeyWait ${extendKey}, D
+    KeyWait F24
+    KeyWait F24, D
     layer_ext = 0
     return
   F24::
     if press_F24 {
       layer_sym = 0
       layer_ext = 1
-      KeyWait ${extendKey}
-      KeyWait ${extendKey}, D
+      KeyWait F24
+      KeyWait F24, D
       layer_ext = 0
     } Else
       press_F24 = 1
@@ -84,15 +70,15 @@ SetCapsLockState, AlwaysOff
   F23 & F24::
     layer_ext = 0
     layer_sym2 = 1
-    KeyWait ${symbolKey}
+    KeyWait F23
     layer_sym2 = 0
     return
   F23::
     if press_F23 {
         layer_ext = 0
         layer_sym = 1
-        KeyWait ${symbolKey}
-        KeyWait ${symbolKey}, D
+        KeyWait F23
+        KeyWait F23, D
         layer_sym = 0
     } Else
       press_F23 = 1
@@ -105,8 +91,8 @@ SetCapsLockState, AlwaysOff
 
 
 
-  // extend layer
-  output += `;extend layer\n#If GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")\n`
+  // 🌟 extend layer
+  output += `;extend layer\n#If GetKeyState("F24", "P") && !GetKeyState("F23", "P")\n`
   keys.forEach(key => {
     if (typeof key[2] == 'object' && key[2][0]) {
       if (key[2][0].includes('Button')) {
@@ -153,9 +139,8 @@ SetCapsLockState, AlwaysOff
   output += '#If\n\n'
 
 
-
-  // symbol layer
-  output += `;symbol layer\n#If GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P") && !layer_sym2\n`
+  // 💲 symbol laye
+  output += `;symbol layer\n#If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2\n`
   keys.forEach(key => {
     if (typeof key[3] == 'object' && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -187,7 +172,7 @@ SetCapsLockState, AlwaysOff
 
 
 
-  // symbol2 layer
+  // 💲💲 symbol2 layer
   output += `;symbol2 layer
 #If layer_sym2\n`
   keys.forEach(key => {
@@ -207,7 +192,7 @@ SetCapsLockState, AlwaysOff
 
 
   // mouse
-  output += `;mouse in extend layer\n#If layer_ext || (GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P") && !layer_sym)\n`
+  output += `;mouse in extend layer\n#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P") && !layer_sym)\n`
   output += mouse(mouseU, mouseR, mouseD, mouseL, 'F24')
   output += wheel('wheelUp', 'q', 'F24')
   output += wheel('wheelDown', 'a', 'F24')

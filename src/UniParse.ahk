@@ -1,3 +1,10 @@
+;
+;
+;   made by UniParse
+;   github.com/TheUniParse
+;   twitter.com/UniParse
+;
+;
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -7,14 +14,15 @@ x_slow = 4
 y_slow := x_slow
 x_default = 18
 y_default := x_default
-x_multiplayer = 3
-y_multiplayer := x_multiplayer
+x_multiplier = 3
+y_multiplier := x_multiplier
 x := x_default
 y := y_default
+scroll_defualt_speed = 40
+scroll_speed_multiplier = .25
 speed_switcher = 0
-mouseDelaySpeed = 50
-mousePreDelay = 200
 move__nth = 0
+
 resetSpeed() {
   global
   If speed_switcher {
@@ -26,17 +34,9 @@ resetSpeed() {
   }
 }
 
-;standard layer
-	CapsLock::LAlt
-	SC056::LShift
-	AppsKey::Alt
 
 
 ;config
-#InputLevel 1
-  RAlt::F24
-  LAlt::F23
-#InputLevel 0
 #Persistent
 SetCapsLockState, AlwaysOff
 
@@ -44,16 +44,16 @@ SetCapsLockState, AlwaysOff
   F24 & F23::
     layer_sym = 0
     layer_ext = 1
-    KeyWait RAlt
-    KeyWait RAlt, D
+    KeyWait F24
+    KeyWait F24, D
     layer_ext = 0
     return
   F24::
     if press_F24 {
       layer_sym = 0
       layer_ext = 1
-      KeyWait RAlt
-      KeyWait RAlt, D
+      KeyWait F24
+      KeyWait F24, D
       layer_ext = 0
     } Else
       press_F24 = 1
@@ -68,15 +68,15 @@ SetCapsLockState, AlwaysOff
   F23 & F24::
     layer_ext = 0
     layer_sym2 = 1
-    KeyWait LAlt
+    KeyWait F23
     layer_sym2 = 0
     return
   F23::
     if press_F23 {
         layer_ext = 0
         layer_sym = 1
-        KeyWait LAlt
-        KeyWait LAlt, D
+        KeyWait F23
+        KeyWait F23, D
         layer_sym = 0
     } Else
       press_F23 = 1
@@ -88,7 +88,7 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;extend layer
-#If GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P")
+#If GetKeyState("F24", "P") && !GetKeyState("F23", "P")
 	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
 	F24 & 1::Browser_Search
@@ -123,9 +123,9 @@ SetCapsLockState, AlwaysOff
 	F24 & v::Del
 	F24 & z::PrintScreen
 	F24 & /::Run calc
-	F24 & k::MButton
+	F24 & k::Tab
 	F24 & h::LButton
-	F24 & ,::Tab
+	F24 & ,::MButton
 	F24 & .::RButton
 #If
 #If layer_ext
@@ -163,14 +163,14 @@ SetCapsLockState, AlwaysOff
 	v::Del
 	z::PrintScreen
 	/::Run calc
-	k::MButton
+	k::Tab
 	h::LButton
-	,::Tab
+	,::MButton
 	.::RButton
 #If
 
 ;symbol layer
-#If GetKeyState("LAlt", "P") && !GetKeyState("RAlt", "P") && !layer_sym2
+#If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2
 	F23 & w::SendRaw {
 		return
 	F23 & f::SendRaw }
@@ -185,8 +185,6 @@ SetCapsLockState, AlwaysOff
 	F23 & r::2
 	F23 & s::3
 	F23 & t::4
-	F23 & m::SendRaw *
-		return
 	F23 & n::7
 	F23 & e::8
 	F23 & i::9
@@ -219,8 +217,6 @@ SetCapsLockState, AlwaysOff
 	r::2
 	s::3
 	t::4
-	m::SendRaw *
-		return
 	n::7
 	e::8
 	i::9
@@ -266,7 +262,7 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;mouse in extend layer
-#If layer_ext || (GetKeyState("RAlt", "P") && !GetKeyState("LAlt", "P") && !layer_sym)
+#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P") && !layer_sym)
 	f::
   F24 & f::
     If !move_f {
@@ -284,8 +280,8 @@ SetCapsLockState, AlwaysOff
           move_f := move__nth + 1
           move__nth++
           If speed_f {
-            x *= x_multiplayer
-            y *= y_multiplayer
+            x *= x_multiplier
+            y *= y_multiplier
             speed_f = 0
           }
           SetTimer, move_f_timer, %A_MouseDelay%
@@ -299,7 +295,7 @@ SetCapsLockState, AlwaysOff
     }
     return
   move_f_timer:
-    If GetKeyState("f","P") && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+    If GetKeyState("f","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_f = move__nth) {
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, -y,, R
@@ -356,8 +352,8 @@ SetCapsLockState, AlwaysOff
           move_s := move__nth + 1
           move__nth++
           If speed_s {
-            x *= x_multiplayer
-            y *= y_multiplayer
+            x *= x_multiplier
+            y *= y_multiplier
             speed_s = 0
           }
           SetTimer, move_s_timer, %A_MouseDelay%
@@ -371,7 +367,7 @@ SetCapsLockState, AlwaysOff
     }
     return
   move_s_timer:
-    If GetKeyState("s","P") && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+    If GetKeyState("s","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_s = move__nth) {
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, y,, R
@@ -428,8 +424,8 @@ SetCapsLockState, AlwaysOff
           move_t := move__nth + 1
           move__nth++
           If speed_t {
-            x *= x_multiplayer
-            y *= y_multiplayer
+            x *= x_multiplier
+            y *= y_multiplier
             speed_t = 0
           }
           SetTimer, move_t_timer, %A_MouseDelay%
@@ -443,7 +439,7 @@ SetCapsLockState, AlwaysOff
     }
     return
   move_t_timer:
-    If GetKeyState("t","P") && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+    If GetKeyState("t","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_t = move__nth) {
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, x, 0,, R
@@ -500,8 +496,8 @@ SetCapsLockState, AlwaysOff
           move_r := move__nth + 1
           move__nth++
           If speed_r {
-            x *= x_multiplayer
-            y *= y_multiplayer
+            x *= x_multiplier
+            y *= y_multiplier
             speed_r = 0
           }
           SetTimer, move_r_timer, %A_MouseDelay%
@@ -515,7 +511,7 @@ SetCapsLockState, AlwaysOff
     }
     return
   move_r_timer:
-    If GetKeyState("r","P") && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
+    If GetKeyState("r","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_r = move__nth) {
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, -x, 0,, R
@@ -558,53 +554,77 @@ SetCapsLockState, AlwaysOff
 	*q::
     F24 & q::
     if !scroll_q {
-
+      If press_q
+        press_q = 2
+      Else {
+        press_q = 1
+        SetTimer, speed_q_timer, -300
+      }
       SendInput {Blind}{wheelUp}
-
       KeyWait, q, T.2
       if ErrorLevel {
         ErrorLevel = 0
         scroll_q = 1
-        setTimer, scroll_q_timer, 50
-      }
-
+        scroll_speed := scroll_defualt_speed
+        If speed_q {
+          scroll_speed *= scroll_speed_multiplier
+          speed_q = 0
+        }
+        setTimer, scroll_q_timer, %scroll_speed%
+      } Else
+          speed_q = 0
     }
     return
-
   scroll_q_timer:
-    if GetKeyState("q","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
-
+    if GetKeyState("q","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelUp}
-    } Else {
+    Else {
+      scroll_speed := scroll_defualt_speed
       scroll_q = 0
       setTimer,, Off
     }
     return
-
+  speed_q_timer:
+    if press_q = 2
+      speed_q = 1
+    press_q = 0
+    Return
 	*a::
     F24 & a::
     if !scroll_a {
-
+      If press_a
+        press_a = 2
+      Else {
+        press_a = 1
+        SetTimer, speed_a_timer, -300
+      }
       SendInput {Blind}{wheelDown}
-
       KeyWait, a, T.2
       if ErrorLevel {
         ErrorLevel = 0
         scroll_a = 1
-        setTimer, scroll_a_timer, 50
-      }
-
+        scroll_speed := scroll_defualt_speed
+        If speed_a {
+          scroll_speed *= scroll_speed_multiplier
+          speed_a = 0
+        }
+        setTimer, scroll_a_timer, %scroll_speed%
+      } Else
+          speed_a = 0
     }
     return
-
   scroll_a_timer:
-    if GetKeyState("a","P")  && (layer_ext ? 1 : GetKeyState("RAlt","P")) {
-
+    if GetKeyState("a","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelDown}
-    } Else {
+    Else {
+      scroll_speed := scroll_defualt_speed
       scroll_a = 0
       setTimer,, Off
     }
     return
-
+  speed_a_timer:
+    if press_a = 2
+      speed_a = 1
+    press_a = 0
+    Return
 #If
