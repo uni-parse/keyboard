@@ -1,0 +1,100 @@
+@use 'utilities' as *;
+@use 'sass:color';
+@mixin nth($indexes...) {
+  @each $i in $indexes {
+    &:nth-child(#{$i}) {
+      @content;
+    }
+  }
+}
+$pincky: hsl(199, 68%, 24%);
+$ring: hsl(330, 88%, 23%);
+$middle: hsl(147, 93%, 16%);
+$indexL: hsl(281, 51%, 24%);
+$indexR: hsl(282, 50%, 14%);
+$lAlt: darkorange;
+$rAlt: hsl(80, 100%, 50%);
+div#keyboardCtx{
+  overflow: auto;
+}
+div#keyboard {
+
+  background-color: #333;
+  min-width: clamp(47rem,100%,58.5rem);
+  overflow: auto;
+  display: flex;
+  place-content: space-evenly;
+  flex-flow: row wrap;
+  // border: red thin solid;
+  font: clamp(1rem,1.5vw,1.25rem) monospace;
+  ::selection{
+    background-color: transparent;
+    color: yellow;
+  }
+  span {
+    flex: none;
+    flex-basis: 6%;
+    display: grid;
+    grid: 1fr 1fr/ 1fr 1fr;
+    border: gray thin solid;
+    border-radius: 0.3em;
+    @include space(0, 0.3%);
+    &:nth-child(14) {
+      flex-basis: 12.5%;
+    }
+    &:nth-child(15),
+    &:nth-child(28) {
+      flex-basis: 9.2%;
+    }
+    &:nth-child(29) {
+      flex-basis: 11%;
+    }
+    &:nth-child(41) {
+      flex-basis: 14%;
+    }
+    &:nth-child(42) {
+      flex-basis: 7.2%;
+    }
+    &:nth-child(54) {
+      flex-basis: 17%;
+    }
+    @include nth(55, 56, 57, 59, 60, 61, 62) {
+      flex-basis: 7.4%;
+    }
+    &:nth-child(58) {
+      flex-basis: 41%;//space
+    }
+    @include nth(1, 2, 3, 13, 14, 16, 26, 27) {
+      background-color: $pincky;
+    }
+    @include nth(4, 12, 17, 25, 44, 53) {
+      background-color: $ring;
+    }
+    @include nth(5, 10, 11, 18, 24, 45, 52) {
+      background-color: $middle;
+    }
+    @include nth(6, 7, 8, 9, 19, 20, 21, 22, 23, 34, 36, 47, 50) {
+      background-color: $indexL;
+    }
+    @include nth(30, 39) {
+      background-color: color.adjust($pincky, $lightness: 16%);
+    }
+    @include nth(31, 38) {
+      background-color: color.adjust($ring, $lightness: 16%);
+    }
+    @include nth(32, 37) {
+      background-color: color.adjust($middle, $lightness: 16%);
+    }
+    
+    @include nth(33, 36) {
+      background-color: color.adjust($indexL, $lightness: 16%);
+    }
+    
+
+    kbd {
+      padding: 0.2em;
+      &.lAlt{color: $lAlt}
+      &.rAlt{color: $rAlt}
+    }
+  }
+}

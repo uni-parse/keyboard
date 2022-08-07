@@ -1,2 +1,0 @@
->!k::sendInput, {Left}
-return

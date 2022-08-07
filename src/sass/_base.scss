@@ -1,0 +1,14 @@
+@use 'utilities' as *;
+html {
+  box-sizing: border-box;
+}
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+html,
+body {
+  @include space();
+  text-align: center;
+}
