@@ -1112,7 +1112,7 @@ typedef struct tagKBD_TYPE_INFO {
 #define T4F _EQ(                           END                       )
 #define T50 _EQ(                           DOWN                      )
 #define T51 _EQ(                           NEXT                      )
-#define T52 _EQ(                           CAPITAL                   ) //WAS INSERT
+#define T52 _EQ(                           INSERT                    )
 #define T53 _EQ(                           DELETE                    )
 #define T54 _EQ(                           SNAPSHOT                  )
 #define T55 _EQ(                           _none_                    ) // KB3270 => DOWN
