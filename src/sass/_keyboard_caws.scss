@@ -277,3 +277,17 @@ $lightness: -8%;
     // }
   }
 }
+
+
+#download{
+  background-color: black;
+  display: flex;
+  place-content: space-evenly;
+  a{
+    color: rgb(255, 29, 123);
+    &::after{
+      content: ' ⬇';
+      color: rgb(22, 236, 219);
+    }
+  }
+}

@@ -10,15 +10,28 @@ const pre = document.createElement('pre'),
   script = document.createElement('div'),
   keyboard = document.createElement('div'),
   keyboardCtx = document.createElement('div'),
+  download = document.createElement('div'),
+  msklc = document.createElement('a'),
+  ahk = document.createElement('a'),
   main = document.createElement('main')
 script.id = 'script'
 keyboard.id = 'keyboard'
 keyboardCtx.id = 'keyboardCtx'
 btn.textContent = 'copy'
+msklc.textContent = 'MSKLC.zip'
+msklc.href = './../src/assets/uniparse/msklc.zip'
+msklc.download = 'msklc.zip'
+ahk.textContent = 'AUTOHOTKEY.zip'
+ahk.href = './../src/assets/uniparse/autohotkey.zip'
+ahk.download = 'autohotkey.zip'
+download.id ='download'
+download.appendChild(msklc)
+download.appendChild(ahk)
 script.appendChild(btn)
 script.appendChild(pre)
 keyboardCtx.appendChild(keyboard)
 main.appendChild(keyboardCtx)
+main.appendChild(download)
 main.appendChild(script)
 document.body.appendChild(main)
 
