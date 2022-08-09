@@ -4,19 +4,21 @@ import './sass/main.scss'
 import keys from './keys'
 import autohotkey from './autohotkey'
 import layout from './layout'
+import showMedias from './mediaIcons'
+
 
 const pre = document.createElement('pre'),
-  btn = document.createElement('button'),
-  script = document.createElement('div'),
+btn = document.createElement('button'),
+script = document.createElement('div'),
   keyboard = document.createElement('div'),
   keyboardCtx = document.createElement('div'),
   download = document.createElement('div'),
   msklc = document.createElement('a'),
   ahk = document.createElement('a'),
   main = document.createElement('main')
-script.id = 'script'
-keyboard.id = 'keyboard'
-keyboardCtx.id = 'keyboardCtx'
+  script.id = 'script'
+  keyboard.id = 'keyboard'
+  keyboardCtx.id = 'keyboardCtx'
 btn.textContent = 'copy'
 msklc.textContent = 'MSKLC.zip'
 msklc.href = './../src/assets/uniparse/msklc.zip'
@@ -34,6 +36,9 @@ main.appendChild(keyboardCtx)
 main.appendChild(download)
 main.appendChild(script)
 document.body.appendChild(main)
+
+showMedias(main)
+
 
 autohotkey(keys, pre, btn, navigator)
 layout(keys, keyboard)
