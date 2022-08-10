@@ -16,6 +16,8 @@ x_default = 18
 y_default := x_default
 x_multiplier = 3
 y_multiplier := x_multiplier
+x_increment = 1.1
+y_increment := x_increment
 x := x_default
 y := y_default
 scroll_defualt_speed = 40
@@ -297,6 +299,8 @@ SetCapsLockState, AlwaysOff
   move_f_timer:
     If GetKeyState("f","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_f = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, -y,, R
         else if GetKeyState("r","P")
@@ -369,6 +373,8 @@ SetCapsLockState, AlwaysOff
   move_s_timer:
     If GetKeyState("s","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_s = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, y,, R
         else if GetKeyState("r","P")
@@ -441,6 +447,8 @@ SetCapsLockState, AlwaysOff
   move_t_timer:
     If GetKeyState("t","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_t = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, x, 0,, R
         else if GetKeyState("f","P")
@@ -513,6 +521,8 @@ SetCapsLockState, AlwaysOff
   move_r_timer:
     If GetKeyState("r","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_r = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, -x, 0,, R
         else if GetKeyState("f","P")
@@ -627,4 +637,4 @@ SetCapsLockState, AlwaysOff
       speed_a = 1
     press_a = 0
     Return
-#If 
+#If

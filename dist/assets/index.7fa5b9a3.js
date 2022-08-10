@@ -32,6 +32,8 @@ const z=function(){const r=document.createElement("link").relList;if(r&&r.suppor
   move_${t}_timer:
     If GetKeyState("${t}","P") && (layer_ext ? 1 : GetKeyState("${d}","P")) {
       if (move_${t} = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("${t==n||t==r?l:n}","P") && !GetKeyState("${t==n||t==r?a:r}","P")
           MouseMove, ${c(t)},, R
         else if GetKeyState("${t==n||t==r?l:n}","P")
@@ -126,6 +128,8 @@ x_default = 18
 y_default := x_default
 x_multiplier = 3
 y_multiplier := x_multiplier
+x_increment = 1.1
+y_increment := x_increment
 x := x_default
 y := y_default
 scroll_defualt_speed = 40

@@ -75,6 +75,8 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
   move_${key}_timer:
     If GetKeyState("${key}","P") && (layer_ext ? 1 : GetKeyState("${combination}","P")) {
       if (move_${key} = move__nth) {
+        x *= x_increment
+        y *= y_increment
         If !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P")
           MouseMove, ${coords(key)},, R
         else if GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P")
