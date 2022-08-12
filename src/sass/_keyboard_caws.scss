@@ -286,8 +286,12 @@ $lightness: -8%;
   a{
     color: rgb(255, 29, 123);
     &::after{
-      content: ' ⬇';
+      content: ' ⇊';
       color: rgb(22, 236, 219);
+      font-size: 1.3em;
+      font-weight: bold;
+      text-decoration: none;
+      text-decoration: underline black;
     }
   }
 }

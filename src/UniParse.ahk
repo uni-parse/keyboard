@@ -173,78 +173,112 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer
 #If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2
+	F23 & q::SendRaw !
+		return
 	F23 & w::SendRaw {
 		return
 	F23 & f::SendRaw }
 		return
+	F23 & p::SendRaw `%
+		return
+	F23 & b::SendRaw @
+		return
+	F23 & j::SendRaw ^
+		return
+	F23 & l::\
 	F23 & u::SendRaw )
 		return
 	F23 & y::SendRaw (
 		return
 	F23 & '::`
-	F23 & -::=
+	F23 & -::SendRaw +
+		return
 	F23 & a::1
 	F23 & r::2
 	F23 & s::3
 	F23 & t::4
+	F23 & g::SendRaw &
+		return
+	F23 & m::SendRaw *
+		return
 	F23 & n::7
 	F23 & e::8
 	F23 & i::9
 	F23 & o::0
-	F23 & `;::SendRaw :
-		return
+	F23 & `;::=
 	F23 & x::[
 	F23 & c::]
 	F23 & d::5
-	F23 & v::\
+	F23 & v::SendRaw |
+		return
+	F23 & z::SendRaw ~
+		return
+	F23 & /::SendRaw ?
+		return
 	F23 & k::/
 	F23 & h::6
-	F23 & ,::SendRaw <
+	F23 & ,::SendRaw #
 		return
-	F23 & .::SendRaw >
+	F23 & .::SendRaw $
 		return
 #If
 #If layer_sym
+	q::SendRaw !
+		return
 	w::SendRaw {
 		return
 	f::SendRaw }
 		return
+	p::SendRaw `%
+		return
+	b::SendRaw @
+		return
+	j::SendRaw ^
+		return
+	l::\
 	u::SendRaw )
 		return
 	y::SendRaw (
 		return
 	'::`
-	-::=
+	-::SendRaw +
+		return
 	a::1
 	r::2
 	s::3
 	t::4
+	g::SendRaw &
+		return
+	m::SendRaw *
+		return
 	n::7
 	e::8
 	i::9
 	o::0
-	`;::SendRaw :
-		return
+	`;::=
 	x::[
 	c::]
 	d::5
-	v::\
+	v::SendRaw |
+		return
+	z::SendRaw ~
+		return
+	/::SendRaw ?
+		return
 	k::/
 	h::6
-	,::SendRaw <
+	,::SendRaw #
 		return
-	.::SendRaw >
+	.::SendRaw $
 		return
 #If
 
 ;symbol2 layer
 #If layer_sym2
-	F23 & 0::SendRaw …
+	F23 & '::SendRaw ≈
 		return
-	F23 & =::SendRaw ±
+	F23 & -::SendRaw ±
 		return
-	F23 & '::F11
-	F23 & -::F12
 	F23 & a::F1
 	F23 & r::F2
 	F23 & s::F3
@@ -256,6 +290,8 @@ SetCapsLockState, AlwaysOff
 	F23 & `;::SendRaw ≠
 		return
 	F23 & d::F5
+	F23 & v::F11
+	F23 & k::F12
 	F23 & h::F6
 	F23 & ,::SendRaw ≤
 		return
