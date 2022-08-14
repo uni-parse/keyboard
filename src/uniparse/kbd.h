@@ -1072,7 +1072,7 @@ typedef struct tagKBD_TYPE_INFO {
 #define T27 _NE(OEM_1,   OEM_PLUS,OEM_1,   OEM_1,   OEM_1,   OEM_1   )
 #define T28 _NE(OEM_7,   OEM_3,   OEM_7,   OEM_7,   OEM_3,   OEM_3   )
 #define T29 _NE(OEM_3,   OEM_7,   OEM_3,   OEM_3,   OEM_7,   OEM_7   )
-#define T2A _EQ(                           LCONTROL                  ) //WAS LSHIFT
+#define T2A _EQ(                           LSHIFT                    )
 #define T2B _EQ(                           OEM_5                     )
 #define T2C _EQ(                           'Z'                       )
 #define T2D _EQ(                           'X'                       )
@@ -1084,7 +1084,7 @@ typedef struct tagKBD_TYPE_INFO {
 #define T33 _EQ(                           OEM_COMMA                 )
 #define T34 _EQ(                           OEM_PERIOD                )
 #define T35 _EQ(                           OEM_2                     )
-#define T36 _EQ(                           RCONTROL                  ) //WAS RSHIFT
+#define T36 _EQ(                           RSHIFT                    )
 #define T37 _EQ(                           MULTIPLY                  )
 #define T38 _EQ(                           F23                       ) //WAS LMENU
 #define T39 _EQ(                           ' '                       )
@@ -1116,7 +1116,7 @@ typedef struct tagKBD_TYPE_INFO {
 #define T53 _EQ(                           DELETE                    )
 #define T54 _EQ(                           SNAPSHOT                  )
 #define T55 _EQ(                           _none_                    ) // KB3270 => DOWN
-#define T56 _NE(RCONTROL, HELP,    RCONTROL, RCONTROL, _none_,  OEM_PA2) //WAS OEM_102  // KB3270 => LEFT
+#define T56 _NE(LSHIFT,  HELP,    LSHIFT,  LSHIFT,  _none_,  OEM_PA2 ) //WAS OEM_102  // KB3270 => LEFT
 #define T57 _NE(F11,     RETURN,  F11,     F11,     _none_,  HELP    ) // KB3270 => ZOOM
 #define T58 _NE(F12,     LEFT,    F12,     F12,     _none_,  OEM_102 ) // KB3270 => HELP
 #define T59 _EQ(                           CLEAR                     )
@@ -1184,9 +1184,9 @@ typedef struct tagKBD_TYPE_INFO {
 #define X51 _NE(NEXT,    F1,      NEXT,    NEXT,    _none_, OEM_PA2  )
 #define X52 _EQ(                           INSERT                    )
 #define X53 _EQ(                           DELETE                    )
-#define X5B _EQ(                           LSHIFT                    ) //WAS LWIN
-#define X5C _EQ(                           RSHIFT                    ) //WAS RWIN
-#define X5D _EQ(                           RSHIFT                    ) //WAS APPS
+#define X5B _EQ(                           LCONTROL                  ) //WAS LWIN
+#define X5C _EQ(                           RCONTROL                  ) //WAS RWIN
+#define X5D _EQ(                           RCONTROL                  ) //WAS APPS
 #define X5E _EQ(                           POWER                     )
 #define X5F _EQ(                           SLEEP                     ) // SpeedRacer
 #define X65 _EQ(                           BROWSER_SEARCH            ) // SpeedRacer
