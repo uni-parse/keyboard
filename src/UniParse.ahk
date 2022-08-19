@@ -275,6 +275,24 @@ SetCapsLockState, AlwaysOff
 
 ;symbol2 layer
 #If layer_sym2
+	F23 & 9::SendRaw ›
+		return
+	F23 & 0::SendRaw ‹
+		return
+	F23 & q::SendRaw ⋆
+		return
+	F23 & w::SendRaw ▪
+		return
+	F23 & f::SendRaw ▫
+		return
+	F23 & p::SendRaw •
+		return
+	F23 & b::SendRaw ◦
+		return
+	F23 & u::SendRaw »
+		return
+	F23 & y::SendRaw «
+		return
 	F23 & '::SendRaw ≈
 		return
 	F23 & -::SendRaw ±

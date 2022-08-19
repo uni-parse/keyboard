@@ -38,7 +38,7 @@ function layout(keys, keyboard) {
 
     if (typeof key[3] == 'object') {
       addSpan(3, 'symbol shift')
-    } else if (key[3]) {
+    } else if (key[3] || key[3] == 0) {
       addSpan(3, 'symbol')
     }
 
