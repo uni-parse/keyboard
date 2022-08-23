@@ -193,22 +193,22 @@ SetCapsLockState, AlwaysOff
 	F23 & '::`
 	F23 & -::SendRaw +
 		return
-	F23 & a::1
-	F23 & r::2
+	F23 & a::7
+	F23 & r::5
 	F23 & s::3
-	F23 & t::4
+	F23 & t::1
 	F23 & g::SendRaw &
 		return
 	F23 & m::SendRaw *
 		return
-	F23 & n::7
-	F23 & e::8
-	F23 & i::9
-	F23 & o::0
+	F23 & n::2
+	F23 & e::4
+	F23 & i::6
+	F23 & o::8
 	F23 & `;::=
 	F23 & x::[
 	F23 & c::]
-	F23 & d::5
+	F23 & d::9
 	F23 & v::SendRaw |
 		return
 	F23 & z::SendRaw ~
@@ -216,7 +216,7 @@ SetCapsLockState, AlwaysOff
 	F23 & /::SendRaw ?
 		return
 	F23 & k::/
-	F23 & h::6
+	F23 & h::0
 	F23 & ,::SendRaw #
 		return
 	F23 & .::SendRaw $
@@ -243,22 +243,22 @@ SetCapsLockState, AlwaysOff
 	'::`
 	-::SendRaw +
 		return
-	a::1
-	r::2
+	a::7
+	r::5
 	s::3
-	t::4
+	t::1
 	g::SendRaw &
 		return
 	m::SendRaw *
 		return
-	n::7
-	e::8
-	i::9
-	o::0
+	n::2
+	e::4
+	i::6
+	o::8
 	`;::=
 	x::[
 	c::]
-	d::5
+	d::9
 	v::SendRaw |
 		return
 	z::SendRaw ~
@@ -266,7 +266,7 @@ SetCapsLockState, AlwaysOff
 	/::SendRaw ?
 		return
 	k::/
-	h::6
+	h::0
 	,::SendRaw #
 		return
 	.::SendRaw $
@@ -297,20 +297,20 @@ SetCapsLockState, AlwaysOff
 		return
 	F23 & -::SendRaw ±
 		return
-	F23 & a::F1
-	F23 & r::F2
+	F23 & a::F7
+	F23 & r::F5
 	F23 & s::F3
-	F23 & t::F4
-	F23 & n::F7
-	F23 & e::F8
-	F23 & i::F9
-	F23 & o::F10
+	F23 & t::F1
+	F23 & n::F2
+	F23 & e::F4
+	F23 & i::F6
+	F23 & o::F8
 	F23 & `;::SendRaw ≠
 		return
-	F23 & d::F5
+	F23 & d::F9
 	F23 & v::F11
 	F23 & k::F12
-	F23 & h::F6
+	F23 & h::F10
 	F23 & ,::SendRaw ≤
 		return
 	F23 & .::SendRaw ≥
