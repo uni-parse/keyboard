@@ -173,23 +173,23 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer
 #If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2
-	F23 & q::SendRaw !
+	F23 & q::SendRaw @
 		return
 	F23 & w::SendRaw {
 		return
 	F23 & f::SendRaw }
 		return
-	F23 & p::SendRaw `%
+	F23 & p::SendRaw &
 		return
-	F23 & b::SendRaw @
+	F23 & b::SendRaw !
 		return
 	F23 & j::SendRaw ^
 		return
 	F23 & l::SendRaw |
 		return
-	F23 & u::SendRaw (
+	F23 & u::SendRaw )
 		return
-	F23 & y::SendRaw )
+	F23 & y::SendRaw (
 		return
 	F23 & '::`
 	F23 & -::SendRaw +
@@ -198,7 +198,7 @@ SetCapsLockState, AlwaysOff
 	F23 & r::5
 	F23 & s::3
 	F23 & t::1
-	F23 & g::SendRaw &
+	F23 & g::SendRaw `%
 		return
 	F23 & m::SendRaw *
 		return
@@ -223,23 +223,23 @@ SetCapsLockState, AlwaysOff
 		return
 #If
 #If layer_sym
-	q::SendRaw !
+	q::SendRaw @
 		return
 	w::SendRaw {
 		return
 	f::SendRaw }
 		return
-	p::SendRaw `%
+	p::SendRaw &
 		return
-	b::SendRaw @
+	b::SendRaw !
 		return
 	j::SendRaw ^
 		return
 	l::SendRaw |
 		return
-	u::SendRaw (
+	u::SendRaw )
 		return
-	y::SendRaw )
+	y::SendRaw (
 		return
 	'::`
 	-::SendRaw +
@@ -248,7 +248,7 @@ SetCapsLockState, AlwaysOff
 	r::5
 	s::3
 	t::1
-	g::SendRaw &
+	g::SendRaw `%
 		return
 	m::SendRaw *
 		return
