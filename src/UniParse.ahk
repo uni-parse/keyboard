@@ -106,14 +106,14 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return
-	F24 & b::PgUp
+	F24 & j::PgUp
 	F24 & l::Home
 	F24 & u::Up
 	F24 & y::End
 	F24 & '::Volume_Down
 	F24 & -::Volume_Up
-	F24 & g::PgDn
-	F24 & m::AppsKey
+	F24 & g::AppsKey
+	F24 & m::PgDn
 	F24 & n::Left
 	F24 & e::Down
 	F24 & i::Right
@@ -146,14 +146,14 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return
-	b::PgUp
+	j::PgUp
 	l::Home
 	u::Up
 	y::End
 	'::Volume_Down
 	-::Volume_Up
-	g::PgDn
-	m::AppsKey
+	g::AppsKey
+	m::PgDn
 	n::Left
 	e::Down
 	i::Right
@@ -173,148 +173,234 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer
 #If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2
+	F23 & `::SendRaw ⋆
+		return
+	F23 & 1::SendRaw ▪
+		return
+	F23 & 2::SendRaw ▸
+		return
+	F23 & 3::SendRaw {
+		return
+	F23 & 4::SendRaw }
+		return
+	F23 & 5::SendRaw »
+		return
+	F23 & 7::SendRaw ›
+		return
+	F23 & 8::SendRaw •
+		return
+	F23 & 9::SendRaw <
+		return
+	F23 & 0::SendRaw >
+		return
+	F23 & =::SendRaw ⁃
+		return
 	F23 & q::SendRaw @
 		return
-	F23 & w::SendRaw {
+	F23 & w::SendRaw #
 		return
-	F23 & f::SendRaw }
+	F23 & f::SendRaw $
 		return
-	F23 & p::SendRaw &
+	F23 & p::SendRaw `%
 		return
-	F23 & b::SendRaw !
+	F23 & b::SendRaw ~
+		return
+	F23 & [::SendRaw √
 		return
 	F23 & j::SendRaw ^
 		return
-	F23 & l::SendRaw |
-		return
-	F23 & u::SendRaw )
-		return
-	F23 & y::SendRaw (
-		return
+	F23 & l::7
+	F23 & u::8
+	F23 & y::9
 	F23 & '::`
 	F23 & -::SendRaw +
 		return
-	F23 & a::7
-	F23 & r::5
-	F23 & s::3
-	F23 & t::1
-	F23 & g::SendRaw `%
+	F23 & a::/
+	F23 & r::SendRaw (
+		return
+	F23 & s::SendRaw )
+		return
+	F23 & t::=
+	F23 & g::SendRaw !
+		return
+	F23 & ]::SendRaw €
 		return
 	F23 & m::SendRaw *
 		return
-	F23 & n::2
-	F23 & e::4
+	F23 & n::4
+	F23 & e::5
 	F23 & i::6
-	F23 & o::8
-	F23 & `;::=
+	F23 & o::SendRaw :
+		return
+	F23 & `;::\
 	F23 & x::[
 	F23 & c::]
-	F23 & d::9
-	F23 & v::\
-	F23 & z::SendRaw ~
+	F23 & d::SendRaw &
+		return
+	F23 & v::SendRaw |
+		return
+	F23 & z::SendRaw _
 		return
 	F23 & /::SendRaw ?
 		return
-	F23 & k::/
-	F23 & h::0
-	F23 & ,::SendRaw #
-		return
-	F23 & .::SendRaw $
-		return
+	F23 & k::0
+	F23 & h::1
+	F23 & ,::2
+	F23 & .::3
 #If
 #If layer_sym
+	`::SendRaw ⋆
+		return
+	1::SendRaw ▪
+		return
+	2::SendRaw ▸
+		return
+	3::SendRaw {
+		return
+	4::SendRaw }
+		return
+	5::SendRaw »
+		return
+	7::SendRaw ›
+		return
+	8::SendRaw •
+		return
+	9::SendRaw <
+		return
+	0::SendRaw >
+		return
+	=::SendRaw ⁃
+		return
 	q::SendRaw @
 		return
-	w::SendRaw {
+	w::SendRaw #
 		return
-	f::SendRaw }
+	f::SendRaw $
 		return
-	p::SendRaw &
+	p::SendRaw `%
 		return
-	b::SendRaw !
+	b::SendRaw ~
+		return
+	[::SendRaw √
 		return
 	j::SendRaw ^
 		return
-	l::SendRaw |
-		return
-	u::SendRaw )
-		return
-	y::SendRaw (
-		return
+	l::7
+	u::8
+	y::9
 	'::`
 	-::SendRaw +
 		return
-	a::7
-	r::5
-	s::3
-	t::1
-	g::SendRaw `%
+	a::/
+	r::SendRaw (
+		return
+	s::SendRaw )
+		return
+	t::=
+	g::SendRaw !
+		return
+	]::SendRaw €
 		return
 	m::SendRaw *
 		return
-	n::2
-	e::4
+	n::4
+	e::5
 	i::6
-	o::8
-	`;::=
+	o::SendRaw :
+		return
+	`;::\
 	x::[
 	c::]
-	d::9
-	v::\
-	z::SendRaw ~
+	d::SendRaw &
+		return
+	v::SendRaw |
+		return
+	z::SendRaw _
 		return
 	/::SendRaw ?
 		return
-	k::/
-	h::0
-	,::SendRaw #
-		return
-	.::SendRaw $
-		return
+	k::0
+	h::1
+	,::2
+	.::3
 #If
 
 ;symbol2 layer
 #If layer_sym2
-	F23 & 9::SendRaw «
+	F23 & 1::SendRaw ⅒
 		return
-	F23 & 0::SendRaw ‹
+	F23 & 2::SendRaw ½
 		return
-	F23 & q::SendRaw ⋆
+	F23 & 3::SendRaw ⅓
 		return
-	F23 & w::SendRaw ▪
+	F23 & 4::SendRaw ¼
 		return
-	F23 & f::SendRaw ▸
+	F23 & 5::SendRaw ⅕ 
 		return
-	F23 & p::SendRaw •
+	F23 & 7::SendRaw ¾
 		return
-	F23 & b::SendRaw ⁃
+	F23 & 8::SendRaw ⁰
 		return
-	F23 & u::SendRaw »
+	F23 & 9::SendRaw ≤
 		return
-	F23 & y::SendRaw ›
+	F23 & 0::SendRaw ≥
 		return
-	F23 & '::SendRaw ≈
+	F23 & q::SendRaw 💡
+		return
+	F23 & w::SendRaw ⚠️
+		return
+	F23 & f::SendRaw ↑
+		return
+	F23 & p::SendRaw π
+		return
+	F23 & b::SendRaw ≈
+		return
+	F23 & [::SendRaw ∉
+		return
+	F23 & j::F12
+	F23 & l::F7
+	F23 & u::F8
+	F23 & y::F9
+	F23 & '::SendRaw …
 		return
 	F23 & -::SendRaw ±
 		return
-	F23 & a::F7
-	F23 & r::F5
-	F23 & s::F3
-	F23 & t::F1
-	F23 & n::F2
-	F23 & e::F4
+	F23 & a::SendRaw ×
+		return
+	F23 & r::SendRaw ←
+		return
+	F23 & s::SendRaw ↓
+		return
+	F23 & t::SendRaw →
+		return
+	F23 & g::SendRaw ≠
+		return
+	F23 & ]::SendRaw ∈
+		return
+	F23 & m::F11
+	F23 & n::F4
+	F23 & e::F5
 	F23 & i::F6
-	F23 & o::F8
-	F23 & `;::SendRaw ≠
+	F23 & o::SendRaw Ø
 		return
-	F23 & d::F9
-	F23 & v::F11
-	F23 & k::F12
-	F23 & h::F10
-	F23 & ,::SendRaw ≤
+	F23 & `;::SendRaw ∞
 		return
-	F23 & .::SendRaw ≥
+	F23 & x::SendRaw ✗
 		return
+	F23 & c::SendRaw ㊿
+		return
+	F23 & d::SendRaw Ⓓ
+		return
+	F23 & v::SendRaw ✓
+		return
+	F23 & z::SendRaw ²
+		return
+	F23 & /::SendRaw ÷
+		return
+	F23 & k::F10
+	F23 & h::F1
+	F23 & ,::F2
+	F23 & .::F3
 #If
 
 ;mouse in extend layer
