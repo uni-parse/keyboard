@@ -421,14 +421,13 @@ SetCapsLockState, AlwaysOff
           ErrorLevel = 0
           move_f := move__nth + 1
           move__nth++
-          If speed_f {
+          If speed_move {
             x *= x_multiplier
             y *= y_multiplier
-            speed_f = 0
           }
           SetTimer, move_f_timer, %A_MouseDelay%
         } Else
-          speed_f = 0
+          speed_move = 0
       } else {
         move_f := move__nth + 1
         move__nth++
@@ -439,8 +438,10 @@ SetCapsLockState, AlwaysOff
   move_f_timer:
     If GetKeyState("f","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_f = move__nth) {
-        x *= x_increment
-        y *= y_increment
+        if speed_move {
+          x *= x_increment
+          y *= y_increment
+        }
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, -y,, R
         else if GetKeyState("r","P")
@@ -451,6 +452,7 @@ SetCapsLockState, AlwaysOff
     } Else {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
         resetSpeed()
+        speed_move = 0
         move__nth = 0
       } Else {
         move__nth--
@@ -476,7 +478,7 @@ SetCapsLockState, AlwaysOff
     Return
   speed_f_timer:
     if press_f = 2
-      speed_f = 1
+      speed_move = 1
     press_f = 0
     Return
 	s::
@@ -495,14 +497,13 @@ SetCapsLockState, AlwaysOff
           ErrorLevel = 0
           move_s := move__nth + 1
           move__nth++
-          If speed_s {
+          If speed_move {
             x *= x_multiplier
             y *= y_multiplier
-            speed_s = 0
           }
           SetTimer, move_s_timer, %A_MouseDelay%
         } Else
-          speed_s = 0
+          speed_move = 0
       } else {
         move_s := move__nth + 1
         move__nth++
@@ -513,8 +514,10 @@ SetCapsLockState, AlwaysOff
   move_s_timer:
     If GetKeyState("s","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_s = move__nth) {
-        x *= x_increment
-        y *= y_increment
+        if speed_move {
+          x *= x_increment
+          y *= y_increment
+        }
         If !GetKeyState("r","P") && !GetKeyState("t","P")
           MouseMove, 0, y,, R
         else if GetKeyState("r","P")
@@ -525,6 +528,7 @@ SetCapsLockState, AlwaysOff
     } Else {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
         resetSpeed()
+        speed_move = 0
         move__nth = 0
       } Else {
         move__nth--
@@ -550,7 +554,7 @@ SetCapsLockState, AlwaysOff
     Return
   speed_s_timer:
     if press_s = 2
-      speed_s = 1
+      speed_move = 1
     press_s = 0
     Return
 	t::
@@ -569,14 +573,13 @@ SetCapsLockState, AlwaysOff
           ErrorLevel = 0
           move_t := move__nth + 1
           move__nth++
-          If speed_t {
+          If speed_move {
             x *= x_multiplier
             y *= y_multiplier
-            speed_t = 0
           }
           SetTimer, move_t_timer, %A_MouseDelay%
         } Else
-          speed_t = 0
+          speed_move = 0
       } else {
         move_t := move__nth + 1
         move__nth++
@@ -587,8 +590,10 @@ SetCapsLockState, AlwaysOff
   move_t_timer:
     If GetKeyState("t","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_t = move__nth) {
-        x *= x_increment
-        y *= y_increment
+        if speed_move {
+          x *= x_increment
+          y *= y_increment
+        }
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, x, 0,, R
         else if GetKeyState("f","P")
@@ -599,6 +604,7 @@ SetCapsLockState, AlwaysOff
     } Else {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
         resetSpeed()
+        speed_move = 0
         move__nth = 0
       } Else {
         move__nth--
@@ -624,7 +630,7 @@ SetCapsLockState, AlwaysOff
     Return
   speed_t_timer:
     if press_t = 2
-      speed_t = 1
+      speed_move = 1
     press_t = 0
     Return
 	r::
@@ -643,14 +649,13 @@ SetCapsLockState, AlwaysOff
           ErrorLevel = 0
           move_r := move__nth + 1
           move__nth++
-          If speed_r {
+          If speed_move {
             x *= x_multiplier
             y *= y_multiplier
-            speed_r = 0
           }
           SetTimer, move_r_timer, %A_MouseDelay%
         } Else
-          speed_r = 0
+          speed_move = 0
       } else {
         move_r := move__nth + 1
         move__nth++
@@ -661,8 +666,10 @@ SetCapsLockState, AlwaysOff
   move_r_timer:
     If GetKeyState("r","P") && (layer_ext ? 1 : GetKeyState("F24","P")) {
       if (move_r = move__nth) {
-        x *= x_increment
-        y *= y_increment
+        if speed_move {
+          x *= x_increment
+          y *= y_increment
+        }
         If !GetKeyState("f","P") && !GetKeyState("s","P")
           MouseMove, -x, 0,, R
         else if GetKeyState("f","P")
@@ -673,6 +680,7 @@ SetCapsLockState, AlwaysOff
     } Else {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
         resetSpeed()
+        speed_move = 0
         move__nth = 0
       } Else {
         move__nth--
@@ -698,7 +706,7 @@ SetCapsLockState, AlwaysOff
     Return
   speed_r_timer:
     if press_r = 2
-      speed_r = 1
+      speed_move = 1
     press_r = 0
     Return
 	*q::

@@ -57,14 +57,13 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
           ErrorLevel = 0
           move_${key} := move__nth + 1
           move__nth++
-          If speed_${key} {
+          If speed_move {
             x *= x_multiplier
             y *= y_multiplier
-            speed_${key} = 0
           }
           SetTimer, move_${key}_timer, %A_MouseDelay%
         } Else
-          speed_${key} = 0
+          speed_move = 0
       } else {
         move_${key} := move__nth + 1
         move__nth++
@@ -75,8 +74,10 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
   move_${key}_timer:
     If GetKeyState("${key}","P") && (layer_ext ? 1 : GetKeyState("${combination}","P")) {
       if (move_${key} = move__nth) {
-        x *= x_increment
-        y *= y_increment
+        if speed_move {
+          x *= x_increment
+          y *= y_increment
+        }
         If !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P")
           MouseMove, ${coords(key)},, R
         else if GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P")
@@ -87,6 +88,7 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
     } Else {
       if !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P") && !GetKeyState("${opposite(key)}","P") {
         resetSpeed()
+        speed_move = 0
         move__nth = 0
       } Else {
         move__nth--
@@ -112,7 +114,7 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
     Return
   speed_${key}_timer:
     if press_${key} = 2
-      speed_${key} = 1
+      speed_move = 1
     press_${key} = 0
     Return\n`
 
