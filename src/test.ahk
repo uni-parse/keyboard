@@ -71,12 +71,12 @@ SetCapsLockState, AlwaysOff
           layer_sym2 = 0
           ;MsgBox !sym2
         }
-      }
+      } else if double_F23
+        double_F23 = 0
     }
     return
   double_F23_timer:
     if (press_F23 = 2) {
-      press_F23 = 0
       If !GetKeyState("F23", "P") {
         if layer_ext {
           layer_ext = 0
@@ -86,8 +86,8 @@ SetCapsLockState, AlwaysOff
         ;MsgBox, sym
       } else
         double_F23 = 1
-    } else
-      press_F23 = 0
+    }
+    press_F23 = 0
     Return
 
 
@@ -122,12 +122,12 @@ SetCapsLockState, AlwaysOff
           layer_ext2 = 0
           ;MsgBox !ext2
         }
-      }
+      } else if double_F24
+        double_F24 = 0
     }
     return
   double_F24_timer:
     if (press_F24 = 2) {
-      press_F24 = 0
       If !GetKeyState("F24", "P") {
         if layer_sym {
           layer_sym = 0
@@ -137,17 +137,12 @@ SetCapsLockState, AlwaysOff
         ;MsgBox, ext
       } else
         double_F24 = 1
-    } else
-      press_F24 = 0
+    }
+    press_F24 = 0
     Return
 
-
-
-
-
-
 ;extend layer
-#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P"))
+#If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
 	1::Browser_Search
@@ -189,7 +184,7 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;symbol layer
-#If layer_sym || (GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2)
+#If !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
 	`::SendRaw ⋆
 		return
 	1::SendRaw ▪
@@ -303,7 +298,7 @@ SetCapsLockState, AlwaysOff
 	u::F8
 	y::F9
 	'::SendRaw …
-		return              
+		return
 	-::SendRaw ±
 		return
 	a::SendRaw ×
@@ -345,7 +340,7 @@ SetCapsLockState, AlwaysOff
 #If
 
 ;mouse in extend layer
-#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P") && !layer_sym)
+#If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	f::
     If !move_f {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
@@ -721,3 +716,4 @@ SetCapsLockState, AlwaysOff
     press_a = 0
     Return
 #If
+

@@ -1,42 +1,43 @@
-function config(s, e) {
-  /**  goal
-    s symbol            e shift symbol
-    ss↑ toggle symbol   e temp extend
-    ss↓ sym2            e alt || ctrl
+/**  goal
+      s symbol            e shift symbol
+      ss↑ toggle symbol   e temp extend
+      ss↓ sym2            e alt || ctrl
+      
+      s↓e↓ shift symbol   
+      e↓s↓ shift symbol   
+      s↓e↑ nothing        
+      e↓s↑ nothign        
     
-    s↓e↓ shift symbol   
-    e↓s↓ shift symbol   
-    s↓e↑ nothing        
-    e↓s↑ nothign        
+      e extend            s shift symbol
+      ee↑ toggle extend   s temp symbol
+      ee↓ ext2            s nothing
   
-    e extend            s shift symbol
-    ee↑ toggle extend   s temp symbol
-    ee↓ ext2            s nothing
+      .....................................
+  
+      symbol              s && !e || layer_sym
+      shift symbol        s↓e↓ e↓s↓
+      toggle symbol       ss↑
+      !toggle symbol      s ee↑
+      sym2                ss↓
+  
+      extend              e
+      toggle extend       ee↑
+      !toggle extend      e ss↑
+      ext2                ee↓
+  
+     */
+const symbolKey = 'F23', extendKey = 'F24',
+  config = {
+    switchers: () => `;config..........................................
 
-    .....................................
-
-    symbol              s
-    shift symbol        s↓e↓ e↓s↓
-    toggle symbol       ss↑
-    !toggle symbol      s ee↑
-    sym2                ss↓
-
-    extend              e
-    toggle extend       ee↑
-    !toggle extend      e ss↑
-    ext2                ee↓
-
-   */
-  return `;config..........................................
-
-  F23::
-    if !hold_F23 {
-      If press_F23 {
-        press_F23 = 2
+  ${symbolKey}::
+    if !hold_${symbolKey} {
+      If press_${symbolKey} {
+        press_${symbolKey} = 2
       }
       Else {
-        press_F23 = 1
-        SetTimer, double_F23_timer, -300
+        press_${symbolKey} = 1
+        SetTimer, double_${symbolKey}_timer, -300
       }
 
       if layer_sym {
@@ -44,28 +45,28 @@ function config(s, e) {
         ;MsgBox, !sym
       }
 
-      KeyWait, F23, T.2
+      KeyWait, ${symbolKey}, T.2
       if ErrorLevel {
         ErrorLevel = 0
-        hold_F23 = 1
-        If double_F23 {
-          double_F23 = 0
+        hold_${symbolKey} = 1
+        If double_${symbolKey} {
+          double_${symbolKey} = 0
           layer_sym2 = 1
           ;MsgBox, sym2
         }
-        KeyWait, F23
-        hold_F23 = 0
+        KeyWait, ${symbolKey}
+        hold_${symbolKey} = 0
         If layer_sym2 {
           layer_sym2 = 0
           ;MsgBox !sym2
         }
-      }
+      } else if double_${symbolKey}
+        double_${symbolKey} = 0
     }
     return
-  double_F23_timer:
-    if (press_F23 = 2) {
-      press_F23 = 0
-      If !GetKeyState("F23", "P") {
+  double_${symbolKey}_timer:
+    if (press_${symbolKey} = 2) {
+      If !GetKeyState("${symbolKey}", "P") {
         if layer_ext {
           layer_ext = 0
           ;MsgBox, !ext
@@ -73,21 +74,21 @@ function config(s, e) {
         layer_sym = 1
         ;MsgBox, sym
       } else
-        double_F23 = 1
-    } else
-      press_F23 = 0
+        double_${symbolKey} = 1
+    }
+    press_${symbolKey} = 0
     Return
 
 
 
-  F24::
-    if !hold_F24 {
-      If press_F24 {
-        press_F24 = 2
+  ${extendKey}::
+    if !hold_${extendKey} {
+      If press_${extendKey} {
+        press_${extendKey} = 2
       }
       Else {
-        press_F24 = 1
-        SetTimer, double_F24_timer, -300
+        press_${extendKey} = 1
+        SetTimer, double_${extendKey}_timer, -300
       }
 
       if layer_ext {
@@ -95,28 +96,28 @@ function config(s, e) {
         ;MsgBox, !ext
       }
 
-      KeyWait, F24, T.2
+      KeyWait, ${extendKey}, T.2
       if ErrorLevel {
         ErrorLevel = 0
-        hold_F24 = 1
-        If double_F24 {
-          double_F24 = 0
+        hold_${extendKey} = 1
+        If double_${extendKey} {
+          double_${extendKey} = 0
           layer_ext2 = 1
           ;MsgBox, ext2
         }
-        KeyWait, F24
-        hold_F24 = 0
+        KeyWait, ${extendKey}
+        hold_${extendKey} = 0
         If layer_ext2 {
           layer_ext2 = 0
           ;MsgBox !ext2
         }
-      }
+      } else if double_${extendKey}
+        double_${extendKey} = 0
     }
     return
-  double_F24_timer:
-    if (press_F24 = 2) {
-      press_F24 = 0
-      If !GetKeyState("F24", "P") {
+  double_${extendKey}_timer:
+    if (press_${extendKey} = 2) {
+      If !GetKeyState("${extendKey}", "P") {
         if layer_sym {
           layer_sym = 0
           ;MsgBox, !sym
@@ -124,69 +125,16 @@ function config(s, e) {
         layer_ext = 1
         ;MsgBox, ext
       } else
-        double_F24 = 1
-    } else
-      press_F24 = 0
-    Return
-
-
-
-
-\n\n`
-}
+        double_${extendKey} = 1
+    }
+    press_${extendKey} = 0
+    Return\n\n`,
+    layer_condition: {
+      sym: `!layer_sym2 && ((layer_sym && !GetKeyState("${extendKey}", "P")) || (!layer_sym && GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P")) || (layer_ext && GetKeyState("${symbolKey}", "P")))`,
+      sym2: `layer_sym2`,
+      ext: `!layer_ext2 && ((layer_ext && !GetKeyState("${symbolKey}", "P")) || (!layer_ext && GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")) || (layer_sym && GetKeyState("${extendKey}", "P")))`,
+      ext2: `layer_ext2`
+    }
+  }
 export default config
-
-
-/*
-`\n\n;config
-#Persistent
-SetCapsLockState, AlwaysOff
-
-#If !layer_ext
-  F24 & F23::
-    layer_sym = 0
-    layer_ext = 1
-    KeyWait F24
-    KeyWait F24, D
-    layer_ext = 0
-    return
-  F24::
-    if press_F24 {
-      layer_sym = 0
-      layer_ext = 1
-      KeyWait F24
-      KeyWait F24, D
-      layer_ext = 0
-    } Else
-      press_F24 = 1
-    SetTimer, KeyF24timer, -300
-    return
-  KeyF24timer:
-    press_F24 = 0
-    return
-#if
-
-#If !layer_sym
-  F23 & F24::
-    layer_ext = 0
-    layer_sym2 = 1
-    KeyWait F23
-    layer_sym2 = 0
-    return
-  F23::
-    if press_F23 {
-        layer_ext = 0
-        layer_sym = 1
-        KeyWait F23
-        KeyWait F23, D
-        layer_sym = 0
-    } Else
-      press_F23 = 1
-    SetTimer, KeyF23timer, -300
-    Return
-  KeyF23timer:
-    press_F23 = 0
-    Return
-#If\n\n`
-
-*/
+export {extendKey,symbolKey,config}

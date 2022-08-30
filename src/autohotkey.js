@@ -1,7 +1,7 @@
 import mouse from "./mouse"
-import config from "./config"
+import { extendKey, symbolKey, config } from "./config"
 function autohotkey(keys, pre, btn, navigator) {
-  let mouseL, mouseR, mouseU, mouseD, extendKey, symbolKey,
+  let mouseL, mouseR, mouseU, mouseD,
     output = `;
 ;
 ;   made by UniParse
@@ -44,11 +44,11 @@ SetCapsLockState, AlwaysOff
 
 
   // ⚙️ config layers
-  output += config(symbolKey, extendKey)
+  output += config.switchers()
 
 
   // 🌟 extend layer
-  output += ';extend layer\n#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P"))\n'
+  output += `;extend layer\n#If ${config.layer_condition.ext}\n`
   keys.forEach(key => {
     if (Array.isArray(key[2]) && key[2][0]) {
       if (key[2][0].includes('Button')) {
@@ -78,7 +78,7 @@ SetCapsLockState, AlwaysOff
 
 
   // 💲 symbol laye
-  output += ';symbol layer\n#If layer_sym || (GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2)\n'
+  output += `;symbol layer\n#If ${config.layer_condition.sym}\n`
   keys.forEach(key => {
     if (Array.isArray(key[3]) && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -98,7 +98,7 @@ SetCapsLockState, AlwaysOff
 
   // 💲💲 symbol2 layers
   output += `;symbol2 layer
-#If layer_sym2\n`
+#If ${config.layer_condition.sym2}\n`
   keys.forEach(key => {
     if (Array.isArray(key[4]) && key[4][0]) {
       output += `${key[4] && !(Array.isArray(key[4]) && !key[4][0]) ?
@@ -116,10 +116,10 @@ SetCapsLockState, AlwaysOff
 
 
   // mouse
-  output += `;mouse in extend layer\n#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P") && !layer_sym)\n`
-  output += mouse.move(mouseU, mouseR, mouseD, mouseL, 'F24')
-  output += mouse.wheel('wheelUp', 'q', 'F24')
-  output += mouse.wheel('wheelDown', 'a', 'F24')
+  output += `;mouse in extend layer\n#If ${config.layer_condition.ext}\n`
+  output += mouse.move(mouseU, mouseR, mouseD, mouseL, extendKey)
+  output += mouse.wheel('wheelUp', 'q', extendKey)
+  output += mouse.wheel('wheelDown', 'a', extendKey)
   output += `#If`
 
   //console.log(output)
