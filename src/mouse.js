@@ -1,48 +1,48 @@
 
-function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
-  function mouseKey(key) {
-    function coords(mouseDirection, cross = 0) {
-      if (!cross) {
-        if (mouseDirection == mouseU) {
-          return '0, -y'
-        } else if (mouseDirection == mouseR) {
-          return 'x, 0'
-        } else if (mouseDirection == mouseD) {
-          return '0, y'
-        } else if (mouseDirection == mouseL) {
-          return '-x, 0'
-        }
-      } else if (cross == 1) {
-        if (mouseDirection == mouseU || mouseDirection == mouseL) {
-          return '-x, -y'
-        } else if (mouseDirection == mouseR) {
-          return 'x, -y'
-        } else if (mouseDirection == mouseD) {
-          return '-x, y'
-        }
-      } else if (cross == 2) {
-        if (mouseDirection == mouseU) {
-          return 'x, -y'
-        } else if (mouseDirection == mouseR || mouseDirection == mouseD) {
-          return 'x, y'
-        } else if (mouseDirection == mouseL) {
-          return '-x, y'
+const mouse = {
+  move: (mouseU, mouseR, mouseD, mouseL, combination) => {
+    function mouseKey(key) {
+      function coords(mouseDirection, cross = 0) {
+        if (!cross) {
+          if (mouseDirection == mouseU) {
+            return '0, -y'
+          } else if (mouseDirection == mouseR) {
+            return 'x, 0'
+          } else if (mouseDirection == mouseD) {
+            return '0, y'
+          } else if (mouseDirection == mouseL) {
+            return '-x, 0'
+          }
+        } else if (cross == 1) {
+          if (mouseDirection == mouseU || mouseDirection == mouseL) {
+            return '-x, -y'
+          } else if (mouseDirection == mouseR) {
+            return 'x, -y'
+          } else if (mouseDirection == mouseD) {
+            return '-x, y'
+          }
+        } else if (cross == 2) {
+          if (mouseDirection == mouseU) {
+            return 'x, -y'
+          } else if (mouseDirection == mouseR || mouseDirection == mouseD) {
+            return 'x, y'
+          } else if (mouseDirection == mouseL) {
+            return '-x, y'
+          }
         }
       }
-    }
-    function opposite(mouseDirection) {
-      if (mouseDirection == mouseL) {
-        return mouseR
-      } else if (mouseDirection == mouseR){
-        return mouseL
-      } else if (mouseDirection == mouseU){
-        return mouseD
-      } else if (mouseDirection == mouseD){
-        return mouseU
+      function opposite(mouseDirection) {
+        if (mouseDirection == mouseL) {
+          return mouseR
+        } else if (mouseDirection == mouseR) {
+          return mouseL
+        } else if (mouseDirection == mouseU) {
+          return mouseD
+        } else if (mouseDirection == mouseD) {
+          return mouseU
+        }
       }
-    }
-    return `\t${key}::
-  ${combination} & ${key}::
+      return `\t${key}::
     If !move_${key} {
       if !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P") && !GetKeyState("${opposite(key)}","P") {
         If press_${key}
@@ -117,15 +117,10 @@ function mouse(mouseU, mouseR, mouseD, mouseL, combination) {
       speed_move = 1
     press_${key} = 0
     Return\n`
-
-  }
-  return mouseKey(mouseU) + mouseKey(mouseD) + mouseKey(mouseR) + mouseKey(mouseL)
-}
-
-
-function wheel(dir, key, combination) {
-  return `\t*${key}::
-    ${combination} & ${key}::
+    }
+    return mouseKey(mouseU) + mouseKey(mouseD) + mouseKey(mouseR) + mouseKey(mouseL)
+  },
+  wheel: (dir, key, combination) => `\t*${key}::
     if !scroll_${key} {
       If press_${key}
         press_${key} = 2
@@ -164,4 +159,3 @@ function wheel(dir, key, combination) {
     Return\n`
 }
 export default mouse
-export { mouse, wheel }
