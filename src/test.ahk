@@ -48,7 +48,7 @@ SetCapsLockState, AlwaysOff
         ;MsgBox, !sym
       }
       If press_F23 {
-        KeyWait, F23, T.15
+        KeyWait, F23, T.2
         if ErrorLevel {
           ErrorLevel = 0
           layer_sym2 = 1
@@ -64,11 +64,12 @@ SetCapsLockState, AlwaysOff
           }
           layer_sym = 1
           ;MsgBox, sym
+          press_F23 = 0
           hold_F23 = 0
         }
       } Else {
         press_F23 = 1
-        SetTimer, double_F23_timer, -400
+        SetTimer, double_F23_timer, -400,2
         KeyWait F23
         hold_F23 = 0
       }
@@ -90,7 +91,7 @@ SetCapsLockState, AlwaysOff
         ;MsgBox, !ext
       }
       If press_F24 {
-        KeyWait, F24, T.15
+        KeyWait, F24, T.2
         if ErrorLevel {
           ErrorLevel = 0
           layer_ext2 = 1
@@ -106,6 +107,7 @@ SetCapsLockState, AlwaysOff
           }
           layer_ext = 1
           ;MsgBox, ext
+          press_F24 = 0
           hold_F24 = 0
         }
       } Else {

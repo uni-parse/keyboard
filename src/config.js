@@ -26,7 +26,7 @@
       ext2                ee↓
   
      */
-const symbolKey = 'F23', extendKey = 'F24', delay = -400,
+const symbolKey = 'F23', extendKey = 'F24', delay = [-400, 2],
   config = {
     switchers: () => `;config..........................................
   ${symbolKey}::
@@ -37,7 +37,7 @@ const symbolKey = 'F23', extendKey = 'F24', delay = -400,
         ;MsgBox, !sym
       }
       If press_${symbolKey} {
-        KeyWait, ${symbolKey}, T.15
+        KeyWait, ${symbolKey}, T.${delay[1]}
         if ErrorLevel {
           ErrorLevel = 0
           layer_sym2 = 1
@@ -53,6 +53,7 @@ const symbolKey = 'F23', extendKey = 'F24', delay = -400,
           }
           layer_sym = 1
           ;MsgBox, sym
+          press_${symbolKey} = 0
           hold_${symbolKey} = 0
         }
       } Else {
@@ -79,7 +80,7 @@ const symbolKey = 'F23', extendKey = 'F24', delay = -400,
         ;MsgBox, !ext
       }
       If press_${extendKey} {
-        KeyWait, ${extendKey}, T.15
+        KeyWait, ${extendKey}, T.${delay[1]}
         if ErrorLevel {
           ErrorLevel = 0
           layer_ext2 = 1
@@ -95,11 +96,12 @@ const symbolKey = 'F23', extendKey = 'F24', delay = -400,
           }
           layer_ext = 1
           ;MsgBox, ext
+          press_${extendKey} = 0
           hold_${extendKey} = 0
         }
       } Else {
         press_${extendKey} = 1
-        SetTimer, double_${extendKey}_timer, ${delay}
+        SetTimer, double_${extendKey}_timer, ${delay[0]}
         KeyWait ${extendKey}
         hold_${extendKey} = 0
       }
