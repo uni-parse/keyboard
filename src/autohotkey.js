@@ -76,6 +76,8 @@ SetCapsLockState, AlwaysOff
   })
   output += '#If\n\n'
 
+  // 🌟🌟 extend2 layer
+
 
   // 💲 symbol laye
   output += `;symbol layer\n#If ${config.layer_condition.sym}\n`
@@ -95,7 +97,6 @@ SetCapsLockState, AlwaysOff
   output += '#If\n\n'
 
 
-
   // 💲💲 symbol2 layers
   output += `;symbol2 layer
 #If ${config.layer_condition.sym2}\n`
@@ -113,7 +114,7 @@ SetCapsLockState, AlwaysOff
   })
   output += `#If\n\n`
 
-
+  // 
 
   // mouse
   output += `;mouse in extend layer\n#If ${config.layer_condition.ext}\n`
