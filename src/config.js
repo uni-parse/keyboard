@@ -28,7 +28,7 @@
      */
 const symbolKey = 'F23', extendKey = 'F24', delay = [-400, 2],
   config = {
-    switchers: () => `;config..........................................
+    switchers: () => `
   ${symbolKey}::
     if !hold_${symbolKey} {
       hold_${symbolKey} = 1
@@ -112,6 +112,7 @@ const symbolKey = 'F23', extendKey = 'F24', delay = [-400, 2],
     Return\n\n`,
     layer_condition: {
       sym: `!layer_sym2 && ((layer_sym && !GetKeyState("${extendKey}", "P")) || (!layer_sym && GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P")) || (layer_ext && GetKeyState("${symbolKey}", "P")))`,
+      sym1: `GetKeyState("${symbolKey}", "P") && GetKeyState("${extendKey}", "P")`,
       sym2: `layer_sym2`,
       ext: `!layer_ext2 && ((layer_ext && !GetKeyState("${symbolKey}", "P")) || (!layer_ext && GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")) || (layer_sym && GetKeyState("${extendKey}", "P")))`,
       ext2: `layer_ext2`

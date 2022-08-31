@@ -43,12 +43,11 @@ SetCapsLockState, AlwaysOff
 \n\n`
 
 
-  // ⚙️ config layers
+  output += ';config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️'
   output += config.switchers()
 
 
-  // 🌟 extend layer
-  output += `;extend layer\n#If ${config.layer_condition.ext}\n`
+  output += `;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟\n#If ${config.layer_condition.ext}\n`
   keys.forEach(key => {
     if (Array.isArray(key[2]) && key[2][0]) {
       if (key[2][0].includes('Button')) {
@@ -76,11 +75,15 @@ SetCapsLockState, AlwaysOff
   })
   output += '#If\n\n'
 
-  // 🌟🌟 extend2 layer
+
+  output += `;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟\n#If ${config.layer_condition.ext2}\n`
+  keys.forEach(key => {
+    
+  })
+  output += '#If\n\n'
 
 
-  // 💲 symbol laye
-  output += `;symbol layer\n#If ${config.layer_condition.sym}\n`
+  output += `;symbol layer 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲\n#If ${config.layer_condition.sym}\n`
   keys.forEach(key => {
     if (Array.isArray(key[3]) && (key[3][0] || key[3][0] == 0)) {
       if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
@@ -97,9 +100,20 @@ SetCapsLockState, AlwaysOff
   output += '#If\n\n'
 
 
-  // 💲💲 symbol2 layers
-  output += `;symbol2 layer
-#If ${config.layer_condition.sym2}\n`
+  output += `;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲\n#If ${config.layer_condition.sym1}\n`
+  keys.forEach(key => {
+    if (Array.isArray(key[3])) {
+      
+      if (key[3][1].includes(' ') && key[3][1].split(' ')[1]) {
+        output += `\t${key[0]}::sendRaw ${key[3][1].split(' ')[1]}\n\t\treturn\n`
+      }
+    }
+
+  })
+  output += '#If\n\n'
+
+
+  output += `;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲\n#If ${config.layer_condition.sym2}\n`
   keys.forEach(key => {
     if (Array.isArray(key[4]) && key[4][0]) {
       output += `${key[4] && !(Array.isArray(key[4]) && !key[4][0]) ?
@@ -114,10 +128,8 @@ SetCapsLockState, AlwaysOff
   })
   output += `#If\n\n`
 
-  // 
 
-  // mouse
-  output += `;mouse in extend layer\n#If ${config.layer_condition.ext}\n`
+  output += `;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺\n#If ${config.layer_condition.ext}\n`
   output += mouse.move(mouseU, mouseR, mouseD, mouseL, extendKey)
   output += mouse.wheel('wheelUp', 'q', extendKey)
   output += mouse.wheel('wheelDown', 'a', extendKey)

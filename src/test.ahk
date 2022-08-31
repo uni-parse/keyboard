@@ -39,7 +39,7 @@ resetSpeed() {
 SetCapsLockState, AlwaysOff
 
 
-;config..........................................
+;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
   F23::
     if !hold_F23 {
       hold_F23 = 1
@@ -122,7 +122,7 @@ SetCapsLockState, AlwaysOff
     press_F24 = 0
     Return
 
-;extend layer
+;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
 #If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
@@ -164,7 +164,11 @@ SetCapsLockState, AlwaysOff
 	.::RButton
 #If
 
-;symbol layer
+;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
+#If layer_ext2
+#If
+
+;symbol layer 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲
 #If !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
 	`::SendRaw ⋆
 		return
@@ -172,77 +176,93 @@ SetCapsLockState, AlwaysOff
 		return
 	2::SendRaw ▸
 		return
-	3::SendRaw {
-		return
-	4::SendRaw }
-		return
 	5::SendRaw »
 		return
 	7::SendRaw ›
 		return
 	8::SendRaw •
 		return
-	9::SendRaw <
-		return
-	0::SendRaw >
-		return
 	=::SendRaw ⁃
 		return
-	q::SendRaw @
+	q::`
+	w::[
+	f::]
+	u::SendRaw (
 		return
-	w::SendRaw #
+	y::SendRaw )
 		return
-	f::SendRaw $
+	'::SendRaw "
 		return
-	p::SendRaw `%
+	-::SendRaw _
 		return
-	b::SendRaw ~
-		return
-	[::SendRaw √
-		return
-	j::SendRaw ^
-		return
-	l::7
-	u::8
-	y::9
-	'::`
-	-::SendRaw +
-		return
-	a::/
-	r::SendRaw (
-		return
-	s::SendRaw )
-		return
-	t::=
-	g::SendRaw !
-		return
+	a::1
+	r::2
+	s::3
+	t::4
 	]::SendRaw €
 		return
-	m::SendRaw *
+	m::\
+	n::7
+	e::8
+	i::9
+	o::0
+	`;::SendRaw :
 		return
-	n::4
-	e::5
-	i::6
-	o::SendRaw :
+	x::SendRaw {
 		return
-	`;::\
-	x::[
-	c::]
-	d::SendRaw &
+	c::SendRaw }
 		return
-	v::SendRaw |
+	d::5
+	v::=
+	k::/
+	h::6
+	,::SendRaw <
 		return
-	z::SendRaw _
+	.::SendRaw >
 		return
-	/::SendRaw ?
-		return
-	k::0
-	h::1
-	,::2
-	.::3
 #If
 
-;symbol2 layer
+;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
+#If GetKeyState("F23", "P") && GetKeyState("F24", "P")
+	q::sendRaw ~
+		return
+	w::sendRaw {
+		return
+	f::sendRaw }
+		return
+	u::sendRaw <
+		return
+	y::sendRaw >
+		return
+	a::sendRaw !
+		return
+	r::sendRaw @
+		return
+	s::sendRaw #
+		return
+	t::sendRaw $
+		return
+	m::sendRaw |
+		return
+	n::sendRaw &
+		return
+	e::sendRaw *
+		return
+	i::sendRaw (
+		return
+	o::sendRaw )
+		return
+	d::sendRaw `%
+		return
+	v::sendRaw +
+		return
+	k::sendRaw ?
+		return
+	h::sendRaw ^
+		return
+#If
+
+;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
 #If layer_sym2
 	1::SendRaw ⅒
 		return
@@ -252,15 +272,11 @@ SetCapsLockState, AlwaysOff
 		return
 	4::SendRaw ¼
 		return
-	5::SendRaw ⅕ 
+	5::SendRaw ⅕
 		return
 	7::SendRaw ¾
 		return
 	8::SendRaw ⁰
-		return
-	9::SendRaw ≤
-		return
-	0::SendRaw ≥
 		return
 	q::SendRaw 💡
 		return
@@ -274,53 +290,37 @@ SetCapsLockState, AlwaysOff
 		return
 	[::SendRaw ∉
 		return
-	j::F12
-	l::F7
-	u::F8
-	y::F9
+	u::SendRaw ≤
+		return
+	y::SendRaw ≥
+		return
 	'::SendRaw …
 		return
 	-::SendRaw ±
 		return
-	a::SendRaw ×
-		return
-	r::SendRaw ←
-		return
-	s::SendRaw ↓
-		return
-	t::SendRaw →
-		return
+	a::F1
+	r::F2
+	s::F3
+	t::F4
 	g::SendRaw ≠
 		return
 	]::SendRaw ∈
 		return
-	m::F11
-	n::F4
-	e::F5
-	i::F6
-	o::SendRaw Ø
-		return
-	`;::SendRaw ∞
-		return
+	n::F7
+	e::F8
+	i::F9
+	o::F10
 	x::SendRaw ✗
 		return
 	c::SendRaw ㊿
 		return
-	d::SendRaw Ⓓ
-		return
-	v::SendRaw ✓
-		return
-	z::SendRaw ²
-		return
-	/::SendRaw ÷
-		return
-	k::F10
-	h::F1
-	,::F2
-	.::F3
+	d::F5
+	v::F11
+	k::F12
+	h::F6
 #If
 
-;mouse in extend layer
+;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
 #If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	f::
     If !move_f {
