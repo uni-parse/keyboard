@@ -52,7 +52,7 @@ const mouse = {
           SetTimer, speed_${key}_timer, -300
         }
         MouseMove, ${coords(key)},, R
-        KeyWait, ${key}, T.2
+        KeyWait, ${key}, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_${key} := move__nth + 1

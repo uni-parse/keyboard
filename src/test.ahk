@@ -40,104 +40,83 @@ SetCapsLockState, AlwaysOff
 
 
 ;config..........................................
-
   F23::
     if !hold_F23 {
-      If press_F23 {
-        press_F23 = 2
-      }
-      Else {
-        press_F23 = 1
-        SetTimer, double_F23_timer, -300
-      }
-
+      hold_F23 = 1
       if layer_sym {
         layer_sym = 0
         ;MsgBox, !sym
       }
-
-      KeyWait, F23, T.2
-      if ErrorLevel {
-        ErrorLevel = 0
-        hold_F23 = 1
-        If double_F23 {
-          double_F23 = 0
+      If press_F23 {
+        KeyWait, F23, T.15
+        if ErrorLevel {
+          ErrorLevel = 0
           layer_sym2 = 1
           ;MsgBox, sym2
-        }
-        KeyWait, F23
-        hold_F23 = 0
-        If layer_sym2 {
+          KeyWait, F23
           layer_sym2 = 0
           ;MsgBox !sym2
+          hold_F23 = 0
+        } else {
+          if layer_ext {
+            layer_ext = 0
+            ;MsgBox, !ext
+          }
+          layer_sym = 1
+          ;MsgBox, sym
+          hold_F23 = 0
         }
-      } else if double_F23
-        double_F23 = 0
+      } Else {
+        press_F23 = 1
+        SetTimer, double_F23_timer, -400
+        KeyWait F23
+        hold_F23 = 0
+      }
     }
     return
   double_F23_timer:
-    if (press_F23 = 2) {
-      If !GetKeyState("F23", "P") {
-        if layer_ext {
-          layer_ext = 0
-          ;MsgBox, !ext
-        }
-        layer_sym = 1
-        ;MsgBox, sym
-      } else
-        double_F23 = 1
-    }
     press_F23 = 0
     Return
 
 
 
+
+
   F24::
     if !hold_F24 {
-      If press_F24 {
-        press_F24 = 2
-      }
-      Else {
-        press_F24 = 1
-        SetTimer, double_F24_timer, -300
-      }
-
+      hold_F24 = 1
       if layer_ext {
         layer_ext = 0
         ;MsgBox, !ext
       }
-
-      KeyWait, F24, T.2
-      if ErrorLevel {
-        ErrorLevel = 0
-        hold_F24 = 1
-        If double_F24 {
-          double_F24 = 0
+      If press_F24 {
+        KeyWait, F24, T.15
+        if ErrorLevel {
+          ErrorLevel = 0
           layer_ext2 = 1
           ;MsgBox, ext2
-        }
-        KeyWait, F24
-        hold_F24 = 0
-        If layer_ext2 {
+          KeyWait, F24
           layer_ext2 = 0
           ;MsgBox !ext2
+          hold_F24 = 0
+        } else {
+          if layer_sym {
+            layer_sym = 0
+            ;MsgBox, !sym
+          }
+          layer_ext = 1
+          ;MsgBox, ext
+          hold_F24 = 0
         }
-      } else if double_F24
-        double_F24 = 0
+      } Else {
+        press_F24 = 1
+        SetTimer, double_F24_timer, -400
+        KeyWait F24
+        hold_F24 = 0
+      }
     }
     return
   double_F24_timer:
-    if (press_F24 = 2) {
-      If !GetKeyState("F24", "P") {
-        if layer_sym {
-          layer_sym = 0
-          ;MsgBox, !sym
-        }
-        layer_ext = 1
-        ;MsgBox, ext
-      } else
-        double_F24 = 1
-    }
     press_F24 = 0
     Return
 
@@ -351,7 +330,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_f_timer, -300
         }
         MouseMove, 0, -y,, R
-        KeyWait, f, T.2
+        KeyWait, f, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_f := move__nth + 1
@@ -426,7 +405,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_s_timer, -300
         }
         MouseMove, 0, y,, R
-        KeyWait, s, T.2
+        KeyWait, s, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_s := move__nth + 1
@@ -501,7 +480,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_t_timer, -300
         }
         MouseMove, x, 0,, R
-        KeyWait, t, T.2
+        KeyWait, t, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_t := move__nth + 1
@@ -576,7 +555,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_r_timer, -300
         }
         MouseMove, -x, 0,, R
-        KeyWait, r, T.2
+        KeyWait, r, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_r := move__nth + 1
@@ -716,4 +695,3 @@ SetCapsLockState, AlwaysOff
     press_a = 0
     Return
 #If
-
