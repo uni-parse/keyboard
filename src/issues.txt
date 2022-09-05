@@ -84,6 +84,12 @@ currently
   e↓s↑ extend
   e↓s↓ toggle extend
 
+
+ext2 ⏵⏸⏯⏮⏭🔈🔊🔇
+.... . . . .... .
+.... . . . .🔈🔊. .
+ ... .. .. ...
+
 goal
   s symbol
   ss↑ toggle symbol

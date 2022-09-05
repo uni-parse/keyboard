@@ -20,7 +20,7 @@ x_increment = 1.1
 y_increment := x_increment
 x := x_default
 y := y_default
-scroll_defualt_speed = 40
+scroll_default_speed = 40
 scroll_speed_multiplier = .25
 speed_switcher = 0
 move__nth = 0
@@ -611,7 +611,7 @@ SetCapsLockState, AlwaysOff
       if ErrorLevel {
         ErrorLevel = 0
         scroll_q = 1
-        scroll_speed := scroll_defualt_speed
+        scroll_speed := scroll_default_speed
         If speed_q {
           scroll_speed *= scroll_speed_multiplier
           speed_q = 0
@@ -625,7 +625,7 @@ SetCapsLockState, AlwaysOff
     if GetKeyState("q","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelUp}
     Else {
-      scroll_speed := scroll_defualt_speed
+      scroll_speed := scroll_default_speed
       scroll_q = 0
       setTimer,, Off
     }
@@ -649,7 +649,7 @@ SetCapsLockState, AlwaysOff
       if ErrorLevel {
         ErrorLevel = 0
         scroll_a = 1
-        scroll_speed := scroll_defualt_speed
+        scroll_speed := scroll_default_speed
         If speed_a {
           scroll_speed *= scroll_speed_multiplier
           speed_a = 0
@@ -663,7 +663,7 @@ SetCapsLockState, AlwaysOff
     if GetKeyState("a","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelDown}
     Else {
-      scroll_speed := scroll_defualt_speed
+      scroll_speed := scroll_default_speed
       scroll_a = 0
       setTimer,, Off
     }

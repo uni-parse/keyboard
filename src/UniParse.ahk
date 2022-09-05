@@ -20,7 +20,7 @@ x_increment = 1.1
 y_increment := x_increment
 x := x_default
 y := y_default
-scroll_defualt_speed = 40
+scroll_default_speed = 40
 scroll_speed_multiplier = .25
 speed_switcher = 0
 move__nth = 0
@@ -36,101 +36,111 @@ resetSpeed() {
   }
 }
 
+brightnessJump = 10
+CurrentBrightness := GetCurrentBrightNess()
+ChangeBrightness(0)
+minimumBrightness := GetCurrentBrightNess()
+ChangeBrightness(CurrentBrightness)
 
+ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
+	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
+		property.WmiSetBrightness( timeout, brightness)
+}
+GetCurrentBrightNess() {
+	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
+		currentBrightness := property.CurrentBrightness	
+	return currentBrightness
+}
 
-;config
 #Persistent
 SetCapsLockState, AlwaysOff
 
-#If !layer_ext
-  F24 & F23::
-    layer_sym = 0
-    layer_ext = 1
-    KeyWait F24
-    KeyWait F24, D
-    layer_ext = 0
-    return
-  F24::
-    if press_F24 {
-      layer_sym = 0
-      layer_ext = 1
-      KeyWait F24
-      KeyWait F24, D
-      layer_ext = 0
-    } Else
-      press_F24 = 1
-    SetTimer, KeyF24timer, -300
-    return
-  KeyF24timer:
-    press_F24 = 0
-    return
-#if
 
-#If !layer_sym
-  F23 & F24::
-    layer_ext = 0
-    layer_sym2 = 1
-    KeyWait F23
-    layer_sym2 = 0
-    return
+;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
   F23::
-    if press_F23 {
-        layer_ext = 0
-        layer_sym = 1
-        KeyWait F23
-        KeyWait F23, D
+    if !hold_F23 {
+      hold_F23 = 1
+      if layer_sym {
         layer_sym = 0
-    } Else
-      press_F23 = 1
-    SetTimer, KeyF23timer, -300
-    Return
-  KeyF23timer:
+        ;MsgBox, !sym
+      }
+      If press_F23 {
+        KeyWait, F23, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          layer_sym2 = 1
+          ;MsgBox, sym2
+          KeyWait, F23
+          layer_sym2 = 0
+          ;MsgBox !sym2
+          hold_F23 = 0
+        } else {
+          if layer_ext {
+            layer_ext = 0
+            ;MsgBox, !ext
+          }
+          layer_sym = 1
+          ;MsgBox, sym
+          press_F23 = 0
+          hold_F23 = 0
+        }
+      } Else {
+        press_F23 = 1
+        SetTimer, double_F23_timer, -400,2
+        KeyWait F23
+        hold_F23 = 0
+      }
+    }
+    return
+  double_F23_timer:
     press_F23 = 0
     Return
-#If
 
-;extend layer
-#If GetKeyState("F24", "P") && !GetKeyState("F23", "P")
-	F24 & `::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
-		return
-	F24 & 1::Browser_Search
-	F24 & 2::Media_Stop
-	F24 & 3::Media_Prev
-	F24 & 4::Media_Next
-	F24 & 8::^Numpad0
-	F24 & 9::^NumpadAdd
-	F24 & 0::^NumpadSub
-	F24 & =::Volume_Mute
-	F24 & w::Esc
-	F24 & p::
-		speed_switcher := !speed_switcher
-		resetSpeed()
-		return
-	F24 & j::PgUp
-	F24 & l::Home
-	F24 & u::Up
-	F24 & y::End
-	F24 & '::Volume_Down
-	F24 & -::Volume_Up
-	F24 & g::AppsKey
-	F24 & m::PgDn
-	F24 & n::Left
-	F24 & e::Down
-	F24 & i::Right
-	F24 & o::Enter
-	F24 & `;::Media_Play_Pause
-	F24 & x::XButton1
-	F24 & c::XButton2
-	F24 & d::Bs
-	F24 & v::Del
-	F24 & z::PrintScreen
-	F24 & /::Run calc
-	F24 & k::Tab
-	F24 & h::LButton
-	F24 & ,::MButton
-	F24 & .::RButton
-#If
-#If layer_ext
+
+
+
+
+  F24::
+    if !hold_F24 {
+      hold_F24 = 1
+      if layer_ext {
+        layer_ext = 0
+        ;MsgBox, !ext
+      }
+      If press_F24 {
+        KeyWait, F24, T.2
+        if ErrorLevel {
+          ErrorLevel = 0
+          layer_ext2 = 1
+          ;MsgBox, ext2
+          KeyWait, F24
+          layer_ext2 = 0
+          ;MsgBox !ext2
+          hold_F24 = 0
+        } else {
+          if layer_sym {
+            layer_sym = 0
+            ;MsgBox, !sym
+          }
+          layer_ext = 1
+          ;MsgBox, ext
+          press_F24 = 0
+          hold_F24 = 0
+        }
+      } Else {
+        press_F24 = 1
+        SetTimer, double_F24_timer, -400
+        KeyWait F24
+        hold_F24 = 0
+      }
+    }
+    return
+  double_F24_timer:
+    press_F24 = 0
+    Return
+
+;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
+#If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
 		return
 	1::Browser_Search
@@ -146,6 +156,14 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return
+	[::
+    if (GetCurrentBrightNess() = minimumBrightness)
+      ChangeBrightness(GetCurrentBrightNess() + 12 - minimumBrightness)
+    else if (GetCurrentBrightNess() <= 100 - brightnessJump)
+      ChangeBrightness(GetCurrentBrightNess() + brightnessJump)
+    else
+      ChangeBrightness(100)
+    return
 	j::PgUp
 	l::Home
 	u::Up
@@ -153,6 +171,12 @@ SetCapsLockState, AlwaysOff
 	'::Volume_Down
 	-::Volume_Up
 	g::AppsKey
+	]::
+    if (GetCurrentBrightNess() - minimumBrightness>= brightnessJump)
+      ChangeBrightness(GetCurrentBrightNess() - brightnessJump)
+    else
+      ChangeBrightness(0)
+    return
 	m::PgDn
 	n::Left
 	e::Down
@@ -171,93 +195,17 @@ SetCapsLockState, AlwaysOff
 	.::RButton
 #If
 
-;symbol layer
-#If GetKeyState("F23", "P") && !GetKeyState("F24", "P") && !layer_sym2
-	F23 & `::SendRaw ⋆
-		return
-	F23 & 1::SendRaw ▪
-		return
-	F23 & 2::SendRaw ▸
-		return
-	F23 & 3::SendRaw {
-		return
-	F23 & 4::SendRaw }
-		return
-	F23 & 5::SendRaw »
-		return
-	F23 & 7::SendRaw ›
-		return
-	F23 & 8::SendRaw •
-		return
-	F23 & 9::SendRaw <
-		return
-	F23 & 0::SendRaw >
-		return
-	F23 & =::SendRaw ⁃
-		return
-	F23 & q::SendRaw @
-		return
-	F23 & w::SendRaw #
-		return
-	F23 & f::SendRaw $
-		return
-	F23 & p::SendRaw `%
-		return
-	F23 & b::SendRaw ~
-		return
-	F23 & [::SendRaw √
-		return
-	F23 & j::SendRaw ^
-		return
-	F23 & l::7
-	F23 & u::8
-	F23 & y::9
-	F23 & '::`
-	F23 & -::SendRaw +
-		return
-	F23 & a::/
-	F23 & r::SendRaw (
-		return
-	F23 & s::SendRaw )
-		return
-	F23 & t::=
-	F23 & g::SendRaw !
-		return
-	F23 & ]::SendRaw €
-		return
-	F23 & m::SendRaw *
-		return
-	F23 & n::4
-	F23 & e::5
-	F23 & i::6
-	F23 & o::SendRaw :
-		return
-	F23 & `;::\
-	F23 & x::[
-	F23 & c::]
-	F23 & d::SendRaw &
-		return
-	F23 & v::SendRaw |
-		return
-	F23 & z::SendRaw _
-		return
-	F23 & /::SendRaw ?
-		return
-	F23 & k::0
-	F23 & h::1
-	F23 & ,::2
-	F23 & .::3
+;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
+#If layer_ext2
 #If
-#If layer_sym
+
+;symbol layer 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲
+#If !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
 	`::SendRaw ⋆
 		return
 	1::SendRaw ▪
 		return
 	2::SendRaw ▸
-		return
-	3::SendRaw {
-		return
-	4::SendRaw }
 		return
 	5::SendRaw »
 		return
@@ -265,148 +213,147 @@ SetCapsLockState, AlwaysOff
 		return
 	8::SendRaw •
 		return
-	9::SendRaw <
-		return
-	0::SendRaw >
-		return
 	=::SendRaw ⁃
 		return
-	q::SendRaw @
+	q::`
+	w::[
+	f::]
+	u::SendRaw (
 		return
-	w::SendRaw #
+	y::SendRaw )
 		return
-	f::SendRaw $
+	'::SendRaw "
 		return
-	p::SendRaw `%
+	-::SendRaw _
 		return
-	b::SendRaw ~
-		return
-	[::SendRaw √
-		return
-	j::SendRaw ^
-		return
-	l::7
-	u::8
-	y::9
-	'::`
-	-::SendRaw +
-		return
-	a::/
-	r::SendRaw (
-		return
-	s::SendRaw )
-		return
-	t::=
-	g::SendRaw !
-		return
+	a::1
+	r::2
+	s::3
+	t::4
 	]::SendRaw €
 		return
-	m::SendRaw *
+	m::\
+	n::7
+	e::8
+	i::9
+	o::0
+	`;::SendRaw :
 		return
-	n::4
-	e::5
-	i::6
-	o::SendRaw :
+	x::SendRaw {
 		return
-	`;::\
-	x::[
-	c::]
-	d::SendRaw &
+	c::SendRaw }
 		return
-	v::SendRaw |
+	d::5
+	v::=
+	k::/
+	h::6
+	,::SendRaw <
 		return
-	z::SendRaw _
+	.::SendRaw >
 		return
-	/::SendRaw ?
-		return
-	k::0
-	h::1
-	,::2
-	.::3
 #If
 
-;symbol2 layer
+;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
+#If GetKeyState("F23", "P") && GetKeyState("F24", "P")
+	q::sendRaw ~
+		return
+	w::sendRaw {
+		return
+	f::sendRaw }
+		return
+	u::sendRaw <
+		return
+	y::sendRaw >
+		return
+	a::sendRaw !
+		return
+	r::sendRaw @
+		return
+	s::sendRaw #
+		return
+	t::sendRaw $
+		return
+	m::sendRaw |
+		return
+	n::sendRaw &
+		return
+	e::sendRaw *
+		return
+	i::sendRaw (
+		return
+	o::sendRaw )
+		return
+	d::sendRaw `%
+		return
+	v::sendRaw +
+		return
+	k::sendRaw ?
+		return
+	h::sendRaw ^
+		return
+#If
+
+;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
 #If layer_sym2
-	F23 & 1::SendRaw ⅒
+	1::SendRaw ⅒
 		return
-	F23 & 2::SendRaw ½
+	2::SendRaw ½
 		return
-	F23 & 3::SendRaw ⅓
+	3::SendRaw ⅓
 		return
-	F23 & 4::SendRaw ¼
+	4::SendRaw ¼
 		return
-	F23 & 5::SendRaw ⅕ 
+	5::SendRaw ⅕
 		return
-	F23 & 7::SendRaw ¾
+	7::SendRaw ¾
 		return
-	F23 & 8::SendRaw ⁰
+	8::SendRaw ⁰
 		return
-	F23 & 9::SendRaw ≤
+	q::SendRaw 💡
 		return
-	F23 & 0::SendRaw ≥
+	w::SendRaw ⚠️
 		return
-	F23 & q::SendRaw 💡
+	f::SendRaw ↑
 		return
-	F23 & w::SendRaw ⚠️
+	p::SendRaw π
 		return
-	F23 & f::SendRaw ↑
+	b::SendRaw ≈
 		return
-	F23 & p::SendRaw π
+	[::SendRaw ∉
 		return
-	F23 & b::SendRaw ≈
+	u::SendRaw ≤
 		return
-	F23 & [::SendRaw ∉
+	y::SendRaw ≥
 		return
-	F23 & j::F12
-	F23 & l::F7
-	F23 & u::F8
-	F23 & y::F9
-	F23 & '::SendRaw …
+	'::SendRaw …
 		return
-	F23 & -::SendRaw ±
+	-::SendRaw ±
 		return
-	F23 & a::SendRaw ×
+	a::F1
+	r::F2
+	s::F3
+	t::F4
+	g::SendRaw ≠
 		return
-	F23 & r::SendRaw ←
+	]::SendRaw ∈
 		return
-	F23 & s::SendRaw ↓
+	n::F7
+	e::F8
+	i::F9
+	o::F10
+	x::SendRaw ✗
 		return
-	F23 & t::SendRaw →
+	c::SendRaw ㊿
 		return
-	F23 & g::SendRaw ≠
-		return
-	F23 & ]::SendRaw ∈
-		return
-	F23 & m::F11
-	F23 & n::F4
-	F23 & e::F5
-	F23 & i::F6
-	F23 & o::SendRaw Ø
-		return
-	F23 & `;::SendRaw ∞
-		return
-	F23 & x::SendRaw ✗
-		return
-	F23 & c::SendRaw ㊿
-		return
-	F23 & d::SendRaw Ⓓ
-		return
-	F23 & v::SendRaw ✓
-		return
-	F23 & z::SendRaw ²
-		return
-	F23 & /::SendRaw ÷
-		return
-	F23 & k::F10
-	F23 & h::F1
-	F23 & ,::F2
-	F23 & .::F3
+	d::F5
+	v::F11
+	k::F12
+	h::F6
 #If
 
-;mouse in extend layer
-#If layer_ext || (GetKeyState("F24", "P") && !GetKeyState("F23", "P") && !layer_sym)
+;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
+#If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
 	f::
-  F24 & f::
     If !move_f {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
         If press_f
@@ -416,7 +363,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_f_timer, -300
         }
         MouseMove, 0, -y,, R
-        KeyWait, f, T.2
+        KeyWait, f, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_f := move__nth + 1
@@ -482,7 +429,6 @@ SetCapsLockState, AlwaysOff
     press_f = 0
     Return
 	s::
-  F24 & s::
     If !move_s {
       if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
         If press_s
@@ -492,7 +438,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_s_timer, -300
         }
         MouseMove, 0, y,, R
-        KeyWait, s, T.2
+        KeyWait, s, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_s := move__nth + 1
@@ -558,7 +504,6 @@ SetCapsLockState, AlwaysOff
     press_s = 0
     Return
 	t::
-  F24 & t::
     If !move_t {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
         If press_t
@@ -568,7 +513,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_t_timer, -300
         }
         MouseMove, x, 0,, R
-        KeyWait, t, T.2
+        KeyWait, t, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_t := move__nth + 1
@@ -634,7 +579,6 @@ SetCapsLockState, AlwaysOff
     press_t = 0
     Return
 	r::
-  F24 & r::
     If !move_r {
       if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
         If press_r
@@ -644,7 +588,7 @@ SetCapsLockState, AlwaysOff
           SetTimer, speed_r_timer, -300
         }
         MouseMove, -x, 0,, R
-        KeyWait, r, T.2
+        KeyWait, r, T.1
         if ErrorLevel {
           ErrorLevel = 0
           move_r := move__nth + 1
@@ -710,7 +654,6 @@ SetCapsLockState, AlwaysOff
     press_r = 0
     Return
 	*q::
-    F24 & q::
     if !scroll_q {
       If press_q
         press_q = 2
@@ -723,7 +666,7 @@ SetCapsLockState, AlwaysOff
       if ErrorLevel {
         ErrorLevel = 0
         scroll_q = 1
-        scroll_speed := scroll_defualt_speed
+        scroll_speed := scroll_default_speed
         If speed_q {
           scroll_speed *= scroll_speed_multiplier
           speed_q = 0
@@ -737,7 +680,7 @@ SetCapsLockState, AlwaysOff
     if GetKeyState("q","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelUp}
     Else {
-      scroll_speed := scroll_defualt_speed
+      scroll_speed := scroll_default_speed
       scroll_q = 0
       setTimer,, Off
     }
@@ -748,7 +691,6 @@ SetCapsLockState, AlwaysOff
     press_q = 0
     Return
 	*a::
-    F24 & a::
     if !scroll_a {
       If press_a
         press_a = 2
@@ -761,7 +703,7 @@ SetCapsLockState, AlwaysOff
       if ErrorLevel {
         ErrorLevel = 0
         scroll_a = 1
-        scroll_speed := scroll_defualt_speed
+        scroll_speed := scroll_default_speed
         If speed_a {
           scroll_speed *= scroll_speed_multiplier
           speed_a = 0
@@ -775,7 +717,7 @@ SetCapsLockState, AlwaysOff
     if GetKeyState("a","P")  && (layer_ext ? 1 : GetKeyState("F24","P"))
       SendInput {Blind}{wheelDown}
     Else {
-      scroll_speed := scroll_defualt_speed
+      scroll_speed := scroll_default_speed
       scroll_a = 0
       setTimer,, Off
     }
@@ -786,3 +728,4 @@ SetCapsLockState, AlwaysOff
     press_a = 0
     Return
 #If
+

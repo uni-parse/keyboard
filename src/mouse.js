@@ -133,7 +133,7 @@ const mouse = {
       if ErrorLevel {
         ErrorLevel = 0
         scroll_${key} = 1
-        scroll_speed := scroll_defualt_speed
+        scroll_speed := scroll_default_speed
         If speed_${key} {
           scroll_speed *= scroll_speed_multiplier
           speed_${key} = 0
@@ -147,7 +147,7 @@ const mouse = {
     if GetKeyState("${key}","P")  && (layer_ext ? 1 : GetKeyState("${combination}","P"))
       SendInput {Blind}{${dir}}
     Else {
-      scroll_speed := scroll_defualt_speed
+      scroll_speed := scroll_default_speed
       scroll_${key} = 0
       setTimer,, Off
     }
