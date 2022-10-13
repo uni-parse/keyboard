@@ -1,5 +1,29 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾⤿⥁🔍
+import './sass/main.scss'
+import showMedias from './mediaIcons'
+import './keyboard'
+import appendKeys from './keyboard'
 
+const main = document.createElement('main'),
+  switcher = document.createElement('div'),
+  keyboard = document.createElement('div'),
+  download = document.createElement('div'),
+  pre = document.createElement('pre'),
+  a = document.createElement('a')
+
+
+download.appendChild((a.textContent = 'download', a))
+main.appendChild((switcher.id = 'switcher', switcher))
+main.appendChild((keyboard.id = 'keyboard', appendKeys(keyboard), keyboard))
+main.appendChild((download.id = 'download', download))
+document.body.appendChild(main)
+
+showMedias(main)
+
+
+console.log('💡💡done💡💡')
+
+/*
 import './sass/main.scss'
 import keys from './keys'
 import autohotkey from './autohotkey'
@@ -82,3 +106,5 @@ symbol.addEventListener('click', () => {
     display()
   }
 })
+
+*/

@@ -1,14 +1,67 @@
 @use 'utilities' as *;
+
 html {
   box-sizing: border-box;
 }
+
 *,
 *:after,
 *:before {
   box-sizing: inherit;
 }
+
 html,
 body {
   @include space();
-  text-align: center;
+  //text-align: center;
 }
+
+main {
+  border: red solid thin;
+  height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  // object-fit: contain;
+  //cursor: cell;
+  // position: sticky;
+  // top: 0;
+}
+
+/* main{
+  display: inline-flex;
+  width: clamp(300px,100vw,1200px);
+  flex-flow: column nowrap;
+  overflow: hidden;
+  max-width: calc(100vw - 1.1em);
+}
+
+div#script{
+  align-self: center;
+  background-color: red;
+  display: inline-block;
+  position: relative;
+  height: 80vh;
+  @include space(0,1em 0 0 0);
+}
+pre{
+  display: inline-block;
+  text-align: start;
+  font-size: clamp(1rem,1.25vw,1.25rem);
+  tab-size: 2;
+  overflow: auto;
+  white-space: break-spaces;
+  background-color: #333;
+  max-height: 100%;
+  max-width: calc(100vw - 1em);
+  color: yellowgreen;
+  @include space();
+}
+button{
+    padding: 0.25rem;
+    position: absolute;
+    right: 1.2rem;
+    top: 0.75rem;
+}
+ */

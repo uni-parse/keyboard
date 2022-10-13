@@ -1,0 +1,20 @@
+switchers buttens
+
+keyboard gui
+
+download links
+
+ahk script
+
+keys script
+
+
+
+
+
+each key are button onclick dialog appear to input keys
+  identified by unique #id
+  in js I need to create switch statement to much each symbol by curesponding ahk hotkey.
+
+
+keyboard gui must be build by flex & grid

@@ -1,3 +1,10 @@
+new feature required to configurate keys through gui(browser)
+  make all the keys inputs or detile elements
+  layout will be fixed don't depend on keys.js
+  sass will be entirely changed
+  create layout switchers buttons: strong standerd shift ext ext2 sym sym-shift sym2
+  use grid or flex layout to alighn every thing
+
 new issue: f24 & d = delete, still pressing dddddd after f24-up
 
 
