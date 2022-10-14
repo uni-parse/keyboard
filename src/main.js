@@ -3,20 +3,19 @@ import './sass/main.scss'
 import appendMedias from './mediaIcons'
 import './keyboard'
 import appendKeys from './keyboard'
+import layerSwitcher from './layerSwitcher'
 
 const main = document.createElement('main'),
   keyboard = document.createElement('div'),
   panel = document.createElement('div'),
   fieldset = document.createElement('fieldset'),
-  legend = document.createElement('legend'),
-  a = document.createElement('a'),
-  pre = document.createElement('pre')
+  legend = document.createElement('legend')
 
 fieldset.appendChild((legend.innerText = 'layout switcher', legend))
 fieldset.name = 'layer'
 
 //layout switcher radio buttons(input type=radio)
-const switcherLabels = ['standard', 'power', 'symbol', 'sym2', 'extend', 'ext2']
+const switcherLabels = ['power','standard','shift', 'sym','symShift', 'sym2', 'ext', 'ext2']
 switcherLabels.forEach(layer => {
   const label = document.createElement('label'),
     radio = document.createElement('input')
@@ -26,21 +25,20 @@ switcherLabels.forEach(layer => {
   radio.id = `radio_${layer}`
   radio.name = 'layer'
   radio.value = layer
-  if (layer == 'standard') radio.setAttribute('checked', 'true')
+  if (layer == 'standard') radio.setAttribute('checked', 'checked')
 
   label.appendChild(radio); label.innerHTML += layer
   fieldset.appendChild(label)
 })
-
-
+panel.appendChild(fieldset)
 
 main.appendChild((keyboard.id = 'keyboard', appendKeys(keyboard), keyboard))
-panel.appendChild(fieldset)
-panel.appendChild((a.textContent = 'download', a))
-appendMedias(main)
-
 main.appendChild((panel.id = 'panel', panel))
+appendMedias(main)
 document.body.appendChild(main)
+
+//listen to layer switcher
+layerSwitcher(fieldset)
 
 
 
