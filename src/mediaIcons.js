@@ -1,4 +1,21 @@
+export default appendMedias
 import srcset from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
+
+function appendMedias(ctx) {
+  ctx.appendChild(address)
+  let toggle = 0
+  img.style.bottom = '.3rem'
+  //onclick show|hide svg icons
+  img.addEventListener('click', () => {
+    toggle = !toggle
+    if (toggle) {
+      svgs.forEach(svg => svg.style.right = '2.8rem')
+    } else {
+      svgs.forEach(svg => svg.style.right = 0)
+    }
+  })
+}
+
 const a = document.createElement('a'),
   address = document.createElement('address'),
   icons = {
@@ -18,6 +35,8 @@ const medias = [
   ['https://github.com/TheUniParse', icons.github],
   ['https://twitter.com/UniParse', icons.twitter],
 ]
+
+//append media ancher links in <address>
 a.setAttribute('target', '_blank')
 let i = 0
 for (const media of medias) {
@@ -25,33 +44,15 @@ for (const media of medias) {
   a.innerHTML = media[1]
   address.appendChild(a.cloneNode(true))
 }
+
+//append the main img icon
 const img = document.createElement('img')
 img.srcset = srcset
 img.setAttribute('alt', 'uniparse')
 address.appendChild(img)
 
-
+//set initial position of svg icons, (hidden in right)
 const svgs = address.querySelectorAll('svg')
-
 for (let i = 0; i < svgs.length; i++) {
   svgs[i].style.transition = `all 500ms cubic-bezier(0.215, 0.61, 0.355, 1), right ${(svgs.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4), left ${(svgs.length - i) * 100 + 200}ms cubic-bezier(.4,1,.8,1.4)`
 }
-
-
-
-function showMedias(ctx) {
-  ctx.appendChild(address)
-  let toggle = 0
-  img.style.bottom = '.3rem'
-  img.addEventListener('click', () => {
-    toggle = !toggle
-    if (toggle) {
-      svgs.forEach(svg => svg.style.right = '2.8rem')
-    } else {
-      svgs.forEach(svg => svg.style.right = 0)
-    }
-  })
-}
-
-
-export default showMedias

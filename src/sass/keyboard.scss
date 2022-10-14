@@ -23,6 +23,20 @@ $shift: hsl(46, 100%, 50%);
 $symbol2: pink;
 $lightness: -8%;
 
+#keyboard {
+  border: solid yellow thin;
+}
+
+div.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#⌫ {
+  flex-basis: 17%;
+}
+
+
 
 /* #keyboardCtx {
   overflow: auto;
