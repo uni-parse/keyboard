@@ -10,7 +10,7 @@ function appendKeys(ctx) {
     //append keys in rows ctx
     keys[row].forEach(key => {
       const btn = document.createElement('button')
-      btn.id = renameToValidId(key.standard)
+      btn.id = renameToValidId(key.standardHtk)
       btn.textContent = key.standard
 
       rowCtx.appendChild(btn)
