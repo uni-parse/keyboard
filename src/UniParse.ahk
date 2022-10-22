@@ -38,9 +38,9 @@ resetSpeed() {
 
 brightnessJump = 10
 CurrentBrightness := GetCurrentBrightNess()
-ChangeBrightness(0)
-minimumBrightness := GetCurrentBrightNess()
-ChangeBrightness(CurrentBrightness)
+; ChangeBrightness(0)
+; minimumBrightness := GetCurrentBrightNess()
+; ChangeBrightness(CurrentBrightness)
 
 ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
 	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
@@ -156,13 +156,7 @@ SetCapsLockState, AlwaysOff
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return
-	[::
-    if (GetCurrentBrightNess() = minimumBrightness)
-      ChangeBrightness(GetCurrentBrightNess() + 12 - minimumBrightness)
-    else if (GetCurrentBrightNess() <= 100 - brightnessJump)
-      ChangeBrightness(GetCurrentBrightNess() + brightnessJump)
-    else
-      ChangeBrightness(100)
+	[::ChangeBrightness(CurrentBrightness < 100 - brightnessJump ? CurrentBrightness += brightnessJump : 100)
     return
 	j::PgUp
 	l::Home
@@ -171,11 +165,7 @@ SetCapsLockState, AlwaysOff
 	'::Volume_Down
 	-::Volume_Up
 	g::AppsKey
-	]::
-    if (GetCurrentBrightNess() - minimumBrightness>= brightnessJump)
-      ChangeBrightness(GetCurrentBrightNess() - brightnessJump)
-    else
-      ChangeBrightness(0)
+	]::ChangeBrightness(CurrentBrightness > brightnessJump ? CurrentBrightness -= brightnessJump : 0)
     return
 	m::PgDn
 	n::Left

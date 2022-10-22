@@ -42,9 +42,9 @@ resetSpeed() {
 
 brightnessJump = 10
 CurrentBrightness := GetCurrentBrightNess()
-ChangeBrightness(0)
-minimumBrightness := GetCurrentBrightNess()
-ChangeBrightness(CurrentBrightness)
+; ChangeBrightness(0)
+; minimumBrightness := GetCurrentBrightNess()
+; ChangeBrightness(CurrentBrightness)
 
 ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
 	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )

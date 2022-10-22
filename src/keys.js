@@ -162,8 +162,9 @@ keysMap.shift = (() => {
           : shift += ' ' + getKeyShift(key)
       )
     })
-  return shift
-})();
+    return shift
+  })();
+  console.log(keysMap.shift)
 
 const keys = {
   topRow: [
