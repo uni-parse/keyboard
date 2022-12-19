@@ -85,7 +85,7 @@ document.body.appendChild(main)
 showMedias(main)
 
 
-autohotkey(keys, pre, btn, navigator)
+autohotkey(pre, btn, navigator)
 layout(keys, keyboard)
 
 let toggle_extend = false, toggle_symbol = false

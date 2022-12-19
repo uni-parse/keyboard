@@ -1,8 +1,15 @@
 import mouse from "./mouse"
 import { extendKey, symbolKey, config } from "./config"
 import brightness from "./brighness"
-function autohotkey(keys, pre, btn, navigator) {
-  let mouseL, mouseR, mouseU, mouseD,
+import keys from "./keys"
+
+
+function autohotkey(pre, btn, navigator) {
+  let {
+    standard: base,
+    sym, sym2, symShift, extHtk, ext2Htk
+  } = keys,
+    mouseL, mouseR, mouseU, mouseD,
     output = `;
 ;
 ;   made by UniParse
@@ -64,89 +71,60 @@ SetCapsLockState, AlwaysOff
   output += ';config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️'
   output += config.switchers()
 
-
   output += `;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟\n#If ${config.layer_condition.ext}\n`
-  keys.forEach(key => {
-    if (Array.isArray(key[2]) && key[2][0]) {
-      if (key[2][0].includes('Button')) {
-        output += `\t${key[0]}::${key[2][0]}\n`
-      } else if (key[2][0] == 'Capslock') {
-        output += `\t${key[0]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
-      } else if (key[2][0] == 'mouseL') {
-        mouseL = key[0]
-      } else if (key[2][0] == 'mouseR') {
-        mouseR = key[0]
-      } else if (key[2][0] == 'mouseU') {
-        mouseU = key[0]
-      } else if (key[2][0] == 'mouseD') {
-        mouseD = key[0]
-      } else if (key[2][0] == 'brightnessUp') {
-        output += brightness(key[0], 1)
-      } else if (key[2][0] == 'brightnessDown') {
-        output += brightness(key[0])
-      } else if (key[2][0] == 'speed') {
-        output += `\t${key[0]}::
+  extHtk.forEach((key, i) => {
+    if (key.includes('Button'))
+      output += `\t${base[i]}::${key}\n`
+    else if (key == 'Capslock')
+      output += `\t${base[i]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
+    else if (key == 'mouseL') mouseL = base[i]
+    else if (key == 'mouseR') mouseR = base[i]
+    else if (key == 'mouseU') mouseU = base[i]
+    else if (key == 'mouseD') mouseD = base[i]
+    else if (key == 'brightnessUp')
+      output += brightness(base[i], 1)
+    else if (key == 'brightnessDown')
+      output += brightness(base[i])
+    else if (key == 'speed')
+      output += `\t${base[i]}::
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return\n`
-      } else if (!key[2][0].includes('mouse') && !key[2][0].includes('Wheel')) {
-        output += `${key[2] && !(Array.isArray(key[2]) && !key[2][0]) ?
-          `\t${key[0]}::${Array.isArray(key[2]) ? key[2][0] : key[2]}\n` : ''}`
-      }
-    }
+    else if (key != '.' && !key.includes('mouse') && !key.includes('Wheel'))
+      output += `\t${base[i]}::${key}\n`
   })
   output += '#If\n\n'
 
 
-  output += `;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟\n#If ${config.layer_condition.ext2}\n`
-  keys.forEach(key => {
-
-  })
+  output += `;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟\n#If ${config.layer_condition.ext2} \n`
+  //ext2Htk.forEach(key => {})
   output += '#If\n\n'
 
 
-  output += `;symbol layer 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲\n#If ${config.layer_condition.sym}\n`
-  keys.forEach(key => {
-    if (Array.isArray(key[3]) && (key[3][0] || key[3][0] == 0)) {
-      if (typeof key[3][0] == 'number' || key[3][0] == '`' || key[3][0] == '\\' || key[3][0] == '/' || key[3][0] == '=' || key[3][0] == '[' || key[3][0] == ']') {
-        output += `\t${key[0]}::${key[3][0]}\n`
-      } else if (key[3][0]) {
-        output += `\t${key[0]}::SendRaw ${key[3][0]}\n\t\treturn\n`
-      }
-    } else if (typeof key[3] == 'number' || key[3] == '`' || key[3] == '\\' || key[3] == '/' || key[3] == '=' || key[3] == '[' || key[3] == ']') {
-      output += `\t${key[0]}::${key[3]}\n`
-    } else if (key[3]) {
-      output += `\t${key[0]}::SendRaw ${key[3]}\n\t\treturn\n`
-    }
+  output += `;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲\n#If ${config.layer_condition.sym} \n`
+  sym.forEach((key, i) => {
+    if (+key || key == 0 || key == '`' || key == '\\' || key == '/' || key == '=' || key == '[' || key == ']')
+      output += `\t${base[i]}::${key}\n`
+    else if (key != '.')
+      output += `\t${base[i]}::SendRaw ${key}\n\t\treturn\n`
   })
   output += '#If\n\n'
 
 
   output += `;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲\n#If ${config.layer_condition.sym1}\n`
-  keys.forEach(key => {
-    if (Array.isArray(key[3])) {
-
-      if (key[3][1].includes(' ') && key[3][1].split(' ')[1]) {
-        output += `\t${key[0]}::sendRaw ${key[3][1].split(' ')[1]}\n\t\treturn\n`
-      }
-    }
-
+  symShift.forEach((key, i) => {
+    if (key != '.')
+      output += `\t${base[i]}::sendRaw ${key}\n\t\treturn\n`
   })
   output += '#If\n\n'
 
 
   output += `;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲\n#If ${config.layer_condition.sym2}\n`
-  keys.forEach(key => {
-    if (Array.isArray(key[4]) && key[4][0]) {
-      output += `${key[4] && !(Array.isArray(key[4]) && !key[4][0]) ?
-        `\t${key[0]}::${((Array.isArray(key[4])) ? (key[4][0]) : key[4])}\n` : ''}`
-    } else if (key[4]) {
-      if (!key[4].startsWith('F') && !key[4].startsWith('^')) {
-        output += `\t${key[0]}::SendRaw ${key[4]}\n\t\treturn\n`
-      } else {
-        output += `\t${key[0]}::${key[4]}\n`
-      }
-    }
+  sym2.forEach((key, i) => {
+    if (key.startsWith('F') || key.startsWith('^'))
+      output += `\t${base[i]}::${key}\n`
+    else if (key != '.')
+      output += `\t${base[i]}::SendRaw ${key}\n\t\treturn\n`
   })
   output += `#If\n\n`
 

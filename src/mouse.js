@@ -4,43 +4,25 @@ const mouse = {
     function mouseKey(key) {
       function coords(mouseDirection, cross = 0) {
         if (!cross) {
-          if (mouseDirection == mouseU) {
-            return '0, -y'
-          } else if (mouseDirection == mouseR) {
-            return 'x, 0'
-          } else if (mouseDirection == mouseD) {
-            return '0, y'
-          } else if (mouseDirection == mouseL) {
-            return '-x, 0'
-          }
+          if (mouseDirection == mouseU) return '0, -y'
+          else if (mouseDirection == mouseR) return 'x, 0'
+          else if (mouseDirection == mouseD) return '0, y'
+          else if (mouseDirection == mouseL) return '-x, 0'
         } else if (cross == 1) {
-          if (mouseDirection == mouseU || mouseDirection == mouseL) {
-            return '-x, -y'
-          } else if (mouseDirection == mouseR) {
-            return 'x, -y'
-          } else if (mouseDirection == mouseD) {
-            return '-x, y'
-          }
+          if (mouseDirection == mouseU || mouseDirection == mouseL) return '-x, -y'
+          else if (mouseDirection == mouseR) return 'x, -y'
+          else if (mouseDirection == mouseD) return '-x, y'
         } else if (cross == 2) {
-          if (mouseDirection == mouseU) {
-            return 'x, -y'
-          } else if (mouseDirection == mouseR || mouseDirection == mouseD) {
-            return 'x, y'
-          } else if (mouseDirection == mouseL) {
-            return '-x, y'
-          }
+          if (mouseDirection == mouseU) return 'x, -y'
+          else if (mouseDirection == mouseR || mouseDirection == mouseD) return 'x, y'
+          else if (mouseDirection == mouseL) return '-x, y'
         }
       }
       function opposite(mouseDirection) {
-        if (mouseDirection == mouseL) {
-          return mouseR
-        } else if (mouseDirection == mouseR) {
-          return mouseL
-        } else if (mouseDirection == mouseU) {
-          return mouseD
-        } else if (mouseDirection == mouseD) {
-          return mouseU
-        }
+        if (mouseDirection == mouseL) return mouseR
+        else if (mouseDirection == mouseR) return mouseL
+        else if (mouseDirection == mouseU) return mouseD
+        else if (mouseDirection == mouseD) return mouseU
       }
       return `\t${key}::
     If !move_${key} {
