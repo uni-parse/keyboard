@@ -1,9 +1,9 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾⤿⥁🔍
 import './sass/main.scss'
 import appendMedias from './mediaIcons'
+import keys from './keys'
 import './keyboard'
 import appendKeys from './keyboard'
-import layerSwitcherListener from './layerSwitcher'
 
 const main = document.createElement('main'),
   keyboard = document.createElement('div'),
@@ -38,7 +38,12 @@ appendMedias(main)
 document.body.appendChild(main)
 
 //listen to layer switcher
-layerSwitcherListener(fieldset)
+const buttons = document.querySelectorAll(`#keyboard button`);
+fieldset.addEventListener('change', e =>
+  buttons.forEach((btn, i) =>
+    btn.textContent = keys[e.target.value][i]
+  )
+)
 
 
 
@@ -47,7 +52,7 @@ console.log('💡💡done💡💡')
 /*
 import './sass/main.scss'
 import keys from './keys'
-import autohotkey from './autohotkey'
+import autohotkeyStr from './autohotkey'
 import layout from './layout'
 import showMedias from './mediaIcons'
 
@@ -85,7 +90,11 @@ document.body.appendChild(main)
 showMedias(main)
 
 
-autohotkey(pre, btn, navigator)
+pre.innerText = autohotkeyStr
+btn.addEventListener('click', () => {
+  navigator.clipboard.writeText(autohotkeyStr)
+    .then(() => btn.textContent = 'copied')
+})
 layout(keys, keyboard)
 
 let toggle_extend = false, toggle_symbol = false

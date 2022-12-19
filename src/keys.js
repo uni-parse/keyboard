@@ -37,10 +37,10 @@ alt   a r s t g   ]   m n e i o ;  ⏎
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
 .      .   .         .         .   .   .   .`,
 }
+
 const standardStr = keys.standard
 formateKeysToArrays()
 keys.standardRows = getKeysByRows(standardStr)
-
 
 keys.shift = getShifts(keys.standard)
 keys.symShift = getShifts(keys.sym)
@@ -55,10 +55,8 @@ keys.standardHtkRows = getKeysByRows(
 keys.extHtk = keys.ext.map(key => getHotKey(key))
 keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
 
-
 export default keys
 
-//helpers functions
 function formateKeysToArrays() {
   for (const layer in keys) {
     keys[layer] = keys[layer]

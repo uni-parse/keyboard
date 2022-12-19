@@ -1,34 +1,8 @@
-/**  goal
-      s symbol            e shift symbol
-      ss↑ toggle symbol   e temp extend
-      ss↓ sym2            e alt || ctrl
-      
-      s↓e↓ shift symbol   
-      e↓s↓ shift symbol   
-      s↓e↑ nothing        
-      e↓s↑ nothign        
-    
-      e extend            s shift symbol
-      ee↑ toggle extend   s temp symbol
-      ee↓ ext2            s nothing
-  
-      .....................................
-  
-      symbol              s && !e || layer_sym
-      shift symbol        s↓e↓ e↓s↓
-      toggle symbol       ss↑
-      !toggle symbol      s ee↑
-      sym2                ss↓
-  
-      extend              e
-      toggle extend       ee↑
-      !toggle extend      e ss↑
-      ext2                ee↓
-  
-     */
-const symbolKey = 'F23', extendKey = 'F24', delay = [-400, 2],
+const symbolKey = 'F23', extendKey = 'F24',
+  delay = [-400, 2],
   config = {
-    switchers: () => `
+    symKey: symbolKey, extKey: extendKey,
+    switchers: `
   ${symbolKey}::
     if !hold_${symbolKey} {
       hold_${symbolKey} = 1
@@ -119,4 +93,32 @@ const symbolKey = 'F23', extendKey = 'F24', delay = [-400, 2],
     }
   }
 export default config
-export { extendKey, symbolKey, config }
+
+/**  goal
+  s symbol            e shift symbol
+  ss↑ toggle symbol   e temp extend
+  ss↓ sym2            e alt || ctrl
+    
+  s↓e↓ shift symbol   
+  e↓s↓ shift symbol   
+  s↓e↑ nothing        
+  e↓s↑ nothign        
+  
+  e extend            s shift symbol
+  ee↑ toggle extend   s temp symbol
+  ee↓ ext2            s nothing
+
+  .....................................
+
+  symbol              s && !e || layer_sym
+  shift symbol        s↓e↓ e↓s↓
+  toggle symbol       ss↑
+  !toggle symbol      s ee↑
+  sym2                ss↓
+
+  extend              e
+  toggle extend       ee↑
+  !toggle extend      e ss↑
+  ext2                ee↓
+
+*/
