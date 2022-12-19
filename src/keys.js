@@ -119,76 +119,136 @@ alt   a r s t g   ]   m n e i o ;  ⏎
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
 .      .   .         .         .   .   .   .`,
 }
+const standardStr = keys.standard
+formateKeysToArrays()
+keys.standardRows = getKeysByRows(standardStr)
 
 
-//formate to { rowName:[], ..., [Symbol(allkeys)]: [] }
-const allkeys = Symbol('allKeys')
-formateKeys(allkeys, 'top', 'upper', 'home', 'lower', 'bottom')
+keys.shift = getShifts(keys.standard)
+keys.symShift = getShifts(keys.sym)
 
-keys.shift = getShiftLayer(keys.standard)
-keys.symShift = getShiftLayer(keys.sym)
-//console.log(keys.shift)
+keys.standardHtk = keys.standard.map(key => getHotKey(key))
+keys.standardHtkRows = getKeysByRows(
+  standardStr
+    .split('')
+    .map(key => getHotKey(key))
+    .join('')
+)
+keys.extHtk = keys.ext.map(key => getHotKey(key))
+keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
+
 
 export default keys
-export { keys, allkeys}
 
 //helpers functions
-function formateKeys(symbol, ...rowsNames) {
+function formateKeysToArrays() {
   for (const layer in keys) {
-    const rows = keys[layer]
+    keys[layer] = keys[layer]
+      .replace('\n', '')         //remove first new line
+      .replaceAll('\n', ' ')      //remove all new lines
+      .replaceAll('    ', ' ')   //remove extra spaces
+      .replaceAll('   ', ' ')    //remove extra spaces
+      .replaceAll('  ', ' ')     //remove extra spaces
+      .split(' ')
+  }
+}
+function getKeysByRows(standardStr) {
+  const names = ['top', 'upper', 'home', 'lower', 'bottom'],
+    rows = standardStr
       .replace('\n', '')         //remove first newLine0
       .replaceAll('    ', ' ')   //remove extra spaces
       .replaceAll('   ', ' ')    //remove extra spaces
       .replaceAll('  ', ' ')     //remove extra spaces
       .split('\n')
-    rows.forEach((str, i) => rows[i] = str.split(' '))
-
-    keys[layer] = {}
-    rowsNames.forEach((name, i) => keys[layer][name] = rows[i])
-
-    keys[layer][symbol] = rows.reduce((all, row) => all.concat(row), [])
-  }
+  rows.forEach((row, i) => rows[i] = row.split(' '))
+  return Object.fromEntries(names.map((n, i) => [n, rows[i]]))
 }
-function getShiftLayer(layer) {
-  const shift = {}
-
-  for (const row in layer) {
-    shift[row] = layer[row].map(key => getKeyShift(key))
-  }
-  shift[allkeys] = layer[allkeys].map(key => getKeyShift(key))
-  return shift
+function getShifts(layer) {
+  return layer.map(key => {
+    switch (key) {
+      case '`': return '~'; break
+      case '1': return '!'; break
+      case '2': return '@'; break
+      case '3': return '#'; break
+      case '4': return '$'; break
+      case '5': return '%'; break
+      case '6': return '^'; break
+      case '7': return '&'; break
+      case '8': return '*'; break
+      case '9': return '('; break
+      case '0': return ')'; break
+      case '=': return '+'; break
+      case '-': return '_'; break
+      case '\\': return '|'; break
+      case '/': return '?'; break
+      case '[': return '{'; break
+      case ']': return '}'; break
+      case ',': return '<'; break
+      case '.': return '>'; break
+      case ';': return ':'; break
+      case "'": return '"'; break
+      default: return (
+        key.length == 1
+          && key >= 'a'
+          && key <= 'z'
+          ? key.toUpperCase()
+          : key
+      )
+    }
+  })
 }
 
-function getKeyShift(key) {
+function getHotKey(key) {
   switch (key) {
-    case '`': return '~'; break
-    case '1': return '!'; break
-    case '2': return '@'; break
-    case '3': return '#'; break
-    case '4': return '$'; break
-    case '5': return '%'; break
-    case '6': return '^'; break
-    case '7': return '&'; break
-    case '8': return '*'; break
-    case '9': return '('; break
-    case '0': return ')'; break
-    case '=': return '+'; break
-    case '-': return '_'; break
-    case '\\': return '|'; break
-    case '/': return '?'; break
-    case '[': return '{'; break
-    case ']': return '}'; break
-    case ',': return '<'; break
-    case '.': return '>'; break
-    case ';': return ':'; break
-    case "'": return '"'; break
-    default: return (
-      key.length == 1
-        && key >= 'a'
-        && key <= 'z'
-        ? key.toUpperCase()
-        : key
-    )
+    case '💲': return 'F23'; break
+    case '⭐': return 'F24'; break
+    case '⎋': return 'Esc'; break
+    case '⇄': return 'Tab'; break
+    case '⏎': return 'Enter'; break
+    case '⇪': return 'Capslock'; break
+    case '⇧': return 'LShift'; break
+    case '⨁': return 'LCtrl'; break
+    case '⊞': return 'LWin'; break
+    case '≣': return 'AppsKey'; break
+    case '⌫': return 'Bs'; break
+    case '⌦': return 'Del'; break
+    case '⇱': return 'Home'; break
+    case '⇲': return 'End'; break
+    case '⇞': return 'PgUp'; break
+    case '⇟': return 'PgDown'; break
+    case '↑': return 'Up'; break
+    case '↓': return 'Down'; break
+    case '→': return 'Right'; break
+    case '←': return 'Left'; break
+    case '▴': return 'mouseU'; break
+    case '▾': return 'mouseD'; break
+    case '▸': return 'mouseR'; break
+    case '◂': return 'mouseL'; break
+    case '◴': return 'LButton'; break
+    case '◷': return 'RButton'; break
+    case '⦺': return 'MButton'; break
+    case '↩': return 'XButton1'; break
+    case '↪': return 'XButton2'; break
+    case '⇈': return 'WheelDown'; break
+    case '⇊': return 'WheelUp'; break
+    case '⎇': return 'speed'; break
+    case '⏯': return 'Media_Play_Pause'; break
+    case '◼': return 'Media_Stop'; break
+    case '⏭': return 'Media_Next'; break
+    case '⏮': return 'Media_Prev'; break
+    case '🔇': return 'Volume_Mute'; break
+    case '🔊': return 'Volume_Up'; break
+    case '🔈': return 'Volume_Down'; break
+    case '☀': return 'brightnessUp'; break
+    case '✳': return 'brightnessDown'; break
+    case '⊚': return '^Numpad0'; break
+    case '⊕': return '^NumpadAdd'; break
+    case '⊝': return '^NumpadSub'; break
+    case '⎙': return 'PrintScreen'; break
+    case '📱': return 'Run calc'; break
+    case '%': return '`%'; break
+    case ';': return '`;'; break
+    default: return key;
   }
 }
 
