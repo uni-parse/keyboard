@@ -1,4 +1,3 @@
-﻿
-g::
-  click, 100, L
+﻿`::
+  click, 4, L
 return

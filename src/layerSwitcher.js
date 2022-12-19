@@ -1,16 +1,15 @@
-export default layerSwitcher
-import keys from "./keys";
+export default layerSwitcherListener
+import { keys, allkeys } from "./keys";
+let buttons = []
 
-function layerSwitcher(fieldset) {
-  fieldset.addEventListener('change', event => {
-    for (const row in keys) {
-      const buttons = document.querySelectorAll(`#${row}>button`)
-
-      //update layer buttons keys
-      let layer = event.target.value //input[type=radio].value
-      for (let i = 0; i < buttons.length; i++) {
-        buttons[i].textContent = keys[row][i][layer]
-      }
-    }
+function layerSwitcherListener(fieldset) {
+  fieldset.addEventListener('click', () =>
+    buttons = document.querySelectorAll(`#keyboard button`)
+    , { once: true })
+  fieldset.addEventListener('change', e => {
+    const layer = e.target.value
+    buttons.forEach((btn, i) =>
+      btn.textContent = keys[layer][allkeys][i]
+    )
   })
 }

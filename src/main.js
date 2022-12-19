@@ -3,7 +3,7 @@ import './sass/main.scss'
 import appendMedias from './mediaIcons'
 import './keyboard'
 import appendKeys from './keyboard'
-import layerSwitcher from './layerSwitcher'
+import layerSwitcherListener from './layerSwitcher'
 
 const main = document.createElement('main'),
   keyboard = document.createElement('div'),
@@ -15,7 +15,7 @@ fieldset.appendChild((legend.innerText = 'layout switcher', legend))
 fieldset.name = 'layer'
 
 //layout switcher radio buttons(input type=radio)
-const switcherLabels = ['power','standard','shift', 'sym','symShift', 'sym2', 'ext', 'ext2']
+const switcherLabels = ['power', 'standard', 'shift', 'sym', 'symShift', 'sym2', 'ext', 'ext2']
 switcherLabels.forEach(layer => {
   const label = document.createElement('label'),
     radio = document.createElement('input')
@@ -25,7 +25,7 @@ switcherLabels.forEach(layer => {
   radio.id = `radio_${layer}`
   radio.name = 'layer'
   radio.value = layer
-  if (layer == 'standard') radio.setAttribute('checked', 'checked')
+  if (layer == 'standard') radio.setAttribute('checked', true)
 
   label.appendChild(radio); label.innerHTML += layer
   fieldset.appendChild(label)
@@ -38,7 +38,7 @@ appendMedias(main)
 document.body.appendChild(main)
 
 //listen to layer switcher
-layerSwitcher(fieldset)
+layerSwitcherListener(fieldset)
 
 
 

@@ -79,34 +79,9 @@ class key {
       default: return key;
     }
   }
-  getKeyShift(key) {
-    switch (key) {
-      case '`': return '~'; break
-      case 1: return '!'; break
-      case 2: return '@'; break
-      case 3: return '#'; break
-      case 4: return '$'; break
-      case 5: return '%'; break
-      case 6: return '^'; break
-      case 7: return '&'; break
-      case 8: return '*'; break
-      case 9: return '('; break
-      case 0: return ')'; break
-      case '=': return '+'; break
-      case '-': return '_'; break
-      case '\\': return '|'; break
-      case '/': return '?'; break
-      case '[': return '{'; break
-      case ']': return '}'; break
-      case ',': return '<'; break
-      case '.': return '>'; break
-      case ';': return ':'; break
-      case "'": return '"'; break
-      default: return key.length == 1 && key >= 'a' && key <= 'z' ? key.toUpperCase() : null
-    }
-  }
 }
-const keysMap = {
+
+const keys = {
   power: `
 55 46 40 34 29 29 35   47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
@@ -144,107 +119,46 @@ alt   a r s t g   ]   m n e i o ;  ⏎
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
 .      .   .         .         .   .   .   .`,
 }
-keysMap.shift = (() => {
-  let shift = ''
-  keysMap.standard
-    .replace('\n', '')         //remove extra new line #1
-    .replaceAll('    ', ' ')   //remove extra spaces
-    .replaceAll('   ', ' ')    //remove extra spaces
-    .replaceAll('  ', ' ')     //remove extra spaces
-    .split('\n')
-    .forEach((row, index) => {
-      index == 0
-        ? null                //do nothing
-        : shift += '\n'
-      row.split(' ').forEach((key, index) =>
-        index == 0
-          ? shift += getKeyShift(key)
-          : shift += ' ' + getKeyShift(key)
-      )
-    })
-    return shift
-  })();
-  console.log(keysMap.shift)
 
-const keys = {
-  topRow: [
-    new key('`  55 ⇪  ⋆ '),
-    new key('1  46   ▪ ⅒'),
-    new key('2  40 ◼  ▸ ½'),
-    new key('3  34 ⏮   ⅓'),
-    new key('4  29 ⏭   ¼'),
-    new key('5  29   » ⅕'),
-    new key('6  35    '),
-    new key('\\  47    '),
-    new key('7  29   › ¾'),
-    new key('8  29 ⊚  • ⁰'),
-    new key('9  30 ⊕   '),
-    new key('0  35 ⊝   '),
-    new key('=  42 🔇  ⁃ '),
-    new key('⌫  51    '),
-  ],
-  upperRow: [
-    new key('⇄  42    '),
-    new key('a  30 ⇈  ` 💡'),
-    new key('w  25 ⊗  [ ⚠️'),
-    new key('f  21 ▴  ] ↑'),
-    new key('p  23 ⎇   π'),
-    new key('b  26    ≈'),
-    new key('[  44 ☀   ∉'),
-    new key('j  34 ⇞   '),
-    new key('l  22 ⇱   '),
-    new key('u  20 ↑  ( ≤'),
-    new key('y  24 ⇲  ) ≥'),
-    new key(`'  30 🔉  " …`),
-    new key('-  36 🔊  _ ±'),
-    new key('⏎  47    '),
-  ],
-  homeRow: [
-    new key('alt  34    '),
-    new key('a  16 ⇊  1 F1'),
-    new key('r  13 ◂  2 F2'),
-    new key('s  11 ▾  3 F3'),
-    new key('t  10 ▸  4 F4'),
-    new key('g  29 ≣    ≠'),
-    new key(']  42 ✳  € ∈'),
-    new key('m  29 ⇟  \\ '),
-    new key('n  10 ←  7 F7'),
-    new key('e  11 ↓  8 F8'),
-    new key('i  13 →  9 F9'),
-    new key('o  16 ⏎  0 F10'),
-    new key(';  34 ⏯  : '),
-    new key('⏎  48     '),
-  ],
-  lowerRow: [
-    new key('⇧  46    '),
-    new key('⇧  33    '),
-    new key('x  27 ↩  { ✗'),
-    new key('c  24 ↪  } ㊿'),
-    new key('d  18 ⌫  5 F5'),
-    new key('v  22 ⌦  = F11'),
-    new key('z  37 ⎙   '),
-    new key('/  37 📱   '),
-    new key('k  22 ⇄  / F12'),
-    new key('h  18 ◴  6 F6'),
-    new key(',  24 ⦺  < ≤'),
-    new key('.  27 ◷  > ≥'),
-    new key('⇧  33    '),
-  ],
-  bottomRow: [
-    new key('⊞  40    '),
-    new key('⨁  26    '),
-    new key('sym  10    '),
-    new key('space  18    '),
-    new key('ext  10    '),
-    new key('⨁  26    '),
-    new key('⨁  40    '),
-    new key('≣  60    ')
-  ]
-}
+
+//formate to { rowName:[], ..., [Symbol(allkeys)]: [] }
+const allkeys = Symbol('allKeys')
+formateKeys(allkeys, 'top', 'upper', 'home', 'lower', 'bottom')
+
+keys.shift = getShiftLayer(keys.standard)
+keys.symShift = getShiftLayer(keys.sym)
+//console.log(keys.shift)
 
 export default keys
+export { keys, allkeys}
 
 //helpers functions
+function formateKeys(symbol, ...rowsNames) {
+  for (const layer in keys) {
+    const rows = keys[layer]
+      .replace('\n', '')         //remove first newLine0
+      .replaceAll('    ', ' ')   //remove extra spaces
+      .replaceAll('   ', ' ')    //remove extra spaces
+      .replaceAll('  ', ' ')     //remove extra spaces
+      .split('\n')
+    rows.forEach((str, i) => rows[i] = str.split(' '))
+
+    keys[layer] = {}
+    rowsNames.forEach((name, i) => keys[layer][name] = rows[i])
+
+    keys[layer][symbol] = rows.reduce((all, row) => all.concat(row), [])
+  }
+}
+function getShiftLayer(layer) {
+  const shift = {}
+
+  for (const row in layer) {
+    shift[row] = layer[row].map(key => getKeyShift(key))
+  }
+  shift[allkeys] = layer[allkeys].map(key => getKeyShift(key))
+  return shift
+}
+
 function getKeyShift(key) {
   switch (key) {
     case '`': return '~'; break

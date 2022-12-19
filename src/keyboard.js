@@ -1,17 +1,17 @@
 export default appendKeys
-import keys from "./keys"
+import { keys, allkeys } from "./keys"
 
 function appendKeys(ctx) {
-  for (const row in keys) {
+  for (const row in keys.standard) {
     const rowCtx = document.createElement('div')
-    rowCtx.id = row
+    rowCtx.id = row + '_row'
     rowCtx.setAttribute('class', 'row')
 
-    //append keys in rows ctx
-    keys[row].forEach(key => {
+    //append layers in rows ctx
+    keys.standard[row].forEach((key, i) => {
       const btn = document.createElement('button')
-      btn.id = renameToValidId(key.standardHtk)
-      btn.textContent = key.standard
+      //⚠️btn.id = renameToValidId(key.standardHtk)
+      btn.textContent = key
 
       rowCtx.appendChild(btn)
     });

@@ -1,11 +1,11 @@
 lockfileVersion: 5.4
 
 specifiers:
-  postcss: ^8.4.13
-  postcss-preset-env: ^7.5.0
-  sass: ^1.51.0
-  vite: ^2.9.7
-  vite-imagetools: ^4.0.3
+  postcss: ^8.4.14
+  postcss-preset-env: ^7.7.1
+  sass: ^1.52.3
+  vite: ^2.9.12
+  vite-imagetools: ^4.0.4
 
 devDependencies:
   postcss: 8.4.14
@@ -175,7 +175,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.20.4
-      caniuse-lite: 1.0.30001352
+      caniuse-lite: 1.0.30001439
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -212,7 +212,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001352
+      caniuse-lite: 1.0.30001439
       electron-to-chromium: 1.4.152
       escalade: 3.1.1
       node-releases: 2.0.5
@@ -226,8 +226,8 @@ packages:
       ieee754: 1.2.1
     dev: true
 
-  /caniuse-lite/1.0.30001352:
-    resolution: {integrity: sha512-GUgH8w6YergqPQDGWhJGt8GDRnY0L/iJVQcU3eJ46GYf52R8tk0Wxp0PymuFVZboJYXGiCqwozAYZNRjVj6IcA==}
+  /caniuse-lite/1.0.30001439:
+    resolution: {integrity: sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==}
     dev: true
 
   /chokidar/3.5.3:
