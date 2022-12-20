@@ -43,7 +43,7 @@ formateKeysToArrays()
 keys.standardRows = getKeysByRows(standardStr)
 
 keys.shift = getShifts(keys.standard)
-keys.symShift = getShifts(keys.sym)
+keys.symShift = getShifts(keys.sym, !'shiftDot')
 
 keys.standardHtk = keys.standard.map(key => getHotKey(key))
 keys.standardHtkRows = getKeysByRows(
@@ -79,7 +79,7 @@ function getKeysByRows(standardStr) {
   rows.forEach((row, i) => rows[i] = row.split(' '))
   return Object.fromEntries(names.map((n, i) => [n, rows[i]]))
 }
-function getShifts(layer) {
+function getShifts(layer, shiftDot = true) {
   return layer.map(key => {
     switch (key) {
       case '`': return '~'; break
@@ -100,7 +100,7 @@ function getShifts(layer) {
       case '[': return '{'; break
       case ']': return '}'; break
       case ',': return '<'; break
-      case '.': return '>'; break
+      case (shiftDot ? '.' : null): return '>'; break
       case ';': return ':'; break
       case "'": return '"'; break
       default: return (
