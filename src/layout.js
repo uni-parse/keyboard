@@ -4,7 +4,7 @@ function layout(keys, keyboard) {
   keys.forEach(key => {
     const keySpan = document.createElement('span')
 
-    if ('Bs Enter RShift LShift SC056 LCtrl RCtrl AppsKey LWin RWin CapsLock Tab LAlt RAlt Space'.includes(key[0]))
+    if ('Bs Enter RShift LShift SC056 LCtrl RCtrl AppsKey LWin RWin CapsLock Tab LAlt RAlt Space'.split(' ').includes(key[0]))
       addSpan(1, 'modifier')
     else if (Array.isArray(key[1]) && key[1][1].includes(' ')) addSpan(1, 'key shift')
     else if (!key[1]) addSpan(0, 'key')
