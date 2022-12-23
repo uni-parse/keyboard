@@ -81,6 +81,7 @@ function getKeysByRows(standardStr) {
 }
 function getShifts(layer, shiftDot = true) {
   return layer.map(key => {
+    if (shiftDot && key == '.') return '>'
     switch (key) {
       case '`': return '~'; break
       case '1': return '!'; break
@@ -100,15 +101,11 @@ function getShifts(layer, shiftDot = true) {
       case '[': return '{'; break
       case ']': return '}'; break
       case ',': return '<'; break
-      case (shiftDot ? '.' : null): return '>'; break
       case ';': return ':'; break
       case "'": return '"'; break
       default: return (
-        key.length == 1
-          && key >= 'a'
-          && key <= 'z'
-          ? key.toUpperCase()
-          : key
+        key.length == 1 && key >= 'a' && key <= 'z'
+          ? key.toUpperCase() : key
       )
     }
   })

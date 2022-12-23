@@ -1,7 +1,13 @@
-export default appendKeys
 import keys from "./keys"
+const keyboard = document.createElement('div')
 
-function appendKeys(ctx) {
+keyboard.id = 'keyboard'
+appendButtons(keyboard)
+
+export default keyboard
+
+//helper functions
+function appendButtons(ctx) {
   for (const row in keys.standardRows) {
     const rowCtx = document.createElement('div')
     rowCtx.id = row + '_row'
@@ -10,20 +16,19 @@ function appendKeys(ctx) {
     //append layers in rows ctx
     keys.standardRows[row].forEach((key, i) => {
       const btn = document.createElement('button')
-      btn.setAttribute('class', renameToValidId(keys.standardHtkRows[row][i]))
-
       btn.textContent = key
+      btn.setAttribute('class',
+        getValidId(keys.standardHtkRows[row][i]))
 
       rowCtx.appendChild(btn)
-    });
+    })
 
     ctx.appendChild(rowCtx)
   }
 }
-//helper function
-function renameToValidId(key) {
+function getValidId(key) {
+  if (+key || key == 0) return `_${key}`
   switch (key) {
-    case (+key || key == 0 ? key : NaN): return `_${key}`; break
     case '`': return 'backtick'; break
     case '-': return 'hyphon'; break
     case '=': return 'equal'; break
