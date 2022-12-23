@@ -1,0 +1,31 @@
+@use 'utilities' as *;
+
+#autoHotKeyCtx {
+  align-self: center;
+  background-color: red;
+  display: inline-block;
+  position: relative;
+  height: 80vh;
+  @include space(0, 1em 0 0 0);
+}
+
+pre {
+  display: inline-block;
+  text-align: start;
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  tab-size: 2;
+  overflow: auto;
+  white-space: break-spaces;
+  background-color: #333;
+  max-height: 100%;
+  max-width: calc(100vw - 1em);
+  color: yellowgreen;
+  @include space();
+}
+
+#copyBtn {
+  padding: 0.25rem;
+  position: absolute;
+  right: 1.2rem;
+  top: 0.75rem;
+}

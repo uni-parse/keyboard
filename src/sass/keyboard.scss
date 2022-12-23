@@ -1,7 +1,6 @@
 @use 'utilities' as *;
 @use 'sass:color';
 
-
 $pincky: hsl(200, 67%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
@@ -24,23 +23,6 @@ div.row {
 
 .Bs {
   flex-basis: 17%;
-}
-
-#download{
-  background-color: black;
-  display: flex;
-  place-content: space-evenly;
-  a{
-    color: rgb(255, 29, 123);
-    &::after{
-      content: ' ⇊';
-      color: rgb(22, 236, 219);
-      font-size: 1.3em;
-      font-weight: bold;
-      text-decoration: none;
-      text-decoration: underline black;
-    }
-  }
 }
 
 /*
@@ -299,15 +281,16 @@ div.row {
 */
 
 
-@mixin nth($indexes...) {
-  @each $i in $indexes {
-    &:nth-child(#{$i}) {
-      @content;
-    }
-  }
-}
-@mixin radial($c) {
-  background: $c
-    radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
-  @content;
-}
+
+// @mixin nth($indexes...) {
+//   @each $i in $indexes {
+//     &:nth-child(#{$i}) {
+//       @content;
+//     }
+//   }
+// }
+// @mixin radial($c) {
+//   background: $c
+//     radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
+//   @content;
+// }
