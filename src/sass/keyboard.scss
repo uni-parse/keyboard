@@ -1,17 +1,7 @@
 @use 'utilities' as *;
 @use 'sass:color';
-@mixin nth($indexes...) {
-  @each $i in $indexes {
-    &:nth-child(#{$i}) {
-      @content;
-    }
-  }
-}
-@mixin radial($c) {
-  background: $c
-    radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
-  @content;
-}
+
+
 $pincky: hsl(200, 67%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
@@ -32,16 +22,29 @@ div.row {
   justify-content: space-between;
 }
 
-#⌫ {
+.Bs {
   flex-basis: 17%;
 }
 
-
-
-/* #keyboardCtx {
-  overflow: auto;
+#download{
+  background-color: black;
+  display: flex;
+  place-content: space-evenly;
+  a{
+    color: rgb(255, 29, 123);
+    &::after{
+      content: ' ⇊';
+      color: rgb(22, 236, 219);
+      font-size: 1.3em;
+      font-weight: bold;
+      text-decoration: none;
+      text-decoration: underline black;
+    }
+  }
 }
-#keyboard {
+
+/*
+#oldKeyboard {
   background-color: #333;
   min-width: clamp(52rem, 100%, 58.5rem);
   overflow: auto;
@@ -293,21 +296,18 @@ div.row {
     // }
   }
 }
+*/
 
 
-#download{
-  background-color: black;
-  display: flex;
-  place-content: space-evenly;
-  a{
-    color: rgb(255, 29, 123);
-    &::after{
-      content: ' ⇊';
-      color: rgb(22, 236, 219);
-      font-size: 1.3em;
-      font-weight: bold;
-      text-decoration: none;
-      text-decoration: underline black;
+@mixin nth($indexes...) {
+  @each $i in $indexes {
+    &:nth-child(#{$i}) {
+      @content;
     }
   }
-} */
+}
+@mixin radial($c) {
+  background: $c
+    radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
+  @content;
+}

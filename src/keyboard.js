@@ -17,8 +17,10 @@ function appendButtons(ctx) {
     keys.standardRows[row].forEach((key, i) => {
       const btn = document.createElement('button')
       btn.textContent = key
+      //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.js
       btn.setAttribute('class',
-        getValidId(keys.standardHtkRows[row][i]))
+        `${getValidId(keys.standardHtkRows[row][i])}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ').includes(key) ? ' modifier' : ''}`
+      )
 
       rowCtx.appendChild(btn)
     })

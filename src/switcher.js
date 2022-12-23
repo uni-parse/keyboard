@@ -1,11 +1,12 @@
 import keys from "./keys";
 
-const fieldset = document.createElement('fieldset'),
-  legend = document.createElement('legend')
-
+const legend = document.createElement('legend')
 legend.innerText = 'layout switcher'
+
+const fieldset = document.createElement('fieldset')
+fieldset.id = 'switcher'
 fieldset.appendChild(legend)
-  .name = 'layer'
+fieldset.name = 'layer'
 
 appendRadioBtns('power', 'standard', 'shift', 'sym', 'symShift', 'sym2', 'ext', 'ext2')
 
