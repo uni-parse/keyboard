@@ -1,5 +1,8 @@
 fieldset#switcher {
   display: inline-block;
+  label {
+    white-space: nowrap;
+  }
 }
 
 #download {

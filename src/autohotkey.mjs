@@ -1,7 +1,7 @@
 
-import keys from "./keys"
-import config from "./config"
-import mouse from "./mouse"
+import keys from "./keys.mjs"
+import config from "./config.mjs"
+import mouse from "./mouse.mjs"
 
 let mouseL, mouseR, mouseU, mouseD,
   base = keys.standard.map(k => k == ';' ? '`;' : k)

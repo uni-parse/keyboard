@@ -1,4 +1,4 @@
-import keys from "./keys";
+import keys from "./keys.mjs";
 
 const legend = document.createElement('legend')
 legend.innerText = 'layout switcher'
@@ -28,13 +28,13 @@ function appendRadioBtns(...switcherLabels) {
     const label = document.createElement('label'),
       radio = document.createElement('input')
 
-    label.id = `label_${layer}`
     radio.setAttribute('type', 'radio')
     radio.id = `radio_${layer}`
     radio.name = 'layer'
     radio.value = layer
-
     if (layer == 'standard') radio.setAttribute('checked', true)
+
+    label.id = `label_${layer}`
     label.appendChild(radio); label.innerHTML += layer
     fieldset.appendChild(label)
   })
