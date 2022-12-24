@@ -8,12 +8,12 @@ const keys = {
 40     26  10         18         10  26   40  60`,
   standard: `
 \`  1 2 3 4 5 6   \\   7 8 9 0 =  ⌫
-⇄    q w f p b   [   j i u y ' -  ⏎
+⇄    q w f p b   [   j l u y ' -  ⏎
 alt   a r s t g   ]   m n e i o ;  ⏎
 ⇧    ⇧ x c d v   z /   k h , . ⇧
 ⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`,
   ext: `
-⇪  . ◼ ⏮ ⏭ . .   .   . ⊚ ⊕ ⊝ 🔇  .
+⇪  🔍 ◼ ⏮ ⏭ . .   .   . ⊚ ⊕ ⊝ 🔇  .
 .   ⇈ ⊗ ▴ ⎇ .   ☀   ⇞ ⇱ ↑ ⇲ 🔉 🔊  .
 .    ⇊ ◂ ▾ ▸ ≣   ✳   ⇟ ← ↓ → ⏎  ⏯  .
 .   . ↩ ↪ ⌫ ⌦   ⎙ 📱  ⇄ ◴ ⦺ ◷ .
@@ -115,6 +115,7 @@ function getHotKey(key) {
   switch (key) {
     case '💲': return 'F23'; break
     case '⭐': return 'F24'; break
+    case '⊗': return 'Esc'; break
     case '⎋': return 'Esc'; break
     case '⇄': return 'Tab'; break
     case '⏎': return 'Enter'; break
@@ -128,7 +129,7 @@ function getHotKey(key) {
     case '⇱': return 'Home'; break
     case '⇲': return 'End'; break
     case '⇞': return 'PgUp'; break
-    case '⇟': return 'PgDown'; break
+    case '⇟': return 'PgDn'; break
     case '↑': return 'Up'; break
     case '↓': return 'Down'; break
     case '→': return 'Right'; break
@@ -151,9 +152,10 @@ function getHotKey(key) {
     case '⏮': return 'Media_Prev'; break
     case '🔇': return 'Volume_Mute'; break
     case '🔊': return 'Volume_Up'; break
-    case '🔈': return 'Volume_Down'; break
+    case '🔉': return 'Volume_Down'; break
     case '☀': return 'brightnessUp'; break
     case '✳': return 'brightnessDown'; break
+    case '🔍': return 'Browser_Search'; break
     case '⊚': return '^Numpad0'; break
     case '⊕': return '^NumpadAdd'; break
     case '⊝': return '^NumpadSub'; break

@@ -46,6 +46,7 @@ ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
 	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
 		property.WmiSetBrightness( timeout, brightness)
 }
+
 GetCurrentBrightNess() {
 	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
 		currentBrightness := property.CurrentBrightness	
@@ -56,8 +57,9 @@ GetCurrentBrightNess() {
 SetCapsLockState, AlwaysOff
 
 
+
 ;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
-  F23::
+	F23::
     if !hold_F23 {
       hold_F23 = 1
       if layer_sym {
@@ -95,10 +97,6 @@ SetCapsLockState, AlwaysOff
   double_F23_timer:
     press_F23 = 0
     Return
-
-
-
-
 
   F24::
     if !hold_F24 {
@@ -138,6 +136,7 @@ SetCapsLockState, AlwaysOff
   double_F24_timer:
     press_F24 = 0
     Return
+
 
 ;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
 #If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
@@ -185,11 +184,13 @@ SetCapsLockState, AlwaysOff
 	.::RButton
 #If
 
+
 ;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
 #If layer_ext2
 #If
 
-;symbol layer 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲 💲
+
+;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲
 #If !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
 	`::SendRaw ⋆
 		return
@@ -243,17 +244,36 @@ SetCapsLockState, AlwaysOff
 		return
 #If
 
+
 ;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
 #If GetKeyState("F23", "P") && GetKeyState("F24", "P")
+	`::sendRaw ⋆
+		return
+	1::sendRaw ▪
+		return
+	2::sendRaw ▸
+		return
+	5::sendRaw »
+		return
+	7::sendRaw ›
+		return
+	8::sendRaw •
+		return
+	=::sendRaw ⁃
+		return
 	q::sendRaw ~
 		return
 	w::sendRaw {
 		return
 	f::sendRaw }
 		return
-	u::sendRaw <
+	u::sendRaw (
 		return
-	y::sendRaw >
+	y::sendRaw )
+		return
+	'::sendRaw "
+		return
+	-::sendRaw _
 		return
 	a::sendRaw !
 		return
@@ -262,6 +282,8 @@ SetCapsLockState, AlwaysOff
 	s::sendRaw #
 		return
 	t::sendRaw $
+		return
+	]::sendRaw €
 		return
 	m::sendRaw |
 		return
@@ -273,6 +295,12 @@ SetCapsLockState, AlwaysOff
 		return
 	o::sendRaw )
 		return
+	`;::sendRaw :
+		return
+	x::sendRaw {
+		return
+	c::sendRaw }
+		return
 	d::sendRaw `%
 		return
 	v::sendRaw +
@@ -281,7 +309,12 @@ SetCapsLockState, AlwaysOff
 		return
 	h::sendRaw ^
 		return
+	,::sendRaw <
+		return
+	.::sendRaw >
+		return
 #If
+
 
 ;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
 #If layer_sym2
@@ -340,6 +373,7 @@ SetCapsLockState, AlwaysOff
 	k::F12
 	h::F6
 #If
+
 
 ;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
 #If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
@@ -643,6 +677,7 @@ SetCapsLockState, AlwaysOff
       speed_move = 1
     press_r = 0
     Return
+
 	*q::
     if !scroll_q {
       If press_q
@@ -680,6 +715,7 @@ SetCapsLockState, AlwaysOff
       speed_q = 1
     press_q = 0
     Return
+
 	*a::
     if !scroll_a {
       If press_a
@@ -718,4 +754,3 @@ SetCapsLockState, AlwaysOff
     press_a = 0
     Return
 #If
-

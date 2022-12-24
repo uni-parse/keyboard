@@ -2,93 +2,48 @@
 import keys from "./keys"
 import config from "./config"
 import mouse from "./mouse"
-let { standard: base } = keys,
-  mouseL, mouseR, mouseU, mouseD,
-  autohotkeyStr = getAutohotkeyStr()
+
+let mouseL, mouseR, mouseU, mouseD,
+  base = keys.standard.map(k => k == ';' ? '`;' : k)
+
+const autohotkeyStr = `${config.intro}
+;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
+${config.switchers}
+
+
+;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
+#If ${config.layer_condition.ext}
+${getExt()}#If
+
+
+;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
+#If ${config.layer_condition.ext2}
+${getExt2()}#If
+
+
+;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲
+#If ${config.layer_condition.sym}
+${getSym()}#If
+
+
+;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
+#If ${config.layer_condition.sym1}
+${getSymShift()}#If
+
+
+;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
+#If ${config.layer_condition.sym2}
+${getSym2()}#If
+
+
+;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
+#If ${config.layer_condition.ext}
+${mouse.move(config.extKey, mouseU, mouseR, mouseD, mouseL)}
+${mouse.wheel(config.extKey, 'q', 'wheelUp')}
+${mouse.wheel(config.extKey, 'a', 'wheelDown')}#If`
 
 export default autohotkeyStr
 
-function getAutohotkeyStr() {
-  return `;
-;
-;   made by UniParse
-;   github.com/TheUniParse
-;   twitter.com/UniParse
-;
-;
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-Process, Priority,, High\n
-x_slow = 4
-y_slow := x_slow
-x_default = 18
-y_default := x_default
-x_multiplier = 3
-y_multiplier := x_multiplier
-x_increment = 1.1
-y_increment := x_increment
-x := x_default
-y := y_default
-scroll_default_speed = 40
-scroll_speed_multiplier = .25
-speed_switcher = 0
-move__nth = 0
-
-resetSpeed() {
-  global
-  If speed_switcher {
-    x := x_slow
-    y := y_slow
-  } Else {
-    x := x_default
-    y := y_default
-  }
-}
-
-brightnessJump = 10
-CurrentBrightness := GetCurrentBrightNess()
-; ChangeBrightness(0)
-; minimumBrightness := GetCurrentBrightNess()
-; ChangeBrightness(CurrentBrightness)
-
-ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
-	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
-		property.WmiSetBrightness( timeout, brightness)
-}
-GetCurrentBrightNess() {
-	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
-		currentBrightness := property.CurrentBrightness	
-	return currentBrightness
-}
-
-#Persistent
-SetCapsLockState, AlwaysOff
-\n\n`
-
-    + `;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️`
-    + config.switchers
-
-    + `;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟\n#If ${config.layer_condition.ext}\n`
-    + getExt() + '#If\n\n'
-
-    + `;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟\n#If ${config.layer_condition.ext2} \n`
-    + getExt2() + '#If\n\n'
-
-    + `;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲\n#If ${config.layer_condition.sym} \n`
-    + getSym() + '#If\n\n'
-
-    + `;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲\n#If ${config.layer_condition.sym1}\n`
-    + getSymShift() + '#If\n\n'
-
-    + `;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲\n#If ${config.layer_condition.sym2}\n`
-    + getSym2() + `#If\n\n`
-
-    + `;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺\n#If ${config.layer_condition.ext}\n`
-    + mouse.move(config.extKey, mouseU, mouseR, mouseD, mouseL)
-    + mouse.wheel('wheelUp', 'q', config.extKey)
-    + mouse.wheel(config.extKey, 'a', 'wheelDown') + `#If\n\n`
-}
 
 function getExt() {
   let str = ''
@@ -115,6 +70,7 @@ function getExt() {
 }
 function getExt2() {
   //keys.ext2Htk.forEach(key => {})
+  return ''
 }
 function getSym() {
   let str = ''
@@ -137,8 +93,9 @@ function getSym2() {
   return str
 }
 function getSymShift() {
-  return keys.symShift.reduce((str, key, i) => key != '.' ?
-    str + `\t${base[i]}::sendRaw ${key}\n\t\treturn\n` : ''
+  return keys.symShift.reduce((prev, key, i) => key != '.'
+    ? prev + `\t${base[i]}::sendRaw ${key == '%' ? '`%' : key}\n\t\treturn\n`
+    : prev
     , '')
 }
 

@@ -1,6 +1,19 @@
 @use 'utilities' as *;
 @use 'sass:color';
 
+@mixin nth($indexes...) {
+  @each $i in $indexes {
+    &:nth-child(#{$i}) {
+      @content;
+    }
+  }
+}
+@mixin radial($c) {
+  background: $c
+    radial-gradient(color.adjust($c, $lightness: 30%), 70%);
+  @content;
+}
+
 $pincky: hsl(200, 67%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
@@ -14,6 +27,14 @@ $lightness: -8%;
 
 #keyboard {
   border: solid yellow thin;
+  background-color: #333;
+  min-width: clamp(52rem, 100%, 58.5rem);
+  overflow: auto;
+  font: clamp(1rem, 1.5vw, 1.25rem) monospace;
+  ::selection {
+    background-color: transparent;
+    color: currentColor;
+  }
 }
 
 div.row {
@@ -25,272 +46,241 @@ div.row {
   flex-basis: 17%;
 }
 
-/*
-#oldKeyboard {
-  background-color: #333;
-  min-width: clamp(52rem, 100%, 58.5rem);
-  overflow: auto;
-  display: flex;
-  place-content: space-evenly;
-  flex-flow: row wrap;
-  // border: red thin solid;
-  font: clamp(1rem, 1.5vw, 1.25rem) monospace;
-  ::selection {
-    background-color: transparent;
-    color: currentColor;
+span {
+  &:hover {
+    cursor: pointer;
   }
-  span {
+  position: relative;
+  flex: none;
+  flex-basis: 6%;
+  display: grid;
+  grid: 1fr 1fr/ 1fr 1fr;
+  border: black thin groove;
+  border-radius: 0.5em 0.5em 50% 50%/0.5em 0.5em 0.5em 0.5em;
+  color: white;
+  transition: all 0.15s ease-out;
+  box-shadow: 0.2em 0.3em 7px 0 #111;
+  &:active {
+    box-shadow: 0 0 1px 0 #111;
+    transform: translate(0.1em, 0.1em);
+  }
+  background-image: radial-gradient(
+    transparent 20%,
+    rgba(0, 0, 0, 0.562)
+  );
+  @include space(0, 0.3%);
+  &:nth-child(14) {
+    flex-basis: 12%;
+  }
+  &:nth-child(57) {
+    color: $symbol;
+  }
+  &:nth-child(59) {
+    color: $extend;
+  }
+  &:nth-child(15),
+  &:nth-child(28) {
+    flex-basis: 9.2%;
+  }
+  &:nth-child(29) {
+    flex-basis: 11%;
+  }
+  &:nth-child(41) {
+    margin-right: 7.8%;
+  }
+  &:nth-child(42) {
+    flex-basis: 7.2%;
+  }
+  &:nth-child(54) {
+    flex-basis: 17%;
+  }
+  @include nth(55, 56, 57, 59, 60, 61, 62) {
+    flex-basis: 7.4%;
+  }
+  &:nth-child(58) {
+    flex-basis: 41%; //space
+  }
+  @include nth(16, 26, 30, 40) {
+    background-color: $pincky;
+  }
+  @include nth(1, 2, 13, 27, 41) {
+    background-color: color.adjust(
+      $pincky,
+      $lightness: $lightness
+    );
+  }
+  @include nth(17, 25, 31, 39, 44, 53) {
+    background-color: $ring;
+  }
+  @include nth(3, 12) {
+    background-color: color.adjust(
+      $ring,
+      $lightness: $lightness
+    );
+  }
+  &:nth-child(4) {
+    background-image: radial-gradient(
+        transparent 20%,
+        rgba(0, 0, 0, 0.562)
+      ),
+      linear-gradient(
+        90deg,
+        color.adjust($ring, $lightness: $lightness) 60%,
+        color.adjust($middle, $lightness: $lightness)
+      );
+  }
+  @include nth(18, 24, 32, 38, 45, 52) {
+    background-color: $middle;
+  }
+  @include nth(5, 10) {
+    background-color: color.adjust(
+      $middle,
+      $lightness: $lightness
+    );
+  }
+  &:nth-child(11) {
+    background-image: radial-gradient(
+        transparent 20%,
+        rgba(0, 0, 0, 0.562)
+      ),
+      linear-gradient(
+        90deg,
+        color.adjust($middle, $lightness: $lightness) 60%,
+        color.adjust($ring, $lightness: $lightness)
+      );
+  }
+  @include nth(19, 20, 33, 34, 46, 47) {
+    background-color: $indexL;
+  }
+  @include nth(6, 7) {
+    background-color: color.adjust(
+      $indexL,
+      $lightness: $lightness
+    );
+  }
+  @include nth(23, 36, 37, 50, 51) {
+    background-color: $indexR;
+  }
+  &:nth-child(9) {
+    background-color: color.adjust(
+      $indexR,
+      $lightness: $lightness
+    );
+  }
+  &:nth-child(48) {
+    background-color: color.adjust(
+      $indexL,
+      $lightness: $lightness
+    );
+  }
+  @include nth(22, 49) {
+    background-color: color.adjust(
+      $indexR,
+      $lightness: $lightness
+    );
+  }
+  &:nth-child(8) {
+    background: radial-gradient(
+        transparent 20%,
+        rgba(0, 0, 0, 0.562)
+      ),
+      linear-gradient(
+        90deg,
+        color.adjust($indexL, $lightness: $lightness),
+        color.adjust($indexR, $lightness: $lightness) 40%
+      );
+  }
+  @include nth(21) {
+    background: radial-gradient(
+        transparent 20%,
+        rgba(0, 0, 0, 0.562)
+      ),
+      linear-gradient(
+        90deg,
+        color.adjust($indexL, $lightness: $lightness) 60%,
+        color.adjust($indexR, $lightness: $lightness)
+      );
+  }
+  @include nth(35) {
+    background: radial-gradient(
+        transparent 20%,
+        rgba(0, 0, 0, 0.562)
+      ),
+      linear-gradient(
+        90deg,
+        color.adjust($indexL, $lightness: $lightness) 30%,
+        color.adjust($indexR, $lightness: $lightness) 70%
+      );
+  }
+  @include nth(30, 31, 32, 33, 37, 38, 39, 40, 46, 51) {
+    border: solid thin black;
+  }
+  @include nth(30, 40) {
+    @include radial($pincky);
+  }
+  @include nth(31, 39) {
+    @include radial($ring);
+  }
+  @include nth(32, 38) {
+    @include radial($middle);
+  }
+  @include nth(33, 46) {
+    @include radial($indexL);
+  }
+  @include nth(37, 51) {
+    @include radial($indexR);
+  }
+  @include nth(57, 58, 59) {
+    @include radial(#333);
+  }
+  @include nth(55, 62) {
+    @include radial(color.adjust($pincky, $saturation: -40%));
+  }
+
+  kbd {
+    padding: 0.2em;
     &:hover {
       cursor: pointer;
     }
-    position: relative;
-    flex: none;
-    flex-basis: 6%;
-    display: grid;
-    grid: 1fr 1fr/ 1fr 1fr;
-    border: black thin groove;
-    border-radius: 0.5em 0.5em 50% 50%/0.5em 0.5em 0.5em 0.5em;
-    color: white;
-    transition: all 0.15s ease-out;
-    box-shadow: 0.2em 0.3em 7px 0 #111;
-    &:active {
-      box-shadow: 0 0 1px 0 #111;
-      transform: translate(0.1em, 0.1em);
+    &.key {
+      color: currentColor;
     }
-    background-image: radial-gradient(
-      transparent 20%,
-      rgba(0, 0, 0, 0.562)
-    );
-    @include space(0, 0.3%);
-    &:nth-child(14) {
-      flex-basis: 12%;
-    }
-    &:nth-child(57) {
-      color: $symbol;
-    }
-    &:nth-child(59) {
+    &.extend {
       color: $extend;
     }
-    &:nth-child(15),
-    &:nth-child(28) {
-      flex-basis: 9.2%;
+    &.symbol {
+      color: $symbol;
     }
-    &:nth-child(29) {
-      flex-basis: 11%;
-    }
-    &:nth-child(41) {
-      margin-right: 7.8%;
-    }
-    &:nth-child(42) {
-      flex-basis: 7.2%;
-    }
-    &:nth-child(54) {
-      flex-basis: 17%;
-    }
-    @include nth(55, 56, 57, 59, 60, 61, 62) {
-      flex-basis: 7.4%;
-    }
-    &:nth-child(58) {
-      flex-basis: 41%; //space
-    }
-    @include nth(16, 26, 30, 40) {
-      background-color: $pincky;
-    }
-    @include nth(1, 2, 13, 27, 41) {
-      background-color: color.adjust(
-        $pincky,
-        $lightness: $lightness
-      );
-    }
-    @include nth(17, 25, 31, 39, 44, 53) {
-      background-color: $ring;
-    }
-    @include nth(3, 12) {
-      background-color: color.adjust(
-        $ring,
-        $lightness: $lightness
-      );
-    }
-    &:nth-child(4) {
-      background-image: radial-gradient(
-          transparent 20%,
-          rgba(0, 0, 0, 0.562)
-        ),
-        linear-gradient(
-          90deg,
-          color.adjust($ring, $lightness: $lightness) 60%,
-          color.adjust($middle, $lightness: $lightness)
-        );
-    }
-    @include nth(18, 24, 32, 38, 45, 52) {
-      background-color: $middle;
-    }
-    @include nth(5, 10) {
-      background-color: color.adjust(
-        $middle,
-        $lightness: $lightness
-      );
-    }
-    &:nth-child(11) {
-      background-image: radial-gradient(
-          transparent 20%,
-          rgba(0, 0, 0, 0.562)
-        ),
-        linear-gradient(
-          90deg,
-          color.adjust($middle, $lightness: $lightness) 60%,
-          color.adjust($ring, $lightness: $lightness)
-        );
-    }
-    @include nth(19, 20, 33, 34, 46, 47) {
-      background-color: $indexL;
-    }
-    @include nth(6, 7) {
-      background-color: color.adjust(
-        $indexL,
-        $lightness: $lightness
-      );
-    }
-    @include nth(23, 36, 37, 50, 51) {
-      background-color: $indexR;
-    }
-    &:nth-child(9) {
-      background-color: color.adjust(
-        $indexR,
-        $lightness: $lightness
-      );
-    }
-    &:nth-child(48) {
-      background-color: color.adjust(
-        $indexL,
-        $lightness: $lightness
-      );
-    }
-    @include nth(22, 49) {
-      background-color: color.adjust(
-        $indexR,
-        $lightness: $lightness
-      );
-    }
-    &:nth-child(8) {
-      background: radial-gradient(
-          transparent 20%,
-          rgba(0, 0, 0, 0.562)
-        ),
-        linear-gradient(
-          90deg,
-          color.adjust($indexL, $lightness: $lightness),
-          color.adjust($indexR, $lightness: $lightness) 40%
-        );
-    }
-    @include nth(21) {
-      background: radial-gradient(
-          transparent 20%,
-          rgba(0, 0, 0, 0.562)
-        ),
-        linear-gradient(
-          90deg,
-          color.adjust($indexL, $lightness: $lightness) 60%,
-          color.adjust($indexR, $lightness: $lightness)
-        );
-    }
-    @include nth(35) {
-      background: radial-gradient(
-          transparent 20%,
-          rgba(0, 0, 0, 0.562)
-        ),
-        linear-gradient(
-          90deg,
-          color.adjust($indexL, $lightness: $lightness) 30%,
-          color.adjust($indexR, $lightness: $lightness) 70%
-        );
-    }
-    @include nth(30, 31, 32, 33, 37, 38, 39, 40, 46, 51) {
-      border: solid thin black;
-    }
-    @include nth(30, 40) {
-      @include radial($pincky);
-    }
-    @include nth(31, 39) {
-      @include radial($ring);
-    }
-    @include nth(32, 38) {
-      @include radial($middle);
-    }
-    @include nth(33, 46) {
-      @include radial($indexL);
-    }
-    @include nth(37, 51) {
-      @include radial($indexR);
-    }
-    @include nth(57, 58, 59) {
-      @include radial(#333);
-    }
-    @include nth(55, 62) {
-      @include radial(color.adjust($pincky, $saturation: -40%));
-    }
-
-    kbd {
-      padding: 0.2em;
-      &:hover {
-        cursor: pointer;
-      }
-      &.key {
-        color: currentColor;
-      }
-      &.extend {
-        color: $extend;
-      }
-      &.symbol {
-        color: $symbol;
-      }
-      &.symbol2 {
-        color: $symbol2;
-        &.f {
-          font-size: 0.8em;
-          letter-spacing: -0.1em;
-        }
-      }
-      &.shift {
-        position: relative;
-        &::after {
-          content: attr(data-shift);
-          color: $shift;
-          font-size: 0.8em;
-          position: absolute;
-          top: 20%;
-        }
-        &.key::after {
-          right: -0.1em;
-        }
-        &.symbol::after {
-          right: 0;
-        }
+    &.symbol2 {
+      color: $symbol2;
+      &.f {
+        font-size: 0.8em;
+        letter-spacing: -0.1em;
       }
     }
-    // @include nth(5,13,27) {
-    //   & kbd.key::after {
-    //     right: -0.2em;
-    //   }
-    //   & kbd.symbol::after {
-    //     right: -0.2em;
-    //   }
-    // }
+    &.shift {
+      position: relative;
+      &::after {
+        content: attr(data-shift);
+        color: $shift;
+        font-size: 0.8em;
+        position: absolute;
+        top: 20%;
+      }
+      &.key::after {
+        right: -0.1em;
+      }
+      &.symbol::after {
+        right: 0;
+      }
+    }
   }
+  // @include nth(5,13,27) {
+  //   & kbd.key::after {
+  //     right: -0.2em;
+  //   }
+  //   & kbd.symbol::after {
+  //     right: -0.2em;
+  //   }
+  // }
 }
-*/
-
-
-
-// @mixin nth($indexes...) {
-//   @each $i in $indexes {
-//     &:nth-child(#{$i}) {
-//       @content;
-//     }
-//   }
-// }
-// @mixin radial($c) {
-//   background: $c
-//     radial-gradient(color.adjust($c, $lightness: 30%), $c 70%);
-//   @content;
-// }

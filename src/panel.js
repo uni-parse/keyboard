@@ -3,13 +3,13 @@ import { fieldset } from './switcher'
 const panel = document.createElement('div')
 panel.id = 'panel'
 panel.appendChild(fieldset)
-panel.appendChild(getDownload())
+panel.appendChild(getDownloadEl())
 
 export default panel
 
-function getDownload() {
+function getDownloadEl() {
   const msklc = document.createElement('a')
-  msklc.textContent = 'MSKLC.zip'
+  msklc.textContent = 'MsKLC.zip'
   msklc.href = './../src/assets/uniparse/msklc.zip'
   msklc.download = 'msklc.zip'
 

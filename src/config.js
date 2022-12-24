@@ -1,9 +1,71 @@
-const symbolKey = 'F23', extendKey = 'F24',
+const
+  symbolKey = 'F23',
+  extendKey = 'F24',
   delay = [-400, 2],
   config = {
-    symKey: symbolKey, extKey: extendKey,
-    switchers: `
-  ${symbolKey}::
+    symKey: symbolKey,
+    extKey: extendKey
+  }
+
+config.intro = `;
+;
+;   made by UniParse
+;   github.com/TheUniParse
+;   twitter.com/UniParse
+;
+;
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+Process, Priority,, High\n
+x_slow = 4
+y_slow := x_slow
+x_default = 18
+y_default := x_default
+x_multiplier = 3
+y_multiplier := x_multiplier
+x_increment = 1.1
+y_increment := x_increment
+x := x_default
+y := y_default
+scroll_default_speed = 40
+scroll_speed_multiplier = .25
+speed_switcher = 0
+move__nth = 0
+
+resetSpeed() {
+  global
+  If speed_switcher {
+    x := x_slow
+    y := y_slow
+  } Else {
+    x := x_default
+    y := y_default
+  }
+}
+
+brightnessJump = 10
+CurrentBrightness := GetCurrentBrightNess()
+; ChangeBrightness(0)
+; minimumBrightness := GetCurrentBrightNess()
+; ChangeBrightness(CurrentBrightness)
+
+ChangeBrightness( ByRef brightness := 50, timeout = 1 ) {
+	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
+		property.WmiSetBrightness( timeout, brightness)
+}
+
+GetCurrentBrightNess() {
+	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
+		currentBrightness := property.CurrentBrightness	
+	return currentBrightness
+}
+
+#Persistent
+SetCapsLockState, AlwaysOff
+\n\n`
+
+config.switchers = `\t${symbolKey}::
     if !hold_${symbolKey} {
       hold_${symbolKey} = 1
       if layer_sym {
@@ -42,10 +104,6 @@ const symbolKey = 'F23', extendKey = 'F24',
     press_${symbolKey} = 0
     Return
 
-
-
-
-
   ${extendKey}::
     if !hold_${extendKey} {
       hold_${extendKey} = 1
@@ -83,15 +141,16 @@ const symbolKey = 'F23', extendKey = 'F24',
     return
   double_${extendKey}_timer:
     press_${extendKey} = 0
-    Return\n\n`,
-    layer_condition: {
-      sym: `!layer_sym2 && ((layer_sym && !GetKeyState("${extendKey}", "P")) || (!layer_sym && GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P")) || (layer_ext && GetKeyState("${symbolKey}", "P")))`,
-      sym1: `GetKeyState("${symbolKey}", "P") && GetKeyState("${extendKey}", "P")`,
-      sym2: `layer_sym2`,
-      ext: `!layer_ext2 && ((layer_ext && !GetKeyState("${symbolKey}", "P")) || (!layer_ext && GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")) || (layer_sym && GetKeyState("${extendKey}", "P")))`,
-      ext2: `layer_ext2`
-    }
-  }
+    Return`
+
+config.layer_condition = {
+  sym: `!layer_sym2 && ((layer_sym && !GetKeyState("${extendKey}", "P")) || (!layer_sym && GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P")) || (layer_ext && GetKeyState("${symbolKey}", "P")))`,
+  sym1: `GetKeyState("${symbolKey}", "P") && GetKeyState("${extendKey}", "P")`,
+  sym2: `layer_sym2`,
+  ext: `!layer_ext2 && ((layer_ext && !GetKeyState("${symbolKey}", "P")) || (!layer_ext && GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")) || (layer_sym && GetKeyState("${extendKey}", "P")))`,
+  ext2: `layer_ext2`
+}
+
 export default config
 
 /**  goal
