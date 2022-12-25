@@ -1,4 +1,4 @@
-import { fieldset } from './switcher'
+import { fieldset } from './panel_switcher'
 
 const panel = document.createElement('div')
 panel.id = 'panel'

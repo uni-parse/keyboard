@@ -1,4 +1,4 @@
-import autohotkeyStr from './autohotkey'
+import autohotkeyStr from './ahk'
 
 const pre = document.createElement('pre')
 pre.innerText = autohotkeyStr

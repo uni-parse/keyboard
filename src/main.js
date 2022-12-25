@@ -3,7 +3,7 @@ import './sass/main.scss'
 import attachMedias from './mediaIcons'
 import keyboard from './keyboard'
 import panel from './panel'
-import { switcherListener } from './switcher'
+import { switcherListener } from './panel_switcher'
 import script from './scriptAhk'
 
 const main = document.createElement('main')

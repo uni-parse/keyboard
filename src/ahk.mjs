@@ -1,7 +1,7 @@
 
 import keys from "./keys.mjs"
-import config from "./config.mjs"
-import mouse from "./mouse.mjs"
+import config from "./ahk_config.mjs"
+import mouse from "./ahk_mouse.mjs"
 
 let mouseL, mouseR, mouseU, mouseD,
   base = keys.standard.map(k => k == ';' ? '`;' : k)
