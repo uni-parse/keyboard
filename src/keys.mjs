@@ -55,6 +55,9 @@ keys.standardHtkRows = getKeysByRows(
 keys.extHtk = keys.ext.map(key => getHotKey(key))
 keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
 
+
+
+
 export default keys
 
 function formateKeysToArrays() {

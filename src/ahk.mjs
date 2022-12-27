@@ -75,8 +75,10 @@ function getExt2() {
 function getSym() {
   let str = ''
   keys.sym.forEach((key, i) => {
-    if (+key || key == 0 || key == '`' || key == '\\' || key == '/' || key == '=' || key == '[' || key == ']')
+    if (+key || '0`\\/=[]'.includes(key))
       str += `\t${base[i]}::${key}\n`
+    else if (key > '~')
+      str += `\t${base[i]}::Send {${getUnicode(key)}}\n\t\treturn\n`
     else if (key != '.')
       str += `\t${base[i]}::SendRaw ${key}\n\t\treturn\n`
   })
@@ -87,18 +89,34 @@ function getSym2() {
   keys.sym2.forEach((key, i) => {
     if (key.startsWith('F') || key.startsWith('^'))
       str += `\t${base[i]}::${key}\n`
+    else if (key > '~')
+      str += `\t${base[i]}::Send {${getUnicode(key)}}\n\t\treturn\n`
     else if (key != '.')
       str += `\t${base[i]}::SendRaw ${key}\n\t\treturn\n`
   })
   return str
 }
 function getSymShift() {
-  return keys.symShift.reduce((prev, key, i) => key != '.'
-    ? prev + `\t${base[i]}::sendRaw ${key == '%' ? '`%' : key}\n\t\treturn\n`
-    : prev
-    , '')
+  let str = ''
+  keys.symShift.forEach((key, i) => {
+    if (key == '%')
+      str += `\t${base[i]}::sendRaw \`%\n\t\treturn\n`
+    else if (key > '~')
+      str += `\t${base[i]}::send {${getUnicode(key)}}\n\t\treturn\n`
+    else if (key != '.')
+      str += `\t${base[i]}::sendRaw ${key}\n\t\treturn\n`
+  })
+  return str
 }
 
+function getUnicode(char) {
+  let comp
+  if (char.length === 1) comp = char.charCodeAt(0)
+  else comp = (char.charCodeAt(0) - 0xD800) * 0x400
+    + (char.charCodeAt(1) - 0xDC00) + 0x10000
+  if (comp < 0) comp = char.charCodeAt(0)
+  return `U+${comp.toString("16")}`
+}
 function getBrightness(key, isIncreasing = 0) {
   return isIncreasing ?
     `\t${key}::ChangeBrightness(CurrentBrightness < 100 - brightnessJump ? CurrentBrightness += brightnessJump : 100)

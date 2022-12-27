@@ -192,19 +192,19 @@ SetCapsLockState, AlwaysOff
 
 ;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲
 #If !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
-	`::SendRaw ⋆
+	`::Send {U+22c6}
 		return
-	1::SendRaw ▪
+	1::Send {U+25aa}
 		return
-	2::SendRaw ▸
+	2::Send {U+25b8}
 		return
-	5::SendRaw »
+	5::Send {U+bb}
 		return
-	7::SendRaw ›
+	7::Send {U+203a}
 		return
-	8::SendRaw •
+	8::Send {U+2022}
 		return
-	=::SendRaw ⁃
+	=::Send {U+2043}
 		return
 	q::`
 	w::[
@@ -221,7 +221,7 @@ SetCapsLockState, AlwaysOff
 	r::2
 	s::3
 	t::4
-	]::SendRaw €
+	]::Send {U+20ac}
 		return
 	m::\
 	n::7
@@ -247,19 +247,19 @@ SetCapsLockState, AlwaysOff
 
 ;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
 #If GetKeyState("F23", "P") && GetKeyState("F24", "P")
-	`::sendRaw ⋆
+	`::send {U+22c6}
 		return
-	1::sendRaw ▪
+	1::send {U+25aa}
 		return
-	2::sendRaw ▸
+	2::send {U+25b8}
 		return
-	5::sendRaw »
+	5::send {U+bb}
 		return
-	7::sendRaw ›
+	7::send {U+203a}
 		return
-	8::sendRaw •
+	8::send {U+2022}
 		return
-	=::sendRaw ⁃
+	=::send {U+2043}
 		return
 	q::sendRaw ~
 		return
@@ -283,7 +283,7 @@ SetCapsLockState, AlwaysOff
 		return
 	t::sendRaw $
 		return
-	]::sendRaw €
+	]::send {U+20ac}
 		return
 	m::sendRaw |
 		return
@@ -318,55 +318,55 @@ SetCapsLockState, AlwaysOff
 
 ;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
 #If layer_sym2
-	1::SendRaw ⅒
+	1::Send {U+2152}
 		return
-	2::SendRaw ½
+	2::Send {U+bd}
 		return
-	3::SendRaw ⅓
+	3::Send {U+2153}
 		return
-	4::SendRaw ¼
+	4::Send {U+bc}
 		return
-	5::SendRaw ⅕
+	5::Send {U+2155}
 		return
-	7::SendRaw ¾
+	7::Send {U+be}
 		return
-	8::SendRaw ⁰
+	8::Send {U+2070}
 		return
-	q::SendRaw 💡
+	q::Send {U+1f4a1}
 		return
-	w::SendRaw ⚠️
+	w::Send {U+26a0}
 		return
-	f::SendRaw ↑
+	f::Send {U+2191}
 		return
-	p::SendRaw π
+	p::Send {U+3c0}
 		return
-	b::SendRaw ≈
+	b::Send {U+2248}
 		return
-	[::SendRaw ∉
+	[::Send {U+2209}
 		return
-	u::SendRaw ≤
+	u::Send {U+2264}
 		return
-	y::SendRaw ≥
+	y::Send {U+2265}
 		return
-	'::SendRaw …
+	'::Send {U+2026}
 		return
-	-::SendRaw ±
+	-::Send {U+b1}
 		return
 	a::F1
 	r::F2
 	s::F3
 	t::F4
-	g::SendRaw ≠
+	g::Send {U+2260}
 		return
-	]::SendRaw ∈
+	]::Send {U+2208}
 		return
 	n::F7
 	e::F8
 	i::F9
 	o::F10
-	x::SendRaw ✗
+	x::Send {U+2717}
 		return
-	c::SendRaw ㊿
+	c::Send {U+32bf}
 		return
 	d::F5
 	v::F11

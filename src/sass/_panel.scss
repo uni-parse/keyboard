@@ -1,5 +1,9 @@
-#panel{
+#panel {
   text-align: center;
+  ::selection {
+    background-color: transparent;
+    color: currentColor;
+  }
 }
 fieldset#switcher {
   display: inline-block;

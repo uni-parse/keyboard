@@ -17,6 +17,7 @@ ol {
   margin: 0 0.1em;
 
   li {
+    white-space: break-spaces;
     counter-increment: index;
 
     &::marker {
@@ -36,4 +37,8 @@ ol {
   position: absolute;
   right: 2rem;
   top: 1rem;
+  &::selection {
+    background-color: transparent;
+    color: currentColor;
+  }
 }
