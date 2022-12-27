@@ -25,27 +25,52 @@ $shift: hsl(46, 100%, 50%);
 $symbol2: pink;
 $lightness: -8%;
 
+
 #keyboard {
-  border: solid yellow thin;
-  background-color: #333;
-  min-width: clamp(52rem, 100%, 58.5rem);
+  display: grid;
+  grid-gap: 0.25em;
+  padding: .25em;
+  //border: solid yellow thin;
+  //background-color: #333;
   overflow: auto;
-  font: clamp(1rem, 1.5vw, 1.25rem) monospace;
+  font: clamp(1em, 1.5vw, 1.25em) monospace;
   ::selection {
     background-color: transparent;
     color: currentColor;
   }
+
+  button {
+    border-color: #a4d13a;
+    border-radius: 10% 10% 50% 50% / 10% 10% 20% 20%;
+    height: 2em;
+    &.modifier {
+      background-color: #333
+    }
+  }
 }
 
-div.row {
-  display: flex;
-  justify-content: space-between;
+.row {
+  display: grid;
+  grid-gap: 0.25em;
+}
+#top_row {
+  grid-template-columns: repeat(13, 1fr) 1.7fr;
+}
+#upper_row {
+  grid-template-columns: 1.5fr repeat(12, 1fr) 1.2fr;
+}
+#home_row {
+  grid-template-columns: 1.8fr repeat(13, 1fr);
+}
+#lower_row {
+  grid-template-columns: 1.2fr repeat(11, 1fr) 1.5fr 1fr;
+}
+#bottom_row {
+  grid-template-columns: repeat(3, 1fr) 3fr repeat(5, 1fr);
 }
 
-.Bs {
-  flex-basis: 17%;
-}
 
+/*
 span {
   &:hover {
     cursor: pointer;
@@ -283,4 +308,4 @@ span {
   //     right: -0.2em;
   //   }
   // }
-}
+}*/

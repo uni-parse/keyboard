@@ -18,11 +18,24 @@ body {
 
 main {
   border: red solid thin;
-  display: inline-flex;
-  width: clamp(300px, 100vw, 1200px);
-  flex-flow: column nowrap;
-  overflow: hidden;
-  max-width: calc(100vw - 1.1em);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  place-items: center;
+  min-height: 100vh;
+  //width: clamp(300px, 100vw, 1200px);
+  //flex-flow: column nowrap;
+  //overflow: hidden;
+  //max-width: calc(100vw - 1.1em);
+
+  #kbdCtx {
+    //max-width: $maxWidth;
+    width: clamp(20em, 100%, 35em);
+  }
+  #ahkCtx {
+    //max-width: 35em;
+    flex: 35em 1 1;
+  }
 }
 
 img {
@@ -32,5 +45,3 @@ img {
   // position: sticky;
   // top: 0;
 }
-
-

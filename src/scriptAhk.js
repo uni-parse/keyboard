@@ -1,7 +1,12 @@
 import autohotkeyStr from './ahk'
 
-const pre = document.createElement('pre')
-pre.innerText = autohotkeyStr
+const ol = document.createElement('ol')
+autohotkeyStr.split('\n').forEach((line, i) => {
+  const li = document.createElement('li')
+  li.textContent=line
+  ol.appendChild(li)
+})
+
 
 const copyBtn = document.createElement('button')
 copyBtn.id = 'copyBtn'
@@ -12,8 +17,8 @@ copyBtn.addEventListener('click', () =>
 )
 
 const script = document.createElement('div')
-script.id = 'autoHotKeyCtx'
+script.id = 'ahkCtx'
 script.appendChild(copyBtn)
-script.appendChild(pre)
+script.appendChild(ol)
 
 export default script

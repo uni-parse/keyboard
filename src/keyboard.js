@@ -7,6 +7,7 @@ appendButtons(keyboard)
 export default keyboard
 
 //helper functions
+
 function appendButtons(ctx) {
   for (const row in keys.standardRows) {
     const rowCtx = document.createElement('div')

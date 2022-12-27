@@ -6,9 +6,14 @@ import panel from './panel'
 import { switcherListener } from './panel_switcher'
 import script from './scriptAhk'
 
+
+const kbdCtx = document.createElement('div')
+kbdCtx.id = 'kbdCtx'
+kbdCtx.appendChild(keyboard)
+kbdCtx.appendChild(panel)
+
 const main = document.createElement('main')
-main.appendChild(keyboard)
-main.appendChild(panel)
+main.appendChild(kbdCtx)
 main.appendChild(script)
 
 attachMedias(main)

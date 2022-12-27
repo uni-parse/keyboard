@@ -8,7 +8,7 @@ fieldset.id = 'switcher'
 fieldset.appendChild(legend)
 fieldset.name = 'layer'
 
-appendRadioBtns('power', 'standard', 'shift', 'sym', 'symShift', 'sym2', 'ext', 'ext2')
+appendRadioBtns('power', 'standard', 'shift', 'ext', 'ext2', 'sym', 'symShift', 'sym2')
 
 export default fieldset
 export { fieldset, switcherListener }

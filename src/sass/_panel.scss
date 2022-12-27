@@ -1,3 +1,6 @@
+#panel{
+  text-align: center;
+}
 fieldset#switcher {
   display: inline-block;
   label {
@@ -6,7 +9,7 @@ fieldset#switcher {
 }
 
 #download {
-  background-color: black;
+  //background-color: black;
   display: flex;
   place-content: space-evenly;
   a {
@@ -17,7 +20,7 @@ fieldset#switcher {
       font-size: 1.3em;
       font-weight: bold;
       text-decoration: none;
-      text-decoration: underline black;
+      //text-decoration: underline #333;
     }
   }
 }
