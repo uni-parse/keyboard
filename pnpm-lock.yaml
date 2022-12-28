@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  file-saver: ^2.0.5
   jszip: ^3.10.1
   postcss: ^8.4.14
   postcss-preset-env: ^7.7.1
@@ -10,7 +9,6 @@ specifiers:
   vite-imagetools: ^4.0.4
 
 devDependencies:
-  file-saver: 2.0.5
   jszip: 3.10.1
   postcss: 8.4.14
   postcss-preset-env: 7.7.1_postcss@8.4.14
@@ -572,10 +570,6 @@ packages:
   /expand-template/2.0.3:
     resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
     engines: {node: '>=6'}
-    dev: true
-
-  /file-saver/2.0.5:
-    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
     dev: true
 
   /fill-range/7.0.1:

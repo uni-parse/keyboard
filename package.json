@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && pnpm ahk && pnpm exe",
+    "build": "vite build && pnpm ahk",
     "preview": "vite preview",
-    "ahk": "node writeFile.mjs",
-    "exe": "C:/\"Program Files\"/AutoHotkey/Compiler/ahk2exe.exe /in ./src/UniParse.ahk /out UniParse.exe",
-    "zip": "node zip.js"
+    "ahk": "pnpm createAhk && pnpm exe && pnpm zip",
+    "createAhk": "node createAhk.mjs",
+    "exe": "C:/\"Program Files\"/AutoHotkey/Compiler/ahk2exe.exe /in ./ahk/UniParse.ahk /out UniParse.exe",
+    "zip": "node createZip.mjs"
   },
   "devDependencies": {
-    "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "postcss": "^8.4.14",
     "postcss-preset-env": "^7.7.1",
