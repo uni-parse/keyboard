@@ -20,7 +20,11 @@ function appendButtons(ctx) {
       btn.textContent = key
       //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.js
       btn.setAttribute('class',
-        `${getValidId(keys.standardHtkRows[row][i])}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ').includes(key) ? ' modifier' : ''}`
+        `${getValidId(
+          keys.standardHtkRows[row][i]
+        )}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'
+          .split(' ')
+          .includes(key) ? ' modifier' : ''}`
       )
 
       rowCtx.appendChild(btn)
