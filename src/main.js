@@ -4,6 +4,7 @@ import attachMedias from './mediaIcons'
 import keyboard from './keyboard'
 import panel from './panel'
 import { switcherListener } from './panel_switcher'
+import typeListener from './typeListener'
 import script from './scriptAhk'
 
 
@@ -20,5 +21,7 @@ attachMedias(main)
 document.body.appendChild(main)
 
 switcherListener()
+typeListener()
+
 
 console.log('💡💡done💡💡')

@@ -17,7 +17,7 @@ body {
 }
 
 main {
-  border: red solid thin;
+  //border: red solid thin;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -30,7 +30,7 @@ main {
 
   #kbdCtx {
     //max-width: $maxWidth;
-    width: clamp(20em, 100%, 35em);
+    width: clamp(28em, 100%, 35em);
   }
   #ahkCtx {
     //max-width: 35em;

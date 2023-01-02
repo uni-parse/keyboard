@@ -44,7 +44,7 @@ function getValidId(key) {
     case '[': return 'openBreacket'; break
     case ']': return 'closeBracket'; break
     case "'": return 'quate'; break
-    case ';': return 'semiColon'; break
+    case '`;': return 'semiColon'; break
     case ',': return 'comma'; break
     case '.': return 'period'; break
     default: return key

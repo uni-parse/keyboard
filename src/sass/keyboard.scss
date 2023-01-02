@@ -44,8 +44,18 @@ $lightness: -8%;
     height: 2em;
     text-align: center;
     padding: 0;
+    background-color: #666;
+    transition: all 0.2s;
+    &:hover,
+    &:focus {
+      background-color: rgb(182, 125, 39);
+    }
     &.modifier {
       background-color: #333;
+      &:hover,
+      &:focus {
+        background-color: rgb(23, 84, 112);
+      }
     }
   }
 }
@@ -53,18 +63,19 @@ $lightness: -8%;
 .row {
   display: grid;
   grid-gap: 0.25em;
+  justify-content: space-between;
 }
 #top_row {
-  grid-template-columns: repeat(13, 1fr) 11%;
+  grid-template-columns: repeat(13, minmax(1em, 1fr)) 11%;
 }
 #upper_row {
-  grid-template-columns: 9.5% repeat(12, 1fr) 7.4%;
+  grid-template-columns: 9.5% repeat(12, minmax(1em, 1fr)) 7.4%;
 }
 #home_row {
-  grid-template-columns: 11% repeat(13, 1fr);
+  grid-template-columns: 11% repeat(13, minmax(1em, 1fr));
 }
 #lower_row {
-  grid-template-columns: 7.4% repeat(11, 1fr) 16.5%;
+  grid-template-columns: 7.4% repeat(11, minmax(1em, 1fr)) 16.5%;
 }
 #bottom_row {
   grid-template-columns: repeat(3, 1fr) 4fr repeat(4, 1fr);
