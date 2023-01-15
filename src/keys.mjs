@@ -42,22 +42,22 @@ const standardStr = keys.get('standard')
 formateKeysToArrays() //map: layer => ['key', ...]
 
 keys
-  .set('standardRows', getKeysByRows(standardStr))
-
   .set('shift', getShifts(keys.get('standard')))
   .set('symShift', getShifts(keys.get('sym'), !'shiftDot'))
 
   .set('standardHtk',
     keys.get('standard').map(key => getHotKey(key))
   )
+  .set('extHtk', keys.get('ext').map(key => getHotKey(key)))
+  .set('ext2Htk', keys.get('ext2').map(key => getHotKey(key)))
+
+  .set('standardRows', getKeysByRows(standardStr))
   .set('standardHtkRows', getKeysByRows(
-    standardStr
-      .split('')
+    standardStr.split('')
       .map(key => getHotKey(key))
       .join('')
   ))
-  .set('extHtk', keys.get('ext').map(key => getHotKey(key)))
-  .set('ext2Htk', keys.get('ext2').map(key => getHotKey(key)))
+
 
 
 
