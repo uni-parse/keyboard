@@ -3,8 +3,8 @@ import keys from "./keys.mjs"
 import config from "./ahk_config.mjs"
 import mouse from "./ahk_mouse.mjs"
 
-let mouseL, mouseR, mouseU, mouseD,
-  base = keys.standard.map(k => k == ';' ? '`;' : k)
+const base = keys.get('standard').map(k => k == ';' ? '`;' : k)
+let mouseL, mouseR, mouseU, mouseD
 
 const autohotkeyStr = `${config.intro}
 ;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
@@ -47,7 +47,7 @@ export default autohotkeyStr
 
 function getExt(ext2 = 0) {
   let str = ''
-  keys[ext2 ? 'ext2Htk' : 'extHtk'].forEach((key, i) => {
+  keys.get(ext2 ? 'ext2Htk' : 'extHtk').forEach((key, i) => {
     if (key.includes('Button'))
       str += `\t${base[i]}::${key}\n`
     else if (key == 'Capslock')
@@ -70,7 +70,7 @@ function getExt(ext2 = 0) {
 }
 function getSym() {
   let str = ''
-  keys.sym.forEach((key, i) => {
+  keys.get('sym').forEach((key, i) => {
     if (+key || '0`\\/=[]'.includes(key))
       str += `\t${base[i]}::${key}\n`
     else if (key > '~')
@@ -82,7 +82,7 @@ function getSym() {
 }
 function getSym2() {
   let str = ''
-  keys.sym2.forEach((key, i) => {
+  keys.get('sym2').forEach((key, i) => {
     if (key.startsWith('F') || key.startsWith('^'))
       str += `\t${base[i]}::${key}\n`
     else if (key > '~')
@@ -94,7 +94,7 @@ function getSym2() {
 }
 function getSymShift() {
   let str = ''
-  keys.symShift.forEach((key, i) => {
+  keys.get('symShift').forEach((key, i) => {
     if (key == '%')
       str += `\t${base[i]}::sendRaw \`%\n\t\treturn\n`
     else if (key > '~')

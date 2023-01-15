@@ -1,74 +1,82 @@
 
-const keys = {
-  power: `
+const keys = new Map()
+  .set('power', `
 55 46 40 34 29 29 35   47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
 34   16 13 11 10 29   42   29 10 11 13 16 34  48
 46  33 27 24 18 22  37  37  22 18 24 27 33
-40     26  10         18         10  26   40  60`,
-  standard: `
+40     26  10         18         10  26   40  60`)
+  .set('standard', `
 \`  1 2 3 4 5 6   \\   7 8 9 0 =   ⌫
 ⇄    q w f p b   [   j l u y ' -   ⏎
 alt   a r s t g   ]   m n e i o ;   ⏎
 ⇧    ⇧ x c d v   z /   k h , . ⇧
-⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`,
-  ext: `
+⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`)
+  .set('ext', `
 .  . . . . . .   .   . . . . .    .
 .   ⇈ ⊗ ▴ ⎇ .   .   . ⇱ ↑ ⇲ ⇞ ⇟   .
 .    ⇊ ◂ ▾ ▸ ≣   .   ⇄ ← ↓ → ⏎ .   .
 .   . ↩ ↪ ⌫ ⌦   . .   ⇪ ◴ ⦺ ◷ .
-.       . .      .        . . . .`,
-  ext2: `
+.       . .      .        . . . .`)
+  .set('ext2', `
 .  . . . . . .   .   . . . . .      .
 .   . . . . .   .   . ⎙ 🔊 ⊚ ◼ .   .
 .   . . 🔍 . .   .  📱 ⏮ 🔉 ⏭ ⏯ 🔇   .
 .  . . . . .   . .   ☀ ✳ ⊕ ⊝ .
-.       . .     .     . . . .`,
-  sym: `
+.       . .     .     . . . .`)
+  .set('sym', `
 ⋆  ▪ ▸ . . » .   .   › • . . ⁃  .
 . \` [ ] . .   .   .  . ( ) " _  .
 .   1 2 3 4 .   €  \\ 7 8 9 0 :  .
 .  . { } 5 =   . .   / 6 < > .
-.     . .       .      . . . .`,
-  sym2: `
+.     . .       .      . . . .`)
+  .set('sym2', `
 . ⅒ ½  ⅓  ¼  ⅕  .    .    ¾  ⁰  .  .  .   .
 .  💡 ⚠️  ↑  π  ≈    ∉   .  .  ≤  ≥  …   ±   .
 .   F1 F2 F3 F4 ≠    ∈   .  F7 F8 F9 F10  .   .
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
-.      .   .         .         .   .   .   .`,
-}
+.      .   .         .         .   .   .   .`)
 
-const standardStr = keys.standard
-formateKeysToArrays()
-keys.standardRows = getKeysByRows(standardStr)
+const standardStr = keys.get('standard')
 
-keys.shift = getShifts(keys.standard)
-keys.symShift = getShifts(keys.sym, !'shiftDot')
+formateKeysToArrays() //map: layer => ['key', ...]
 
-keys.standardHtk = keys.standard.map(key => getHotKey(key))
-keys.standardHtkRows = getKeysByRows(
-  standardStr
-    .split('')
-    .map(key => getHotKey(key))
-    .join('')
-)
-keys.extHtk = keys.ext.map(key => getHotKey(key))
-keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
+keys
+  .set('standardRows', getKeysByRows(standardStr))
+
+  .set('shift', getShifts(keys.get('standard')))
+  .set('symShift', getShifts(keys.get('sym'), !'shiftDot'))
+
+  .set('standardHtk',
+    keys.get('standard').map(key => getHotKey(key))
+  )
+  .set('standardHtkRows', getKeysByRows(
+    standardStr
+      .split('')
+      .map(key => getHotKey(key))
+      .join('')
+  ))
+  .set('extHtk', keys.get('ext').map(key => getHotKey(key)))
+  .set('ext2Htk', keys.get('ext2').map(key => getHotKey(key)))
 
 
 
 
 export default keys
 
+
+
+
 function formateKeysToArrays() {
-  for (const layer in keys) {
-    keys[layer] = keys[layer]
+  for (const [key, value] of keys) {
+    keys.set(key, value
       .replace('\n', '')         //remove first new line
-      .replaceAll('\n', ' ')      //remove all new lines
+      .replaceAll('\n', ' ')     //remove all new lines
       .replaceAll('    ', ' ')   //remove extra spaces
       .replaceAll('   ', ' ')    //remove extra spaces
       .replaceAll('  ', ' ')     //remove extra spaces
       .split(' ')
+    )
   }
 }
 function getKeysByRows(standardStr) {
@@ -80,7 +88,7 @@ function getKeysByRows(standardStr) {
       .replaceAll('  ', ' ')     //remove extra spaces
       .split('\n')
   rows.forEach((row, i) => rows[i] = row.split(' '))
-  return Object.fromEntries(names.map((n, i) => [n, rows[i]]))
+  return new Map(names.map((n, i) => [n, rows[i]]))
 }
 function getShifts(layer, shiftDot = true) {
   return layer.map(key => {
@@ -169,6 +177,9 @@ function getHotKey(key) {
     default: return key;
   }
 }
+
+
+
 
 //.  . . . . . .   .   . . . . .  .
 //.   . . . . .   .   . . . . . .  .

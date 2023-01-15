@@ -9,19 +9,19 @@ export default keyboard
 //helper functions
 
 function appendButtons(ctx) {
-  for (const row in keys.standardRows) {
+  for (const row of keys.get('standardRows').keys()) {
     const rowCtx = document.createElement('div')
     rowCtx.id = row + '_row'
     rowCtx.setAttribute('class', 'row')
 
     //append layers in rows ctx
-    keys.standardRows[row].forEach((key, i) => {
+    keys.get('standardRows').get(row).forEach((key, i) => {
       const btn = document.createElement('button')
       btn.textContent = key
       //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.js
       btn.setAttribute('class',
         `${getValidId(
-          keys.standardHtkRows[row][i]
+          keys.get('standardHtkRows').get(row)[i]
         )}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'
           .split(' ')
           .includes(key) ? ' modifier' : ''}`
