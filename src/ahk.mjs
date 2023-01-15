@@ -18,7 +18,7 @@ ${getExt()}#If
 
 ;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
 #If ${config.layer_condition.ext2}
-${getExt2()}#If
+${getExt('ext2Htk')}#If
 
 
 ;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲
@@ -45,9 +45,9 @@ ${mouse.wheel(config.extKey, 'a', 'wheelDown')}#If`
 export default autohotkeyStr
 
 
-function getExt() {
+function getExt(ext2 = 0) {
   let str = ''
-  keys.extHtk.forEach((key, i) => {
+  keys[ext2 ? 'ext2Htk' : 'extHtk'].forEach((key, i) => {
     if (key.includes('Button'))
       str += `\t${base[i]}::${key}\n`
     else if (key == 'Capslock')
@@ -67,10 +67,6 @@ function getExt() {
     else if (key != '.' && !key.includes('mouse') && !key.includes('Wheel')) str += `\t${base[i]}::${key}\n`
   })
   return str
-}
-function getExt2() {
-  //keys.ext2Htk.forEach(key => {})
-  return ''
 }
 function getSym() {
   let str = ''
