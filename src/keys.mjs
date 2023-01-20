@@ -60,13 +60,9 @@ keys
 
 
 
-
-
 export default keys
 
 
-const map = new Map([['p', 'v'], ['p2', 'v2']])
-map.forEach((v, k) => console.log(k, v))
 
 function formateKeysToArrays() {
   keys.forEach((value, key) =>
