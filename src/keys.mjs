@@ -65,10 +65,11 @@ keys
 export default keys
 
 
-
+const map = new Map([['p', 'v'], ['p2', 'v2']])
+map.forEach((v, k) => console.log(k, v))
 
 function formateKeysToArrays() {
-  for (const [key, value] of keys) {
+  keys.forEach((value, key) =>
     keys.set(key, value
       .replace('\n', '')         //remove first new line
       .replaceAll('\n', ' ')     //remove all new lines
@@ -77,7 +78,7 @@ function formateKeysToArrays() {
       .replaceAll('  ', ' ')     //remove extra spaces
       .split(' ')
     )
-  }
+  )
 }
 function getKeysByRows(standardStr) {
   const names = ['top', 'upper', 'home', 'lower', 'bottom'],
