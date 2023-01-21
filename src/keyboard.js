@@ -9,16 +9,16 @@ export default keyboard
 //helper functions
 
 function appendButtons(ctx) {
-  for (const row of keys.get('standardRows').keys()) {
+  keys.get('standardRows').forEach((rowKeys, row) => {
     const rowCtx = document.createElement('div')
     rowCtx.id = row + '_row'
     rowCtx.setAttribute('class', 'row')
 
     //append layers in rows ctx
-    keys.get('standardRows').get(row).forEach((key, i) => {
+    rowKeys.forEach((key, i) => {
       const btn = document.createElement('button')
       btn.textContent = key
-      //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.js
+      //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
       btn.setAttribute('class',
         `${getValidId(
           keys.get('standardHtkRows').get(row)[i]
@@ -31,7 +31,7 @@ function appendButtons(ctx) {
     })
 
     ctx.appendChild(rowCtx)
-  }
+  })
 }
 function getValidId(key) {
   if (+key || key == 0) return `_${key}`
