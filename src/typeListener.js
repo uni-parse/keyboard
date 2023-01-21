@@ -7,14 +7,14 @@ import pop3 from "./assets/audio/pop3.wav"
 const pops = [pop1, pop2, pop3]
 pops.forEach(pop => new Audio(pop))//pre fetch
 
-const buttons = [...keyboard.querySelectorAll(`button`)]
+const buttons = keyboard.querySelectorAll(`button`)
 //console.log(buttons)
 
 function typeListener() {
   document.addEventListener('keydown', ({ key: keyDown, code }) => {
     console.log(code, keyDown)
 
-    const targetBtn = buttons.find(btn =>
+    const targetBtn = [].find.call(buttons, btn =>
       btn.innerText == keyDown
       || btn.className.split(' ').find(className =>
         className == keyDown || className == '_' + keyDown

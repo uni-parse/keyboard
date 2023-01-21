@@ -15,9 +15,9 @@ export { fieldset, switcherListener }
 
 function switcherListener() {
   const buttons = document.querySelectorAll(`#keyboard button`);
-  fieldset.addEventListener('change', e =>
+  fieldset.addEventListener('change', ({ target: { value } }) =>
     buttons.forEach((btn, i) =>
-      btn.textContent = keys.get(e.target.value)[i]
+      btn.textContent = keys.get(value)[i]
     )
   )
 }
