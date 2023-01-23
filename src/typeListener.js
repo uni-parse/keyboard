@@ -35,13 +35,15 @@ function typeListener() {
       targetBtn.style.backgroundColor = 'darkcyan'
     else targetBtn.style.backgroundColor = '#333'
 
-    document.addEventListener('keyup', ({ key: keyUp }) => {
+    document.addEventListener('keyup', function handler({ key: keyUp }) {
       if (keyDown != keyUp) return
+
+      document.removeEventListener('keyup', handler)
 
       targetBtn.style.borderStyle = 'outset'
       if (targetBtn.className.includes('modifier'))
         targetBtn.style.backgroundColor = '#222'
       else targetBtn.style.backgroundColor = '#666'
-    }, { once: false }) //can't make it once, too fast
+    }, { once: false })
   })
 }
