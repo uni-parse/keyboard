@@ -1,6 +1,8 @@
 
-const mouse = {
-  wheel: (combo, key, hotKey) => `\t*${key}::
+const mouse = {}
+export default mouse
+
+mouse.getWheel = (combo, key, hotKey) => `\t*${key}::
     if !scroll_${key} {
       If press_${key}
         press_${key} = 2
@@ -36,12 +38,13 @@ const mouse = {
     if press_${key} = 2
       speed_${key} = 1
     press_${key} = 0
-    Return\n`,
-  move: (combo, mouseU, mouseR, mouseD, mouseL) => {
-    return getMouseKeyHtk(mouseU) + getMouseKeyHtk(mouseD) + getMouseKeyHtk(mouseR) + getMouseKeyHtk(mouseL)
+    Return\n`
 
-    function getMouseKeyHtk(key) {
-      return `\t${key}::
+mouse.getHover = (combo, mouseU, mouseR, mouseD, mouseL) => {
+  return getMouseKeyHtk(mouseU) + getMouseKeyHtk(mouseD) + getMouseKeyHtk(mouseR) + getMouseKeyHtk(mouseL)
+
+  function getMouseKeyHtk(key) {
+    return `\t${key}::
     If !move_${key} {
       if !GetKeyState("${key == mouseL || key == mouseR ? mouseU : mouseL}","P") && !GetKeyState("${key == mouseL || key == mouseR ? mouseD : mouseR}","P") && !GetKeyState("${getOppositeKey(key)}","P") {
         If press_${key}
@@ -117,30 +120,28 @@ const mouse = {
     press_${key} = 0
     Return\n`
 
-      function getCoords(mouseDir, cross = 0) {
-        if (!cross) {
-          if (mouseDir == mouseU) return '0, -y'
-          else if (mouseDir == mouseR) return 'x, 0'
-          else if (mouseDir == mouseD) return '0, y'
-          else if (mouseDir == mouseL) return '-x, 0'
-        } else if (cross == 1) {
-          if (mouseDir == mouseU || mouseDir == mouseL) return '-x, -y'
-          else if (mouseDir == mouseR) return 'x, -y'
-          else if (mouseDir == mouseD) return '-x, y'
-        } else if (cross == 2) {
-          if (mouseDir == mouseU) return 'x, -y'
-          else if (mouseDir == mouseR || mouseDir == mouseD) return 'x, y'
-          else if (mouseDir == mouseL) return '-x, y'
-        }
+    function getCoords(mouseDir, cross = 0) {
+      if (!cross) {
+        if (mouseDir == mouseU) return '0, -y'
+        else if (mouseDir == mouseR) return 'x, 0'
+        else if (mouseDir == mouseD) return '0, y'
+        else if (mouseDir == mouseL) return '-x, 0'
+      } else if (cross == 1) {
+        if (mouseDir == mouseU || mouseDir == mouseL) return '-x, -y'
+        else if (mouseDir == mouseR) return 'x, -y'
+        else if (mouseDir == mouseD) return '-x, y'
+      } else if (cross == 2) {
+        if (mouseDir == mouseU) return 'x, -y'
+        else if (mouseDir == mouseR || mouseDir == mouseD) return 'x, y'
+        else if (mouseDir == mouseL) return '-x, y'
       }
+    }
 
-      function getOppositeKey(mouseDirection) {
-        if (mouseDirection == mouseL) return mouseR
-        else if (mouseDirection == mouseR) return mouseL
-        else if (mouseDirection == mouseU) return mouseD
-        else if (mouseDirection == mouseD) return mouseU
-      }
+    function getOppositeKey(mouseDirection) {
+      if (mouseDirection == mouseL) return mouseR
+      else if (mouseDirection == mouseR) return mouseL
+      else if (mouseDirection == mouseU) return mouseD
+      else if (mouseDirection == mouseD) return mouseU
     }
   }
 }
-export default mouse

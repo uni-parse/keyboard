@@ -1,12 +1,10 @@
 import keys from "./keys"
 const keyboard = document.createElement('div')
+export default keyboard
 
 keyboard.id = 'keyboard'
 appendButtons(keyboard)
 
-export default keyboard
-
-//helper functions
 
 function appendButtons(ctx) {
   keys.get('standardRows').forEach((rowKeys, row) => {
@@ -33,6 +31,8 @@ function appendButtons(ctx) {
     ctx.appendChild(rowCtx)
   })
 }
+
+//helper functions
 function getValidId(key) {
   if (+key || key == 0) return `_${key}`
   switch (key) {

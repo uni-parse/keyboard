@@ -1,5 +1,8 @@
 
 const keys = new Map()
+export default keys
+
+keys
   .set('power', `
 55 46 40 34 29 29 35   47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
@@ -57,11 +60,6 @@ keys
       .map(key => getHotKey(key))
       .join('')
   ))
-
-
-
-export default keys
-
 
 
 function formateKeysToArrays() {

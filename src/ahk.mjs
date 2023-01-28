@@ -38,9 +38,9 @@ ${getSym2()}#If
 
 ;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
 #If ${config.layer_condition.ext}
-${mouse.move(config.extKey, mouseU, mouseR, mouseD, mouseL)}
-${mouse.wheel(config.extKey, 'q', 'wheelUp')}
-${mouse.wheel(config.extKey, 'a', 'wheelDown')}#If`
+${mouse.getHover(config.extKey, mouseU, mouseR, mouseD, mouseL)}
+${mouse.getWheel(config.extKey, 'q', 'wheelUp')}
+${mouse.getWheel(config.extKey, 'a', 'wheelDown')}#If`
 
 export default autohotkeyStr
 

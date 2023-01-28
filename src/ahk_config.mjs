@@ -6,6 +6,7 @@ const
     symKey: symbolKey,
     extKey: extendKey
   }
+export default config
 
 config.intro = `;
 ;
@@ -151,7 +152,6 @@ config.layer_condition = {
   ext2: `layer_ext2`
 }
 
-export default config
 
 /**  goal
   s symbol            e shift symbol
