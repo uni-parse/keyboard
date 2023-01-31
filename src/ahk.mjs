@@ -106,12 +106,7 @@ function getSymShift() {
 }
 
 function getUnicode(char) {
-  let comp
-  if (char.length === 1) comp = char.charCodeAt(0)
-  else comp = (char.charCodeAt(0) - 0xD800) * 0x400
-    + (char.charCodeAt(1) - 0xDC00) + 0x10000
-  if (comp < 0) comp = char.charCodeAt(0)
-  return `U+${comp.toString("16")}`
+  return `U+${char.codePointAt(0).toString(16)}`
 }
 function getBrightness(key, isIncreasing = 0) {
   return isIncreasing ?
