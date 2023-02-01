@@ -54,20 +54,21 @@ function getExt(ext2 = 0) {
       case 'MButton':
       case 'XButton1':
       case 'XButton2': str += `\t${base[i]}::${key}\n`; break
-      case 'Capslock':
-        str += `\t${base[i]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`; break
+      case 'Capslock': str += `\t${base[i]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
+        break
       case 'mouseL': mouseL = base[i]; break
       case 'mouseR': mouseR = base[i]; break
       case 'mouseU': mouseU = base[i]; break
       case 'mouseD': mouseD = base[i]; break
-      case 'brightnessUp':
-        str += getBrightness(base[i], 1); break
-      case 'brightnessDown':
-        str += getBrightness(base[i]); break
+      case 'brightnessUp': str += getBrightness(base[i], 1)
+        break
+      case 'brightnessDown': str += getBrightness(base[i])
+        break
       case 'speed': str += `\t${base[i]}::
 		speed_switcher := !speed_switcher
 		resetSpeed()
-		return\n`; break
+		return\n`
+        break
       default: if (key != '.' && !key.includes('mouse') && !key.includes('Wheel'))
         str += `\t${base[i]}::${key}\n`
     }
