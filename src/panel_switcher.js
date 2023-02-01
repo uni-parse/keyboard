@@ -17,7 +17,7 @@ function switcherListener() {
   const buttons = document.querySelectorAll(`#keyboard button`);
   fieldset.addEventListener('change', ({ target: { value } }) =>
     buttons.forEach((btn, i) =>
-      btn.textContent = keys.get(value)[i]
+      btn.textContent = keys[value][i]
     )
   )
 }

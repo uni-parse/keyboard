@@ -3,7 +3,7 @@ import keys from "./keys.mjs"
 import config from "./ahk_config.mjs"
 import mouse from "./ahk_mouse.mjs"
 
-const base = keys.get('standard').map(k => k == ';' ? '`;' : k)
+const base = keys.standard.map(k => k == ';' ? '`;' : k)
 let mouseL, mouseR, mouseU, mouseD
 
 const autohotkeyStr = `${config.intro}
@@ -47,30 +47,36 @@ export default autohotkeyStr
 
 function getExt(ext2 = 0) {
   let str = ''
-  keys.get(ext2 ? 'ext2Htk' : 'extHtk').forEach((key, i) => {
-    if (key.includes('Button'))
-      str += `\t${base[i]}::${key}\n`
-    else if (key == 'Capslock')
-      str += `\t${base[i]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`
-    else if (key == 'mouseL') mouseL = base[i]
-    else if (key == 'mouseR') mouseR = base[i]
-    else if (key == 'mouseU') mouseU = base[i]
-    else if (key == 'mouseD') mouseD = base[i]
-    else if (key == 'brightnessUp')
-      str += getBrightness(base[i], 1)
-    else if (key == 'brightnessDown')
-      str += getBrightness(base[i])
-    else if (key == 'speed') str += `\t${base[i]}::
+  keys[ext2 ? 'ext2Htk' : 'extHtk'].forEach((key, i) => {
+    switch (key) {
+      case 'LButton':
+      case 'RButton':
+      case 'MButton':
+      case 'XButton1':
+      case 'XButton2': str += `\t${base[i]}::${key}\n`; break
+      case 'Capslock':
+        str += `\t${base[i]}::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"\n\t\treturn\n`; break
+      case 'mouseL': mouseL = base[i]; break
+      case 'mouseR': mouseR = base[i]; break
+      case 'mouseU': mouseU = base[i]; break
+      case 'mouseD': mouseD = base[i]; break
+      case 'brightnessUp':
+        str += getBrightness(base[i], 1); break
+      case 'brightnessDown':
+        str += getBrightness(base[i]); break
+      case 'speed': str += `\t${base[i]}::
 		speed_switcher := !speed_switcher
 		resetSpeed()
-		return\n`
-    else if (key != '.' && !key.includes('mouse') && !key.includes('Wheel')) str += `\t${base[i]}::${key}\n`
+		return\n`; break
+      default: if (key != '.' && !key.includes('mouse') && !key.includes('Wheel'))
+        str += `\t${base[i]}::${key}\n`
+    }
   })
   return str
 }
 function getSym() {
   let str = ''
-  keys.get('sym').forEach((key, i) => {
+  keys.sym.forEach((key, i) => {
     if (+key || '0`\\/=[]'.includes(key))
       str += `\t${base[i]}::${key}\n`
     else if (key > '~')
@@ -82,7 +88,7 @@ function getSym() {
 }
 function getSym2() {
   let str = ''
-  keys.get('sym2').forEach((key, i) => {
+  keys.sym2.forEach((key, i) => {
     if (key.startsWith('F') || key.startsWith('^'))
       str += `\t${base[i]}::${key}\n`
     else if (key > '~')
@@ -94,7 +100,7 @@ function getSym2() {
 }
 function getSymShift() {
   let str = ''
-  keys.get('symShift').forEach((key, i) => {
+  keys.symShift.forEach((key, i) => {
     if (key == '%')
       str += `\t${base[i]}::sendRaw \`%\n\t\treturn\n`
     else if (key > '~')
@@ -106,7 +112,10 @@ function getSymShift() {
 }
 
 function getUnicode(char) {
-  return `U+${char.codePointAt(0).toString(16)}`
+  switch (char) {
+    case '⚠️': return 'U+26a0}{U+fe0f'
+    default: return `U+${char.codePointAt(0).toString(16)}`
+  }
 }
 function getBrightness(key, isIncreasing = 0) {
   return isIncreasing ?

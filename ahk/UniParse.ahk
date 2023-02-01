@@ -140,45 +140,28 @@ SetCapsLockState, AlwaysOff
 
 ;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
 #If !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
-	`::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
-		return
-	1::Browser_Search
-	2::Media_Stop
-	3::Media_Prev
-	4::Media_Next
-	8::^Numpad0
-	9::^NumpadAdd
-	0::^NumpadSub
-	=::Volume_Mute
 	w::Esc
 	p::
 		speed_switcher := !speed_switcher
 		resetSpeed()
 		return
-	[::ChangeBrightness(CurrentBrightness < 100 - brightnessJump ? CurrentBrightness += brightnessJump : 100)
-    return
-	j::PgUp
 	l::Home
 	u::Up
 	y::End
-	'::Volume_Down
-	-::Volume_Up
+	'::PgUp
+	-::PgDn
 	g::AppsKey
-	]::ChangeBrightness(CurrentBrightness > brightnessJump ? CurrentBrightness -= brightnessJump : 0)
-    return
-	m::PgDn
+	m::Tab
 	n::Left
 	e::Down
 	i::Right
 	o::Enter
-	`;::Media_Play_Pause
 	x::XButton1
 	c::XButton2
 	d::Bs
 	v::Del
-	z::PrintScreen
-	/::Run calc
-	k::Tab
+	k::SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+		return
 	h::LButton
 	,::MButton
 	.::RButton
@@ -187,6 +170,23 @@ SetCapsLockState, AlwaysOff
 
 ;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
 #If layer_ext2
+	l::PrintScreen
+	u::Volume_Up
+	y::^Numpad0
+	'::Media_Stop
+	s::Browser_Search
+	m::Run calc
+	n::Media_Prev
+	e::Volume_Down
+	i::Media_Next
+	o::Media_Play_Pause
+	`;::Volume_Mute
+	k::ChangeBrightness(CurrentBrightness < 100 - brightnessJump ? CurrentBrightness += brightnessJump : 100)
+    return
+	h::ChangeBrightness(CurrentBrightness > brightnessJump ? CurrentBrightness -= brightnessJump : 0)
+    return
+	,::^NumpadAdd
+	.::^NumpadSub
 #If
 
 
@@ -334,7 +334,7 @@ SetCapsLockState, AlwaysOff
 		return
 	q::Send {U+1f4a1}
 		return
-	w::Send {U+26a0}
+	w::Send {U+26a0}{U+fe0f}
 		return
 	f::Send {U+2191}
 		return

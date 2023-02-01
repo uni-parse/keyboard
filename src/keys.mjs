@@ -1,78 +1,74 @@
-
-const keys = new Map()
-export default keys
-
-keys
-  .set('power', `
-55 46 40 34 29 29 35   47   29 29 30 35 42  51
+const keys = {
+  power: `55 46 40 34 29 29 35   47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
 34   16 13 11 10 29   42   29 10 11 13 16 34  48
 46  33 27 24 18 22  37  37  22 18 24 27 33
-40     26  10         18         10  26   40  60`)
-  .set('standard', `
+40     26  10         18         10  26   40  60`,
+  standard: `
 \`  1 2 3 4 5 6   \\   7 8 9 0 =   ⌫
 ⇄    q w f p b   [   j l u y ' -   ⏎
 alt   a r s t g   ]   m n e i o ;   ⏎
 ⇧    ⇧ x c d v   z /   k h , . ⇧
-⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`)
-  .set('ext', `
+⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`,
+  ext: `
 .  . . . . . .   .   . . . . .    .
 .   ⇈ ⊗ ▴ ⎇ .   .   . ⇱ ↑ ⇲ ⇞ ⇟   .
 .    ⇊ ◂ ▾ ▸ ≣   .   ⇄ ← ↓ → ⏎ .   .
 .   . ↩ ↪ ⌫ ⌦   . .   ⇪ ◴ ⦺ ◷ .
-.       . .      .        . . . .`)
-  .set('ext2', `
+.       . .      .        . . . .`,
+  ext2: `
 .  . . . . . .   .   . . . . .      .
 .   . . . . .   .   . ⎙ 🔊 ⊚ ◼ .   .
 .   . . 🔍 . .   .  📱 ⏮ 🔉 ⏭ ⏯ 🔇   .
 .  . . . . .   . .   ☀ ✳ ⊕ ⊝ .
-.       . .     .     . . . .`)
-  .set('sym', `
+.       . .     .     . . . .`,
+  sym: `
 ⋆  ▪ ▸ . . » .   .   › • . . ⁃  .
 . \` [ ] . .   .   .  . ( ) " _  .
 .   1 2 3 4 .   €  \\ 7 8 9 0 :  .
 .  . { } 5 =   . .   / 6 < > .
-.     . .       .      . . . .`)
-  .set('sym2', `
+.     . .       .      . . . .`,
+  sym2: `
 . ⅒ ½  ⅓  ¼  ⅕  .    .    ¾  ⁰  .  .  .   .
 .  💡 ⚠️  ↑  π  ≈    ∉   .  .  ≤  ≥  …   ±   .
 .   F1 F2 F3 F4 ≠    ∈   .  F7 F8 F9 F10  .   .
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
-.      .   .         .         .   .   .   .`)
+.      .   .         .         .   .   .   .`
+}
+export default keys
 
-const standardStr = keys.get('standard')
 
-formateKeysToArrays() //map: layer => ['key', ...]
 
-keys
-  .set('shift', getShifts(keys.get('standard')))
-  .set('symShift', getShifts(keys.get('sym'), !'shiftDot'))
+const standardStr = keys.standard
 
-  .set('standardHtk',
-    keys.get('standard').map(key => getHotKey(key))
-  )
-  .set('extHtk', keys.get('ext').map(key => getHotKey(key)))
-  .set('ext2Htk', keys.get('ext2').map(key => getHotKey(key)))
+formateKeysToArrays() // keys = { layer1: ['key1', ...], ... }
 
-  .set('standardRows', getKeysByRows(standardStr))
-  .set('standardHtkRows', getKeysByRows(
-    standardStr.split('')
-      .map(key => getHotKey(key))
-      .join('')
-  ))
+keys.shift = getShifts(keys.standard)
+keys.symShift = getShifts(keys.sym, !'shiftDot')
+
+keys.standardHtk = keys.standard.map(key => getHotKey(key))
+keys.extHtk = keys.ext.map(key => getHotKey(key))
+keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
+
+keys.standardRows = getKeysByRows(standardStr)
+keys.standardHtkRows = getKeysByRows(
+  standardStr.split('')
+    .map(key => getHotKey(key))
+    .join('')
+)
 
 
 function formateKeysToArrays() {
-  keys.forEach((value, key) =>
-    keys.set(key, value
+  Object.entries(keys).forEach(([key, value]) =>
+    keys[key] = value
       .replace('\n', '')         //remove first new line
       .replaceAll('\n', ' ')     //remove all new lines
       .replaceAll('    ', ' ')   //remove extra spaces
       .replaceAll('   ', ' ')    //remove extra spaces
       .replaceAll('  ', ' ')     //remove extra spaces
       .split(' ')
-    )
   )
+
 }
 function getKeysByRows(standardStr) {
   const names = ['top', 'upper', 'home', 'lower', 'bottom'],
@@ -83,35 +79,36 @@ function getKeysByRows(standardStr) {
       .replaceAll('  ', ' ')     //remove extra spaces
       .split('\n')
   rows.forEach((row, i) => rows[i] = row.split(' '))
-  return new Map(names.map((n, i) => [n, rows[i]]))
+  return Object.fromEntries(names.map((n, i) => [n, rows[i]]))
 }
 function getShifts(layer, shiftDot = true) {
   return layer.map(key => {
     if (shiftDot && key == '.') return '>'
     switch (key) {
-      case '`': return '~'; break
-      case '1': return '!'; break
-      case '2': return '@'; break
-      case '3': return '#'; break
-      case '4': return '$'; break
-      case '5': return '%'; break
-      case '6': return '^'; break
-      case '7': return '&'; break
-      case '8': return '*'; break
-      case '9': return '('; break
-      case '0': return ')'; break
-      case '=': return '+'; break
-      case '-': return '_'; break
-      case '\\': return '|'; break
-      case '/': return '?'; break
-      case '[': return '{'; break
-      case ']': return '}'; break
-      case ',': return '<'; break
-      case ';': return ':'; break
-      case "'": return '"'; break
+      case '`': return '~'
+      case '1': return '!'
+      case '2': return '@'
+      case '3': return '#'
+      case '4': return '$'
+      case '5': return '%'
+      case '6': return '^'
+      case '7': return '&'
+      case '8': return '*'
+      case '9': return '('
+      case '0': return ')'
+      case '=': return '+'
+      case '-': return '_'
+      case '\\': return '|'
+      case '/': return '?'
+      case '[': return '{'
+      case ']': return '}'
+      case ',': return '<'
+      case ';': return ':'
+      case "'": return '"'
       default: return (
         key.length == 1 && key >= 'a' && key <= 'z'
-          ? key.toUpperCase() : key
+          ? key.toUpperCase()
+          : key
       )
     }
   })
@@ -119,60 +116,59 @@ function getShifts(layer, shiftDot = true) {
 
 function getHotKey(key) {
   switch (key) {
-    case '💲': return 'F23'; break
-    case '⭐': return 'F24'; break
-    case '⊗': return 'Esc'; break
-    case '⎋': return 'Esc'; break
-    case '⇄': return 'Tab'; break
-    case '⏎': return 'Enter'; break
-    case '⇪': return 'Capslock'; break
-    case '⇧': return 'LShift'; break
-    case '⨁': return 'LCtrl'; break
-    case '⊞': return 'LWin'; break
-    case '≣': return 'AppsKey'; break
-    case '⌫': return 'Bs'; break
-    case '⌦': return 'Del'; break
-    case '⇱': return 'Home'; break
-    case '⇲': return 'End'; break
-    case '⇞': return 'PgUp'; break
-    case '⇟': return 'PgDn'; break
-    case '↑': return 'Up'; break
-    case '↓': return 'Down'; break
-    case '→': return 'Right'; break
-    case '←': return 'Left'; break
-    case '▴': return 'mouseU'; break
-    case '▾': return 'mouseD'; break
-    case '▸': return 'mouseR'; break
-    case '◂': return 'mouseL'; break
-    case '◴': return 'LButton'; break
-    case '◷': return 'RButton'; break
-    case '⦺': return 'MButton'; break
-    case '↩': return 'XButton1'; break
-    case '↪': return 'XButton2'; break
-    case '⇈': return 'WheelDown'; break
-    case '⇊': return 'WheelUp'; break
-    case '⎇': return 'speed'; break
-    case '⏯': return 'Media_Play_Pause'; break
-    case '◼': return 'Media_Stop'; break
-    case '⏭': return 'Media_Next'; break
-    case '⏮': return 'Media_Prev'; break
-    case '🔇': return 'Volume_Mute'; break
-    case '🔊': return 'Volume_Up'; break
-    case '🔉': return 'Volume_Down'; break
-    case '☀': return 'brightnessUp'; break
-    case '✳': return 'brightnessDown'; break
-    case '🔍': return 'Browser_Search'; break
-    case '⊚': return '^Numpad0'; break
-    case '⊕': return '^NumpadAdd'; break
-    case '⊝': return '^NumpadSub'; break
-    case '⎙': return 'PrintScreen'; break
-    case '📱': return 'Run calc'; break
-    case '%': return '`%'; break
-    case ';': return '`;'; break
-    default: return key;
+    case '💲': return 'F23'
+    case '⭐': return 'F24'
+    case '⊗': return 'Esc'
+    case '⎋': return 'Esc'
+    case '⇄': return 'Tab'
+    case '⏎': return 'Enter'
+    case '⇪': return 'Capslock'
+    case '⇧': return 'LShift'
+    case '⨁': return 'LCtrl'
+    case '⊞': return 'LWin'
+    case '≣': return 'AppsKey'
+    case '⌫': return 'Bs'
+    case '⌦': return 'Del'
+    case '⇱': return 'Home'
+    case '⇲': return 'End'
+    case '⇞': return 'PgUp'
+    case '⇟': return 'PgDn'
+    case '↑': return 'Up'
+    case '↓': return 'Down'
+    case '→': return 'Right'
+    case '←': return 'Left'
+    case '▴': return 'mouseU'
+    case '▾': return 'mouseD'
+    case '▸': return 'mouseR'
+    case '◂': return 'mouseL'
+    case '◴': return 'LButton'
+    case '◷': return 'RButton'
+    case '⦺': return 'MButton'
+    case '↩': return 'XButton1'
+    case '↪': return 'XButton2'
+    case '⇈': return 'WheelDown'
+    case '⇊': return 'WheelUp'
+    case '⎇': return 'speed'
+    case '⏯': return 'Media_Play_Pause'
+    case '◼': return 'Media_Stop'
+    case '⏭': return 'Media_Next'
+    case '⏮': return 'Media_Prev'
+    case '🔇': return 'Volume_Mute'
+    case '🔊': return 'Volume_Up'
+    case '🔉': return 'Volume_Down'
+    case '☀': return 'brightnessUp'
+    case '✳': return 'brightnessDown'
+    case '🔍': return 'Browser_Search'
+    case '⊚': return '^Numpad0'
+    case '⊕': return '^NumpadAdd'
+    case '⊝': return '^NumpadSub'
+    case '⎙': return 'PrintScreen'
+    case '📱': return 'Run calc'
+    case '%': return '`%'
+    case ';': return '`;'
+    default: return key
   }
 }
-
 
 
 
