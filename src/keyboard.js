@@ -7,7 +7,7 @@ keyboard.id = 'keyboard'
 //append Buttons in keyboard
 for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
   const rowCtx = document.createElement('div')
-  rowCtx.id = row + '_row'
+  rowCtx.id = `${row}_row`
   rowCtx.className = 'row'
 
   //append layers in rows ctx
@@ -15,11 +15,9 @@ for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
     const btn = document.createElement('button')
     btn.textContent = key
     //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
-    btn.className = `${getValidId(
-      keys.standardHtkRows[row][i]
-    )}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'
-      .split(' ')
-      .includes(key) ? ' modifier' : ''}`
+    btn.className = getValidId(keys.standardHtkRows[row][i])
+      + key in '⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ')
+      ? ' modifier' : ''
 
     rowCtx.append(btn)
   })
