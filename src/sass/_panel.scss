@@ -1,0 +1,30 @@
+#panel {
+  text-align: center;
+  ::selection {
+    background-color: transparent;
+    color: currentColor;
+  }
+}
+fieldset#switcher {
+  display: inline-block;
+  label {
+    white-space: nowrap;
+  }
+}
+
+#download {
+  //background-color: black;
+  display: flex;
+  place-content: space-evenly;
+  a {
+    color: rgb(255, 29, 123);
+    &::after {
+      content: ' ⇊';
+      color: rgb(22, 236, 219);
+      font-size: 1.3em;
+      font-weight: bold;
+      text-decoration: none;
+      //text-decoration: underline #333;
+    }
+  }
+}

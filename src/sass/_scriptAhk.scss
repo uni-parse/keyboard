@@ -1,0 +1,44 @@
+#ahkCtx {
+  position: relative;
+  height: 80vh;
+  padding: 0.5em;
+}
+
+ol {
+  border: double;
+  border-radius: 0.5em;
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  tab-size: 2;
+  overflow: auto;
+  white-space: break-spaces;
+  background-color: #333;
+  max-height: 100%;
+  color: yellowgreen;
+  margin: 0 0.1em;
+
+  li {
+    white-space: break-spaces;
+    counter-increment: index;
+
+    &::marker {
+      content: counter(index, decimal-leading-zero) '  ';
+      color: orange;
+    }
+
+    &::selection {
+      background-color: transparent;
+      color: cyan;
+    }
+  }
+}
+
+#copyBtn {
+  padding: 0.25rem;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  &::selection {
+    background-color: transparent;
+    color: currentColor;
+  }
+}
