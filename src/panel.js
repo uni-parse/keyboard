@@ -2,8 +2,7 @@ import { fieldset } from './panel_switcher'
 
 const panel = document.createElement('div')
 panel.id = 'panel'
-panel.appendChild(fieldset)
-panel.appendChild(getDownloadEl())
+panel.append(fieldset, getDownloadEl())
 
 export default panel
 
@@ -20,8 +19,7 @@ function getDownloadEl() {
 
   const download = document.createElement('div')
   download.id = 'download'
-  download.appendChild(msklc)
-  download.appendChild(ahk)
+  download.append(msklc, ahk)
 
   return download
 }

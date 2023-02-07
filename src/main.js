@@ -10,15 +10,13 @@ import script from './scriptAhk'
 
 const kbdCtx = document.createElement('div')
 kbdCtx.id = 'kbdCtx'
-kbdCtx.appendChild(keyboard)
-kbdCtx.appendChild(panel)
+kbdCtx.append(keyboard, panel)
 
 const main = document.createElement('main')
-main.appendChild(kbdCtx)
-main.appendChild(script)
+main.append(kbdCtx, script)
 
 attachMedias(main)
-document.body.appendChild(main)
+document.body.append(main)
 
 switcherListener()
 typeListener()

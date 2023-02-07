@@ -3,33 +3,30 @@ const keyboard = document.createElement('div')
 export default keyboard
 
 keyboard.id = 'keyboard'
-appendButtons(keyboard)
 
-function appendButtons(ctx) {
-  Object.entries(keys.standardRows).forEach(([row, rowKeys]) => {
-    const rowCtx = document.createElement('div')
-    rowCtx.id = row + '_row'
-    rowCtx.setAttribute('class', 'row')
+//append Buttons in keyboard
+for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
+  const rowCtx = document.createElement('div')
+  rowCtx.id = row + '_row'
+  rowCtx.className = 'row'
 
-    //append layers in rows ctx
-    rowKeys.forEach((key, i) => {
-      const btn = document.createElement('button')
-      btn.textContent = key
-      //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
-      btn.setAttribute('class',
-        `${getValidId(
-          keys.standardHtkRows[row][i]
-        )}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'
-          .split(' ')
-          .includes(key) ? ' modifier' : ''}`
-      )
+  //append layers in rows ctx
+  rowKeys.forEach((key, i) => {
+    const btn = document.createElement('button')
+    btn.textContent = key
+    //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
+    btn.className = `${getValidId(
+      keys.standardHtkRows[row][i]
+    )}${'⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'
+      .split(' ')
+      .includes(key) ? ' modifier' : ''}`
 
-      rowCtx.appendChild(btn)
-    })
-
-    ctx.appendChild(rowCtx)
+    rowCtx.append(btn)
   })
+
+  keyboard.append(rowCtx)
 }
+
 
 //helper functions
 function getValidId(key) {
