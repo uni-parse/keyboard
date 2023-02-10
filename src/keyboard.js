@@ -1,4 +1,5 @@
 import keys from "./keys"
+
 const keyboard = document.createElement('div')
 export default keyboard
 
@@ -16,8 +17,8 @@ for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
     btn.textContent = key
     //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
     btn.className = getValidId(keys.standardHtkRows[row][i])
-      + key in '⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ')
-      ? ' modifier' : ''
+    if ('⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ').includes(key))
+      btn.classList.add('modifier')
 
     rowCtx.append(btn)
   })

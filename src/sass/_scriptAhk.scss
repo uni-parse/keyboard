@@ -41,4 +41,12 @@ ol {
     background-color: transparent;
     color: currentColor;
   }
+
+  span {
+    position: absolute;
+    top: 0.25em;
+    right: 120%;
+    opacity: 0;
+    white-space: nowrap;
+  }
 }
