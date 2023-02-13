@@ -48,5 +48,6 @@ ol {
     right: 120%;
     opacity: 0;
     white-space: nowrap;
+    transition: opacity 500ms;
   }
 }

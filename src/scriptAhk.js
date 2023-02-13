@@ -13,21 +13,28 @@ const copyBtn = document.createElement('button')
 copyBtn.id = 'copyBtn'
 copyBtn.textContent = 'copy'
 
-const span = document.createElement('span')
-span.textContent = 'copied ✓'
-span.style.transition = 'opacity 500ms'
-copyBtn.prepend(span)
+const copyMessage = document.createElement('span')
+copyBtn.prepend(copyMessage)
 
-copyBtn.addEventListener('click', async e => {
+let msgVisible
+copyBtn.addEventListener('click', async () => {
   await navigator.clipboard.writeText(autohotkeyStr)
-  span.style.opacity = 1
-  await sleep(1000)
-  span.style.opacity = 0
+
+  if (msgVisible) return
+  msgVisible = true
+
+  copyMessage.textContent = 'copied ✓'
+  copyMessage.style.opacity = 1
+  await sleep(1500)
+  copyMessage.style.opacity = 0
+  await sleep(500)
+  copyMessage.textContent = ''
+
+  msgVisible = false
 }, { once: false })
 
 const script = document.createElement('div')
 script.id = 'ahkCtx'
-script.appendChild(copyBtn)
-script.appendChild(ol)
+script.append(copyBtn, ol)
 
 export default script
