@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && pnpm ahk",
+    "build": "vite build",
     "preview": "vite preview",
     "ahk": "pnpm createAhk && pnpm exe && pnpm zip",
     "createAhk": "node createAhk.mjs",
-    "exe": "C:/\"Program Files\"/AutoHotkey/Compiler/ahk2exe.exe /in ./ahk/UniParse.ahk /out UniParse.exe",
+    "exe": "C:/\"Program Files\"/AutoHotkey/Compiler/ahk2exe.exe /in ./src/assets/UniParse.ahk /out UniParse.exe",
     "zip": "node createZip.mjs"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import srcset from './assets/UniParse.jpg?w=66&format=avif;webp&srcset'
+import srcset from './assets/images/UniParse.jpg?w=66&format=avif;webp&srcset'
 
 export default function attachMedias(ctx) {
   ctx.append(address)

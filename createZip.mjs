@@ -3,32 +3,28 @@ import fs from 'node:fs'
 import { get } from 'node:https'
 
 const zip = new JsZip(),
-  output = './ahk/UniParse.zip',
-  [ahk, exe] = [
-    './ahk/UniParse.ahk',
-    './ahk/UniParse.exe'
-  ]
+  output = './src/assets/UniParse.zip',
+  ahk = './src/assets/UniParse.ahk',
+  exe = './src/assets/UniParse.exe'
 
 zip
   .file(
     'UniParse.ahk',      //output in same /data_path
     fs.readFileSync(ahk) //data
   )
-  .file(
-    'UniParse.exe',
-    fs.readFileSync(exe)
-  )
+  .file('UniParse.exe', fs.readFileSync(exe))
   .generateAsync({ type: "base64" })
-  .then(data =>
-    fs.writeFile(
-      output, data, 'base64',
-      err => {
-        if (err) throw err
-        else console.log(`${ahk} ${getSize(ahk)}
-${exe} ${getSize(exe)}
-${output} ${getSize(output)}`)
-      }
-    )
+  .then(data => fs.writeFile(
+    output, data, 'base64',
+    err => {
+      if (err) throw err
+      else console.log(
+        ahk + ' ' + getSize(ahk) + '\n'
+        + exe + getSize(exe) + '\n'
+        + output + ' ' + getSize(output)
+      )
+    }
+  )
   )
 
 //extra for console.log('size')

@@ -1,0 +1,19 @@
+run taskschd.msc
+
+Create Task
+
+General tab:
+  name: uniparse
+  description: run uniparse.exe at startup as admin
+  check: Run with highest privilages
+  configure for: windows 10
+
+Triggers tab:
+  begin the task: At log on
+  check: Specific user
+
+Action tab:
+  program/script: C:\Users\UniParse\projects\keyboard\src\assets\UniParse.exe
+
+Conditions tab:
+  uncheck: Start the task only if the computer is on AC power
