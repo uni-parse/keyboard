@@ -1,12 +1,12 @@
 const
   symbolKey = 'F23',
   extendKey = 'F24',
-  delay = [-400, 2],
-  config = {
-    symKey: symbolKey,
-    extKey: extendKey
-  }
-export default config
+  delay = [-400, 2]
+
+export const config = {
+  symKey: symbolKey,
+  extKey: extendKey
+}
 
 config.intro = `;
 ;

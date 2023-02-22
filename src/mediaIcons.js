@@ -1,6 +1,6 @@
 import srcset from './assets/images/UniParse.jpg?w=66&format=avif;webp&srcset'
 
-export default function attachMedias(ctx) {
+export function attachMedias(ctx) {
   ctx.append(address)
   img.style.bottom = '.3rem'
 

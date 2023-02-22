@@ -1,5 +1,5 @@
-export default typeListener
-import keyboard from "./keyboard"
+export { typeListener }
+
 import pop1 from "./assets/audio/pop1.wav"
 import pop2 from "./assets/audio/pop2.wav"
 import pop3 from "./assets/audio/pop3.wav"
@@ -7,11 +7,12 @@ import pop3 from "./assets/audio/pop3.wav"
 const pops = [pop1, pop2, pop3]
 pops.forEach(pop => new Audio(pop))//pre fetch
 
-const buttons = keyboard.querySelectorAll(`button`)
-//console.log(buttons)
-
 function typeListener() {
-  document.addEventListener('keydown', ({ key: keyDown, code }) => {
+  const buttons = document.querySelectorAll(`#keyboard button`)
+  //console.log(buttons)
+  document.addEventListener('keydown', e => {
+    const { key: keyDown, code } = e
+
     console.log(code, keyDown)
 
     const targetBtn = [].find.call(buttons, btn =>

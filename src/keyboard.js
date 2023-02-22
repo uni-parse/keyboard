@@ -1,18 +1,18 @@
-import keys from "./keys"
+import { keys } from "./keys"
 
-const keyboard = document.createElement('div')
-export default keyboard
-
+export { typeListener } from './typeListener'
+export const keyboard = document.createElement('div')
 keyboard.id = 'keyboard'
 
-//append Buttons in keyboard
-for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
+//append Buttons in keyboard row by row
+const rows = [...Object.entries(keys.standardRows)]
+const rowsCtxs = rows.map(([row, rowKeys]) => {
   const rowCtx = document.createElement('div')
   rowCtx.id = `${row}_row`
   rowCtx.className = 'row'
 
-  //append layers in rows ctx
-  rowKeys.forEach((key, i) => {
+  //append buttons keys in row
+  const btns = rowKeys.map((key, i) => {
     const btn = document.createElement('button')
     btn.textContent = key
     //💡use .id and .class after fixing doublicate modifiers in getHotKey() in keys.mjs
@@ -20,11 +20,13 @@ for (let [row, rowKeys] of Object.entries(keys.standardRows)) {
     if ('⌫ ⇄ ⏎ alt ⇧ ⊞ ⨁ 💲 space ⭐ ≣'.split(' ').includes(key))
       btn.classList.add('modifier')
 
-    rowCtx.append(btn)
+    return btn
   })
+  rowCtx.append(...btns)
 
-  keyboard.append(rowCtx)
-}
+  return rowCtx
+})
+keyboard.append(...rowsCtxs)
 
 
 //helper functions

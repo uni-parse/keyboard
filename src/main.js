@@ -1,11 +1,9 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾⤿⥁🔍
 import './sass/main.scss'
-import attachMedias from './mediaIcons'
-import keyboard from './keyboard'
-import panel from './panel'
-import { switcherListener } from './panel_switcher'
-import typeListener from './typeListener'
-import script from './scriptAhk'
+import { attachMedias } from './mediaIcons'
+import { keyboard, typeListener } from './keyboard'
+import { panel, switcherListener } from './panel'
+import { script } from './scriptAhk'
 
 
 const kbdCtx = document.createElement('div')

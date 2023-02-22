@@ -1,12 +1,12 @@
 
-import keys from "./keys.mjs"
-import config from "./ahk_config.mjs"
-import mouse from "./ahk_mouse.mjs"
+import { keys } from "./keys.mjs"
+import { config } from "./ahk_config.mjs"
+import { mouse } from "./ahk_mouse.mjs"
 
 const base = keys.standard.map(k => k == ';' ? '`;' : k)
 let mouseL, mouseR, mouseU, mouseD
 
-const autohotkeyStr = `${config.intro}
+export const autohotkeyStr = `${config.intro}
 ;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
 ${config.switchers}
 
@@ -42,7 +42,6 @@ ${mouse.getHover(config.extKey, mouseU, mouseR, mouseD, mouseL)}
 ${mouse.getWheel(config.extKey, 'q', 'wheelUp')}
 ${mouse.getWheel(config.extKey, 'a', 'wheelDown')}#If`
 
-export default autohotkeyStr
 
 
 function getExt(ext2 = 0) {

@@ -1,17 +1,25 @@
-import autohotkeyStr from './ahk'
+import { autohotkeyStr } from './ahk'
 import { sleep } from './utilities'
 
+export const script = document.createElement('div')
+script.id = 'ahkCtx'
+
+
 const ol = document.createElement('ol')
-autohotkeyStr.split('\n').forEach((line, i) => {
+script.append(ol)
+
+const listItems = autohotkeyStr.split('\n').map(line => {
   const li = document.createElement('li')
   li.textContent = line
-  ol.appendChild(li)
+  return li
 })
+ol.append(...listItems)
 
 
 const copyBtn = document.createElement('button')
 copyBtn.id = 'copyBtn'
 copyBtn.textContent = 'copy'
+script.append(copyBtn)
 
 const copyMessage = document.createElement('span')
 copyBtn.prepend(copyMessage)
@@ -33,8 +41,4 @@ copyBtn.addEventListener('click', async () => {
   msgVisible = false
 }, { once: false })
 
-const script = document.createElement('div')
-script.id = 'ahkCtx'
-script.append(copyBtn, ol)
 
-export default script

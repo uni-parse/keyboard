@@ -1,6 +1,5 @@
 import JsZip from 'jszip'
 import fs from 'node:fs'
-import { get } from 'node:https'
 
 const zip = new JsZip(),
   output = './src/assets/UniParse.zip',
@@ -31,6 +30,7 @@ zip
 function getSize(file) {
   return formatBytes(fs.statSync(file).size)
 }
+
 function formatBytes(bytes, decimals = 2) {
   if (!+bytes) return '0 Bytes'
 

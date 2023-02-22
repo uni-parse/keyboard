@@ -1,8 +1,8 @@
 
-const mouse = {}
-export default mouse
+export const mouse = { getWheel, getHover }
 
-mouse.getWheel = (combo, key, hotKey) => `\t*${key}::
+function getWheel(combo, key, hotKey) {
+  return `\t*${key}::
     if !scroll_${key} {
       If press_${key}
         press_${key} = 2
@@ -39,8 +39,9 @@ mouse.getWheel = (combo, key, hotKey) => `\t*${key}::
       speed_${key} = 1
     press_${key} = 0
     Return\n`
+}
 
-mouse.getHover = (combo, mouseU, mouseR, mouseD, mouseL) => {
+function getHover(combo, mouseU, mouseR, mouseD, mouseL) {
   return getMouseKeyHtk(mouseU) + getMouseKeyHtk(mouseD) + getMouseKeyHtk(mouseR) + getMouseKeyHtk(mouseL)
 
   function getMouseKeyHtk(key) {
@@ -145,3 +146,4 @@ mouse.getHover = (combo, mouseU, mouseR, mouseD, mouseL) => {
     }
   }
 }
+

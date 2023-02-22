@@ -1,6 +1,4 @@
-export default layout
-
-function layout(keys, keyboard) {
+export function layout(keys, keyboard) {
   keys.forEach(key => {
     const keySpan = document.createElement('span')
 

@@ -1,4 +1,4 @@
-const keys = {
+export const keys = {
   power: `
 55 46 40 34 29 29 35   47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
@@ -36,7 +36,6 @@ alt   a r s t g   ]   m n e i o ;   ⏎
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
 .      .   .         .         .   .   .   .`
 }
-export default keys
 
 
 
