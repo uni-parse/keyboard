@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "ahk": "pnpm createAhk && pnpm exe && pnpm zip",
     "createAhk": "node createAhk.mjs",
-    "exe": "C:/\"Program Files\"/AutoHotkey/Compiler/ahk2exe.exe /in ./src/assets/UniParse.ahk /out UniParse.exe",
+    "exe": "C:/Users/UniParse/AppData/Local/Programs/AutoHotkey/Compiler/Ahk2Exe.exe /in ./src/assets/UniParse.ahk /out UniParse.exe",
     "zip": "node createZip.mjs"
   },
   "devDependencies": {
