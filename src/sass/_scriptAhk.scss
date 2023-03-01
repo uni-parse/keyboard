@@ -22,12 +22,12 @@ ol {
 
     &::marker {
       content: counter(index, decimal-leading-zero) '  ';
-      color: orange;
+      color: darkorange;
     }
 
     &::selection {
-      background-color: transparent;
-      color: cyan;
+      background-color: #222;
+      color: darkorange;
     }
   }
 }
