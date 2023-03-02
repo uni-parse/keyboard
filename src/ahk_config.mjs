@@ -18,131 +18,150 @@ config.intro = `;
 #Requires AutoHotkey v2.0
 ProcessSetPriority 'High'
 Persistent
-; #Warn  ; Enable warnings to assist with detecting common errors.
-
-SetCapsLockState 'AlwaysOff'
-
-scroll_default_speed := 40
-scroll_speed_multiplier := .25
+;#Warn  ; detecting common errors.
 
 x_slow := 1.5
 x_default := 2.8
-y_slow := x_slow
-y_default := x_default
-x := x_default
-y := y_default
-
-speed_switcher := 0
-move__nth := 0
-x_max := speed_switcher ? x_default : 8
-
-;double click or tripleclick  
-speed_move := 0
 x_double := 1.02
 x_triple := 1.05
+
+y_slow := x_slow
+y_default := x_default
 y_double := x_double
 y_triple := x_triple
 
-resetSpeed() {
-  global
-  x := speed_switcher ? x_slow : x_default
-  y := speed_switcher ? y_slow : y_default
-}
+x := x_default
+y := y_default
+
+mouse_speed_lvl := 0
+x_max := mouse_speed_lvl ? x_default : 8
+
+wheelDelay_default := 40
+wheelDelay_multiplier := .25
 
 brightnessJump := 10
-CurrentBrightness := GetCurrentBrightNess()
-; ChangeBrightness(0)
-; minimumBrightness := GetCurrentBrightNess()
-; ChangeBrightness(CurrentBrightness)
+currentBrightness := getCurrentBrightness()
 
-ChangeBrightness( brightness := 50, timeout := 1 ) {
-	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
-		property.WmiSetBrightness( timeout, brightness)
-}
+SetCapsLockState('AlwaysOff')
+\n`
 
-GetCurrentBrightNess() {
-	For property in ComObjGet( "winmgmts:\\\\.\\root\\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
-		currentBrightness := property.CurrentBrightness	
-	return currentBrightness
-}
-\n\n`
 
-config.switchers = `\tlayer_ext := 0
-  layer_ext2 := 0
-  layer_sym := 0
-  layer_sym2 := 0
-  hold_${symbolKey} := 0
-  press_${symbolKey} := 0
-  hold_${extendKey} := 0
-  press_${extendKey} := 0
+config.switchers =
+  `${symbolKey}::symSwitcher('${symbolKey}', 400, 200)
+${extendKey}::extSwitcher('${extendKey}', 400, 200)`
 
-  ${symbolKey}:: {
-    global
-    if hold_${symbolKey}
-      return
-    hold_${symbolKey} := 1
-    if layer_sym
-      layer_sym := 0
-    If !press_${symbolKey} {
-      press_${symbolKey} := 1
-      SetTimer double_${symbolKey}_timer, ${delay}
-      KeyWait('${symbolKey}')
-      hold_${symbolKey} := 0
-    } Else if KeyWait('${symbolKey}', 'T.${delay[1]}') {
-      if layer_ext
-        layer_ext := 0
-      layer_sym := 1
-      press_${symbolKey} := 0
-      hold_${symbolKey} := 0
-    } else {
-      layer_sym2 := 1
-      KeyWait('${symbolKey}')
-      layer_sym2 := 0
-      hold_${symbolKey} := 0
-    }
-  }
-  double_${symbolKey}_timer() {
-    global
-    press_${symbolKey} := 0
-  }
-
-  ${extendKey}:: {
-    global
-    if hold_${extendKey}
-      return
-    hold_${extendKey} := 1
-    if layer_ext
-      layer_ext := 0
-    If !press_${extendKey} {
-      press_${extendKey} := 1
-      SetTimer double_${extendKey}_timer, ${delay[0]}
-      KeyWait('${extendKey}')
-      hold_${extendKey} := 0
-    } Else if KeyWait('${extendKey}', 'T.${delay[1]}') {
-      if layer_sym
-        layer_sym := 0
-      layer_ext := 1
-      press_${extendKey} := 0
-      hold_${extendKey} := 0
-    } else {
-      layer_ext2 := 1
-      KeyWait('${extendKey}')
-      layer_ext2 := 0
-      hold_${extendKey} := 0        
-    }
-  }
-  double_${extendKey}_timer() {
-    global
-    press_${extendKey} := 0
-  }`
 
 config.layer_condition = {
-  sym: `!layer_sym2 && ((layer_sym && !GetKeyState("${extendKey}", "P")) || (!layer_sym && GetKeyState("${symbolKey}", "P") && !GetKeyState("${extendKey}", "P")) || (layer_ext && GetKeyState("${symbolKey}", "P")))`,
+  ext: `!layer_ext2 && (
+  (
+    layer_ext
+    && !GetKeyState("${symbolKey}", "P")
+  ) || (
+    !layer_ext
+    && GetKeyState("${extendKey}", "P")
+    && !GetKeyState("${symbolKey}", "P")
+  ) || (
+    layer_sym
+    && GetKeyState("${extendKey}", "P")
+  )
+)`,
+
+  ext2: `layer_ext2`,
+
+  sym: `!layer_sym2 && (
+  (
+    layer_sym
+    && !GetKeyState("${extendKey}", "P")
+  ) || (
+    !layer_sym
+    && GetKeyState("${symbolKey}", "P")
+    && !GetKeyState("${extendKey}", "P")
+  ) || (
+    layer_ext
+    && GetKeyState("${symbolKey}", "P")
+  )
+)`,
+
   sym1: `GetKeyState("${symbolKey}", "P") && GetKeyState("${extendKey}", "P")`,
-  sym2: `layer_sym2`,
-  ext: `!layer_ext2 && ((layer_ext && !GetKeyState("${symbolKey}", "P")) || (!layer_ext && GetKeyState("${extendKey}", "P") && !GetKeyState("${symbolKey}", "P")) || (layer_sym && GetKeyState("${extendKey}", "P")))`,
-  ext2: `layer_ext2`
+
+  sym2: `layer_sym2`
 }
+
+config.config = `layer_ext := 0
+layer_ext2 := 0
+layer_sym := 0
+layer_sym2 := 0
+
+switchers := {
+  holding_sym: 0,
+  holding_ext: 0,
+  pressCount_sym: 0,
+  pressCount_ext: 0
+}
+
+symSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+  global
+
+  if switchers.holding_sym
+    return
+
+  switchers.holding_sym := 1
+  layer_sym := 0
+
+  If !switchers.pressCount_sym {
+    switchers.pressCount_sym := 1
+    SetTimer(double_sym_timer, -doubleDelay)
+    KeyWait(key)
+    switchers.holding_sym := 0
+  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+    layer_ext := 0
+    layer_sym := 1
+    switchers.pressCount_sym := 0
+    switchers.holding_sym := 0
+  } else {
+    layer_sym2 := 1
+    KeyWait(key)
+    layer_sym2 := 0
+    switchers.holding_sym := 0
+  }
+}
+
+double_sym_timer() {
+  global
+  switchers.pressCount_sym := 0
+}
+
+extSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+  global
+
+  if switchers.holding_ext
+    return
+  
+  switchers.holding_ext := 1
+  layer_ext := 0
+
+  If !switchers.pressCount_ext {
+    switchers.pressCount_ext := 1
+    SetTimer(double_ext_timer, -doubleDelay)
+    KeyWait(key)
+    switchers.holding_ext := 0
+  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+    layer_sym := 0
+    layer_ext := 1
+    switchers.pressCount_ext := 0
+    switchers.holding_ext := 0
+  } else {
+    layer_ext2 := 1
+    KeyWait(key)
+    layer_ext2 := 0
+    switchers.holding_ext := 0        
+  }
+}
+
+double_ext_timer() {
+  global
+  switchers.pressCount_ext := 0
+}`
 
 
 /**  goal

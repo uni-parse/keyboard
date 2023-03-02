@@ -8,140 +8,65 @@
 #Requires AutoHotkey v2.0
 ProcessSetPriority 'High'
 Persistent
-; #Warn  ; Enable warnings to assist with detecting common errors.
-
-SetCapsLockState 'AlwaysOff'
-
-scroll_default_speed := 40
-scroll_speed_multiplier := .25
+;#Warn  ; detecting common errors.
 
 x_slow := 1.5
 x_default := 2.8
-y_slow := x_slow
-y_default := x_default
-x := x_default
-y := y_default
-
-speed_switcher := 0
-move__nth := 0
-x_max := speed_switcher ? x_default : 8
-
-;double click or tripleclick  
-speed_move := 0
 x_double := 1.02
 x_triple := 1.05
+
+y_slow := x_slow
+y_default := x_default
 y_double := x_double
 y_triple := x_triple
 
-resetSpeed() {
-  global
-  x := speed_switcher ? x_slow : x_default
-  y := speed_switcher ? y_slow : y_default
-}
+x := x_default
+y := y_default
+
+mouse_speed_lvl := 0
+x_max := mouse_speed_lvl ? x_default : 8
+
+wheelDelay_default := 40
+wheelDelay_multiplier := .25
 
 brightnessJump := 10
-CurrentBrightness := GetCurrentBrightNess()
-; ChangeBrightness(0)
-; minimumBrightness := GetCurrentBrightNess()
-; ChangeBrightness(CurrentBrightness)
+currentBrightness := getCurrentBrightness()
 
-ChangeBrightness( brightness := 50, timeout := 1 ) {
-	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
-		property.WmiSetBrightness( timeout, brightness)
-}
-
-GetCurrentBrightNess() {
-	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
-		currentBrightness := property.CurrentBrightness	
-	return currentBrightness
-}
+SetCapsLockState('AlwaysOff')
 
 
-
-;config layers ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️
-	layer_ext := 0
-  layer_ext2 := 0
-  layer_sym := 0
-  layer_sym2 := 0
-  hold_F23 := 0
-  press_F23 := 0
-  hold_F24 := 0
-  press_F24 := 0
-
-  F23:: {
-    global
-    if hold_F23
-      return
-    hold_F23 := 1
-    if layer_sym
-      layer_sym := 0
-    If !press_F23 {
-      press_F23 := 1
-      SetTimer double_F23_timer, -400,2
-      KeyWait('F23')
-      hold_F23 := 0
-    } Else if KeyWait('F23', 'T.2') {
-      if layer_ext
-        layer_ext := 0
-      layer_sym := 1
-      press_F23 := 0
-      hold_F23 := 0
-    } else {
-      layer_sym2 := 1
-      KeyWait('F23')
-      layer_sym2 := 0
-      hold_F23 := 0
-    }
-  }
-  double_F23_timer() {
-    global
-    press_F23 := 0
-  }
-
-  F24:: {
-    global
-    if hold_F24
-      return
-    hold_F24 := 1
-    if layer_ext
-      layer_ext := 0
-    If !press_F24 {
-      press_F24 := 1
-      SetTimer double_F24_timer, -400
-      KeyWait('F24')
-      hold_F24 := 0
-    } Else if KeyWait('F24', 'T.2') {
-      if layer_sym
-        layer_sym := 0
-      layer_ext := 1
-      press_F24 := 0
-      hold_F24 := 0
-    } else {
-      layer_ext2 := 1
-      KeyWait('F24')
-      layer_ext2 := 0
-      hold_F24 := 0        
-    }
-  }
-  double_F24_timer() {
-    global
-    press_F24 := 0
-  }
+;config layers ⚙️      ⚙️       ⚙️      ⚙️      ⚙️     ⚙️
+F23::symSwitcher('F23', 400, 200)
+F24::extSwitcher('F24', 400, 200)
 
 
-;extend layer 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟
-#HotIf !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
+;extend layer 🌟    🌟    🌟    🌟    🌟    🌟    🌟    🌟
+#HotIf !layer_ext2 && (
+  (
+    layer_ext
+    && !GetKeyState("F23", "P")
+  ) || (
+    !layer_ext
+    && GetKeyState("F24", "P")
+    && !GetKeyState("F23", "P")
+  ) || (
+    layer_sym
+    && GetKeyState("F24", "P")
+  )
+)
+	*q::wheelScroll_up()
 	w::Esc
-	p:: {
-    global
-		speed_switcher := !speed_switcher
-		resetSpeed()
-	}
+	f::mouseMove_up()
+	p::toggleMouseSpeed()
 	l::Home
 	u::Up
 	y::End
 	'::PgUp
 	-::PgDn
+	*a::wheelScroll_down()
+	r::mouseMove_left()
+	s::mouseMove_down()
+	t::mouseMove_right()
 	g::AppsKey
 	m::Tab
 	n::Left
@@ -152,16 +77,14 @@ GetCurrentBrightNess() {
 	c::XButton2
 	d::Bs
 	v::Del
-	k:: {
-    SetCapsLockState !GetKeyState("CapsLock","T")
-	}
+	k::SetCapsLockState(!GetKeyState("CapsLock","T"))
 	h::LButton
 	,::MButton
 	.::RButton
 #HotIf
 
 
-;extend2 layer 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟 🌟🌟
+;extend2 layer 🌟🌟     🌟🌟     🌟🌟     🌟🌟     🌟🌟
 #HotIf layer_ext2
 	l::PrintScreen
 	u::Volume_Up
@@ -174,268 +97,132 @@ GetCurrentBrightNess() {
 	i::Media_Next
 	o::Media_Play_Pause
 	`;::Volume_Mute
-	k:: {
-	global
-    ChangeBrightness(CurrentBrightness < 100 - brightnessJump ? CurrentBrightness += brightnessJump : 100)
-	}
-	h:: {
-	global
-    ChangeBrightness(CurrentBrightness > brightnessJump ? CurrentBrightness -= brightnessJump : 0)
-	}
+	k::brightnessUp()
+	h::brightnessDown()
 	,::^NumpadAdd
 	.::^NumpadSub
 #HotIf
 
 
-;symbol layer 💲  💲  💲  💲  💲  💲  💲  💲  💲
-#HotIf !layer_sym2 && ((layer_sym && !GetKeyState("F24", "P")) || (!layer_sym && GetKeyState("F23", "P") && !GetKeyState("F24", "P")) || (layer_ext && GetKeyState("F23", "P")))
-	`:: {
-		Send '{U+22c6}'
-	}
-	1:: {
-		Send '{U+25aa}'
-	}
-	2:: {
-		Send '{U+25b8}'
-	}
-	5:: {
-		Send '{U+bb}'
-	}
-	7:: {
-		Send '{U+203a}'
-	}
-	8:: {
-		Send '{U+2022}'
-	}
-	=:: {
-		Send '{U+2043}'
-	}
+;symbol layer 💲     💲     💲     💲     💲     💲     💲
+#HotIf !layer_sym2 && (
+  (
+    layer_sym
+    && !GetKeyState("F24", "P")
+  ) || (
+    !layer_sym
+    && GetKeyState("F23", "P")
+    && !GetKeyState("F24", "P")
+  ) || (
+    layer_ext
+    && GetKeyState("F23", "P")
+  )
+)
+	`::Send('{U+22c6}')
+	1::Send('{U+25aa}')
+	2::Send('{U+25b8}')
+	5::Send('{U+bb}')
+	7::Send('{U+203a}')
+	8::Send('{U+2022}')
+	=::Send('{U+2043}')
 	q::`
 	w::[
 	f::]
-	u:: {
-		SendText '('
-	}
-	y:: {
-		SendText ')'
-	}
-	':: {
-		SendText '"'
-	}
-	-:: {
-		SendText '_'
-	}
+	u::SendText('(')
+	y::SendText(')')
+	'::SendText('"')
+	-::SendText('_')
 	a::1
 	r::2
 	s::3
 	t::4
-	]:: {
-		Send '{U+20ac}'
-	}
+	]::Send('{U+20ac}')
 	m::\
 	n::7
 	e::8
 	i::9
 	o::0
-	`;:: {
-		SendText ':'
-	}
-	x:: {
-		SendText '{'
-	}
-	c:: {
-		SendText '}'
-	}
+	`;::SendText(':')
+	x::SendText('{')
+	c::SendText('}')
 	d::5
 	v::=
 	k::/
 	h::6
-	,:: {
-		SendText '<'
-	}
-	.:: {
-		SendText '>'
-	}
+	,::SendText('<')
+	.::SendText('>')
 #HotIf
 
 
-;symbol1 layer ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲 ⇧💲
+;symbol1 layer ⇧💲      ⇧💲      ⇧💲      ⇧💲      ⇧💲
 #HotIf GetKeyState("F23", "P") && GetKeyState("F24", "P")
-	`:: {
-		Send '{U+22c6}'
-	}
-	1:: {
-		Send '{U+25aa}'
-	}
-	2:: {
-		Send '{U+25b8}'
-	}
-	5:: {
-		Send '{U+bb}'
-	}
-	7:: {
-		Send '{U+203a}'
-	}
-	8:: {
-		Send '{U+2022}'
-	}
-	=:: {
-		Send '{U+2043}'
-	}
-	q:: {
-		SendText '~'
-	}
-	w:: {
-		SendText '{'
-	}
-	f:: {
-		SendText '}'
-	}
-	u:: {
-		SendText '('
-	}
-	y:: {
-		SendText ')'
-	}
-	':: {
-		SendText '"'
-	}
-	-:: {
-		SendText '_'
-	}
-	a:: {
-		SendText '!'
-	}
-	r:: {
-		SendText '@'
-	}
-	s:: {
-		SendText '#'
-	}
-	t:: {
-		SendText '$'
-	}
-	]:: {
-		Send '{U+20ac}'
-	}
-	m:: {
-		SendText '|'
-	}
-	n:: {
-		SendText '&'
-	}
-	e:: {
-		SendText '*'
-	}
-	i:: {
-		SendText '('
-	}
-	o:: {
-		SendText ')'
-	}
-	`;:: {
-		SendText ':'
-	}
-	x:: {
-		SendText '{'
-	}
-	c:: {
-		SendText '}'
-	}
-	d:: {
-		SendText '%'
-	}
-	v:: {
-		SendText '+'
-	}
-	k:: {
-		SendText '?'
-	}
-	h:: {
-		SendText '^'
-	}
-	,:: {
-		SendText '<'
-	}
-	.:: {
-		SendText '>'
-	}
+	`::Send('{U+22c6}')
+	1::Send('{U+25aa}')
+	2::Send('{U+25b8}')
+	5::Send('{U+bb}')
+	7::Send('{U+203a}')
+	8::Send('{U+2022}')
+	=::Send('{U+2043}')
+	q::SendText('~')
+	w::SendText('{')
+	f::SendText('}')
+	u::SendText('(')
+	y::SendText(')')
+	'::SendText('"')
+	-::SendText('_')
+	a::SendText('!')
+	r::SendText('@')
+	s::SendText('#')
+	t::SendText('$')
+	]::Send('{U+20ac}')
+	m::SendText('|')
+	n::SendText('&')
+	e::SendText('*')
+	i::SendText('(')
+	o::SendText(')')
+	`;::SendText(':')
+	x::SendText('{')
+	c::SendText('}')
+	d::SendText('%')
+	v::SendText('+')
+	k::SendText('?')
+	h::SendText('^')
+	,::SendText('<')
+	.::SendText('>')
 #HotIf
 
 
-;symbol2 layer 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲 💲💲
+;symbol2 layer 💲💲    💲💲    💲💲    💲💲    💲💲    💲💲
 #HotIf layer_sym2
-	1:: {
-		Send '{U+2152}'
-	}
-	2:: {
-		Send '{U+bd}'
-	}
-	3:: {
-		Send '{U+2153}'
-	}
-	4:: {
-		Send '{U+bc}'
-	}
-	5:: {
-		Send '{U+2155}'
-	}
-	7:: {
-		Send '{U+be}'
-	}
-	8:: {
-		Send '{U+2070}'
-	}
-	q:: {
-		Send '{U+1f4a1}'
-	}
-	w:: {
-		Send '{U+26a0}{U+fe0f}'
-	}
-	f:: {
-		Send '{U+2191}'
-	}
-	p:: {
-		Send '{U+3c0}'
-	}
-	b:: {
-		Send '{U+2248}'
-	}
-	[:: {
-		Send '{U+2209}'
-	}
-	u:: {
-		Send '{U+2264}'
-	}
-	y:: {
-		Send '{U+2265}'
-	}
-	':: {
-		Send '{U+2026}'
-	}
-	-:: {
-		Send '{U+b1}'
-	}
+	1::Send('{U+2152}')
+	2::Send('{U+bd}')
+	3::Send('{U+2153}')
+	4::Send('{U+bc}')
+	5::Send('{U+2155}')
+	7::Send('{U+be}')
+	8::Send('{U+2070}')
+	q::Send('{U+1f4a1}')
+	w::Send('{U+26a0}{U+fe0f}')
+	f::Send('{U+2191}')
+	p::Send('{U+3c0}')
+	b::Send('{U+2248}')
+	[::Send('{U+2209}')
+	u::Send('{U+2264}')
+	y::Send('{U+2265}')
+	'::Send('{U+2026}')
+	-::Send('{U+b1}')
 	a::F1
 	r::F2
 	s::F3
 	t::F4
-	g:: {
-		Send '{U+2260}'
-	}
-	]:: {
-		Send '{U+2208}'
-	}
+	g::Send('{U+2260}')
+	]::Send('{U+2208}')
 	n::F7
 	e::F8
 	i::F9
 	o::F10
-	x:: {
-		Send '{U+2717}'
-	}
-	c:: {
-		Send '{U+32bf}'
-	}
+	x::Send('{U+2717}')
+	c::Send('{U+32bf}')
 	d::F5
 	v::F11
 	k::F12
@@ -443,462 +230,605 @@ GetCurrentBrightNess() {
 #HotIf
 
 
-;mouse in extend layer 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
-#HotIf !layer_ext2 && ((layer_ext && !GetKeyState("F23", "P")) || (!layer_ext && GetKeyState("F24", "P") && !GetKeyState("F23", "P")) || (layer_sym && GetKeyState("F24", "P")))
-	move_f := 0
-  press_f := 0
-  f:: {
-    global
+;helper functions 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
+layer_ext := 0
+layer_ext2 := 0
+layer_sym := 0
+layer_sym2 := 0
 
-    If move_f
+switchers := {
+  holding_sym: 0,
+  holding_ext: 0,
+  pressCount_sym: 0,
+  pressCount_ext: 0
+}
+
+symSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+  global
+
+  if switchers.holding_sym
+    return
+
+  switchers.holding_sym := 1
+  layer_sym := 0
+
+  If !switchers.pressCount_sym {
+    switchers.pressCount_sym := 1
+    SetTimer(double_sym_timer, -doubleDelay)
+    KeyWait(key)
+    switchers.holding_sym := 0
+  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+    layer_ext := 0
+    layer_sym := 1
+    switchers.pressCount_sym := 0
+    switchers.holding_sym := 0
+  } else {
+    layer_sym2 := 1
+    KeyWait(key)
+    layer_sym2 := 0
+    switchers.holding_sym := 0
+  }
+}
+
+double_sym_timer() {
+  global
+  switchers.pressCount_sym := 0
+}
+
+extSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+  global
+
+  if switchers.holding_ext
+    return
+  
+  switchers.holding_ext := 1
+  layer_ext := 0
+
+  If !switchers.pressCount_ext {
+    switchers.pressCount_ext := 1
+    SetTimer(double_ext_timer, -doubleDelay)
+    KeyWait(key)
+    switchers.holding_ext := 0
+  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+    layer_sym := 0
+    layer_ext := 1
+    switchers.pressCount_ext := 0
+    switchers.holding_ext := 0
+  } else {
+    layer_ext2 := 1
+    KeyWait(key)
+    layer_ext2 := 0
+    switchers.holding_ext := 0        
+  }
+}
+
+double_ext_timer() {
+  global
+  switchers.pressCount_ext := 0
+}
+; setBrightness(0)
+; minimumBrightness := getCurrentBrightness()
+; setBrightness(currentBrightness)
+
+brightnessUp() {
+  global
+  brightness := (currentBrightness < 100 - brightnessJump)
+    ? (currentBrightness += brightnessJump)
+    : 100
+  setBrightness(brightness)
+}
+
+brightnessDown() {
+  global
+  brightness := (currentBrightness > brightnessJump)
+    ? (currentBrightness -= brightnessJump)
+    : 0
+  setBrightness(brightness)
+}
+
+getCurrentBrightness() {
+	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery( "SELECT * FROM WmiMonitorBrightness" )
+		current_brightness := property.CurrentBrightness
+	return current_brightness
+}
+
+setBrightness( brightness := 50, timeout := 1 ) {
+	For property in ComObjGet( "winmgmts:\\.\root\WMI" ).ExecQuery("SELECT * FROM WmiMonitorBrightnessMethods" )
+		property.WmiSetBrightness( timeout, brightness)
+}
+
+wheel := {
+  boostSpeed_up: 0,
+  boostSpeed_down: 0,
+  scrolling_up: 0,
+  scrolling_down: 0,
+  pressCount_up: 0,
+  pressCount_down: 0,
+}
+
+wheelScroll_up() {
+  global
+
+  if wheel.scrolling_up
+    return
+
+  If !wheel.pressCount_up {
+    wheel.pressCount_up := 1
+    SetTimer(wheel_up_boostSpeed_timer, -300)
+  } Else
+    wheel.pressCount_up := 2
+
+  SendInput '{Blind}{WheelUp}'
+
+  if KeyWait('q', 'T.2') 
+    wheel.boostSpeed_up := 0
+  Else{
+    wheel.scrolling_up := 1
+    wheelDelay := wheelDelay_default
+    
+    If wheel.boostSpeed_up {
+      wheelDelay *= wheelDelay_multiplier
+      wheel.boostSpeed_up := 0
+    }
+
+    setTimer(wheel_up_scrolling_timer, wheelDelay)
+  }   
+}
+
+wheel_up_scrolling_timer() {
+  global
+  if GetKeyState("q","P") && (layer_ext || GetKeyState("F24","P"))
+    SendInput '{Blind}{WheelUp}'
+  Else {
+    wheelDelay := wheelDelay_default
+    wheel.scrolling_up := 0
+    setTimer( , 0)
+  }
+}
+
+wheel_up_boostSpeed_timer() {
+  global
+  if wheel.pressCount_up = 2
+    wheel.boostSpeed_up := 1
+  wheel.pressCount_up := 0
+}
+
+wheelScroll_down() {
+  global
+
+  if wheel.scrolling_down
+    return
+
+  If !wheel.pressCount_down {
+    wheel.pressCount_down := 1
+    SetTimer(wheel_down_boostSpeed_timer, -300)
+  } Else
+    wheel.pressCount_down := 2
+
+  SendInput '{Blind}{WheelDown}'
+
+  if KeyWait('a', 'T.2') 
+    wheel.boostSpeed_down := 0
+  Else{
+    wheel.scrolling_down := 1
+    wheelDelay := wheelDelay_default
+    
+    If wheel.boostSpeed_down {
+      wheelDelay *= wheelDelay_multiplier
+      wheel.boostSpeed_down := 0
+    }
+
+    setTimer(wheel_down_scrolling_timer, wheelDelay)
+  }   
+}
+
+wheel_down_scrolling_timer() {
+  global
+  if GetKeyState("a","P") && (layer_ext || GetKeyState("F24","P"))
+    SendInput '{Blind}{WheelDown}'
+  Else {
+    wheelDelay := wheelDelay_default
+    wheel.scrolling_down := 0
+    setTimer( , 0)
+  }
+}
+
+wheel_down_boostSpeed_timer() {
+  global
+  if wheel.pressCount_down = 2
+    wheel.boostSpeed_down := 1
+  wheel.pressCount_down := 0
+}
+
+mouse := {
+  boostSpeed : 0, ; on double/triple click  
+  moveCount : 0,
+  moveCount_up : 0,
+  moveCount_down : 0,
+  moveCount_right : 0,
+  moveCount_left : 0,
+  pressCount_up : 0,
+  pressCount_down : 0,
+  pressCount_right : 0,
+  pressCount_left : 0,
+}
+
+resetMouseSpeed() {
+  global
+  x := mouse_speed_lvl ? x_slow : x_default
+  y := mouse_speed_lvl ? y_slow : y_default
+}
+
+toggleMouseSpeed() {
+  global
+  mouse_speed_lvl := !mouse_speed_lvl
+  resetMouseSpeed()
+}
+
+mouseMove_up() {
+  global
+
+  If mouse.moveCount_up
+    return
+
+  if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("s","P") {
+    mouse.moveCount_up := ++mouse.moveCount
+    SetTimer(mouse_up_moveCount_timer, A_MouseDelay)
+    
+    return
+  }
+
+  If !mouse.pressCount_up {
+    mouse.pressCount_up := 1
+    SetTimer(mouse_up_boostSpeed_timer, -300)
+  } Else
+    mouse.pressCount_up := 2
+
+  MouseMove(0, -y,, 'R')
+
+  if KeyWait('f', 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    mouse.moveCount_up := ++mouse.moveCount
+
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_triple
+      y *= y_triple
+    }
+
+    SetTimer(mouse_up_moveCount_timer, A_MouseDelay)
+  }
+}
+
+mouse_up_moveCount_timer() {
+  global
+
+  If GetKeyState("f","P") && (layer_ext || GetKeyState("F24","P")) {
+    if (mouse.moveCount_up != mouse.moveCount)
       return
 
-    if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("s","P") {
-      move_f := ++move__nth
-      SetTimer(move_f_timer, A_MouseDelay)
-      
-      return
+    ;double clicks
+    if mouse.boostSpeed && x <= x_max {
+      x *= x_double
+      y *= y_double
     }
 
-    If !press_f {
-      press_f := 1
-      SetTimer(speed_f_timer, -300)
-    } Else
-      press_f := 2
+    if GetKeyState("r","P")
+      MouseMove(-x, -y,, 'R')
+    else if GetKeyState("t","P")
+      MouseMove(x, -y,, 'R')
+    else
+      MouseMove(0, -y,, 'R')
 
-    MouseMove(0, -y,, 'R')
-
-    if KeyWait('f', 'T.1')
-      speed_move := 0
-    Else {
-      move_f := ++move__nth
-
-      ;triple clicks
-      If speed_move {
-        x *= x_triple
-        y *= y_triple
-      }
-
-      SetTimer(move_f_timer, A_MouseDelay)
-    }
+    return
   }
 
-  move_f_timer() {
-    global
-
-    If GetKeyState("f","P") && (layer_ext || GetKeyState("F24","P")) {
-      if (move_f != move__nth)
-        return
-
-      ;double clicks
-      if speed_move && x <= x_max {
-        x *= x_double
-        y *= y_double
-      }
-
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove(0, -y,, 'R')
-      else if GetKeyState("r","P")
-        MouseMove(-x, -y,, 'R')
-      else if GetKeyState("t","P")
-        MouseMove(x, -y,, 'R')
-
-      return
-    }
-
-    if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
-      resetSpeed()
-      speed_move := 0
-      move__nth := 0
-    } Else if (move_f = 1) {
-      move__nth--
-      if move_r > 1
-        move_r--
-      if move_t > 1
-        move_t--
-      if move_s > 1
-        move_s--
-    } Else if (move_f = 2) {
-      move__nth--
-      if move_r > 2
-        move_r--
-      if move_t > 2
-        move_t--
-      if move_s > 2
-        move_s--
-    }
-
-    move_f := 0
-    SetTimer( , 0)
+  if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount := 0
+  } Else if (mouse.moveCount_up = 1) {
+    mouse.moveCount--
+    if mouse.moveCount_left > 1
+      mouse.moveCount_left--
+    if mouse.moveCount_right > 1
+      mouse.moveCount_right--
+    if mouse.moveCount_down > 1
+      mouse.moveCount_down--
+  } Else if (mouse.moveCount_up = 2) {
+    mouse.moveCount--
+    if mouse.moveCount_left > 2
+      mouse.moveCount_left--
+    if mouse.moveCount_right > 2
+      mouse.moveCount_right--
+    if mouse.moveCount_down > 2
+      mouse.moveCount_down--
   }
 
-  speed_f_timer() {
-    global
-    if press_f = 2
-      speed_move := 1
-    press_f := 0
-  }
-	move_s := 0
-  press_s := 0
-  s:: {
-    global
+  mouse.moveCount_up := 0
+  SetTimer( , 0)
+}
 
-    If move_s
-      return
+mouse_up_boostSpeed_timer() {
+  global
+  if mouse.pressCount_up = 2
+    mouse.boostSpeed := 1
+  mouse.pressCount_up := 0
+}
 
-    if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("f","P") {
-      move_s := ++move__nth
-      SetTimer(move_s_timer, A_MouseDelay)
-      
-      return
-    }
+mouseMove_down() {
+  global
 
-    If !press_s {
-      press_s := 1
-      SetTimer(speed_s_timer, -300)
-    } Else
-      press_s := 2
+  If mouse.moveCount_down
+    return
 
-    MouseMove(0, y,, 'R')
-
-    if KeyWait('s', 'T.1')
-      speed_move := 0
-    Else {
-      move_s := ++move__nth
-
-      ;triple clicks
-      If speed_move {
-        x *= x_triple
-        y *= y_triple
-      }
-
-      SetTimer(move_s_timer, A_MouseDelay)
-    }
+  if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("f","P") {
+    mouse.moveCount_down := ++mouse.moveCount
+    SetTimer(mouse_down_moveCount_timer, A_MouseDelay)
+    
+    return
   }
 
-  move_s_timer() {
-    global
+  If !mouse.pressCount_down {
+    mouse.pressCount_down := 1
+    SetTimer(mouse_down_boostSpeed_timer, -300)
+  } Else
+    mouse.pressCount_down := 2
 
-    If GetKeyState("s","P") && (layer_ext || GetKeyState("F24","P")) {
-      if (move_s != move__nth)
-        return
+  MouseMove(0, y,, 'R')
 
-      ;double clicks
-      if speed_move && x <= x_max {
-        x *= x_double
-        y *= y_double
-      }
+  if KeyWait('s', 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    mouse.moveCount_down := ++mouse.moveCount
 
-      If !GetKeyState("r","P") && !GetKeyState("t","P")
-        MouseMove(0, y,, 'R')
-      else if GetKeyState("r","P")
-        MouseMove(-x, y,, 'R')
-      else if GetKeyState("t","P")
-        MouseMove(x, y,, 'R')
-
-      return
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_triple
+      y *= y_triple
     }
 
-    if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
-      resetSpeed()
-      speed_move := 0
-      move__nth := 0
-    } Else if (move_s = 1) {
-      move__nth--
-      if move_r > 1
-        move_r--
-      if move_t > 1
-        move_t--
-      if move_f > 1
-        move_f--
-    } Else if (move_s = 2) {
-      move__nth--
-      if move_r > 2
-        move_r--
-      if move_t > 2
-        move_t--
-      if move_f > 2
-        move_f--
-    }
-
-    move_s := 0
-    SetTimer( , 0)
+    SetTimer(mouse_down_moveCount_timer, A_MouseDelay)
   }
+}
 
-  speed_s_timer() {
-    global
-    if press_s = 2
-      speed_move := 1
-    press_s := 0
-  }
-	move_t := 0
-  press_t := 0
-  t:: {
-    global
+mouse_down_moveCount_timer() {
+  global
 
-    If move_t
+  If GetKeyState("s","P") && (layer_ext || GetKeyState("F24","P")) {
+    if (mouse.moveCount_down != mouse.moveCount)
       return
 
-    if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("r","P") {
-      move_t := ++move__nth
-      SetTimer(move_t_timer, A_MouseDelay)
-      
+    ;double clicks
+    if mouse.boostSpeed && x <= x_max {
+      x *= x_double
+      y *= y_double
+    }
+
+    if GetKeyState("r","P")
+      MouseMove(-x, y,, 'R')
+    else if GetKeyState("t","P")
+      MouseMove(x, y,, 'R')
+    else
+      MouseMove(0, y,, 'R')
+
+    return
+  }
+
+  if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount := 0
+  } Else if (mouse.moveCount_down = 1) {
+    mouse.moveCount--
+    if mouse.moveCount_left > 1
+      mouse.moveCount_left--
+    if mouse.moveCount_right > 1
+      mouse.moveCount_right--
+    if mouse.moveCount_up > 1
+      mouse.moveCount_up--
+  } Else if (mouse.moveCount_down = 2) {
+    mouse.moveCount--
+    if mouse.moveCount_left > 2
+      mouse.moveCount_left--
+    if mouse.moveCount_right > 2
+      mouse.moveCount_right--
+    if mouse.moveCount_up > 2
+      mouse.moveCount_up--
+  }
+
+  mouse.moveCount_down := 0
+  SetTimer( , 0)
+}
+
+mouse_down_boostSpeed_timer() {
+  global
+  if mouse.pressCount_down = 2
+    mouse.boostSpeed := 1
+  mouse.pressCount_down := 0
+}
+
+mouseMove_right() {
+  global
+
+  If mouse.moveCount_right
+    return
+
+  if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("r","P") {
+    mouse.moveCount_right := ++mouse.moveCount
+    SetTimer(mouse_right_moveCount_timer, A_MouseDelay)
+    
+    return
+  }
+
+  If !mouse.pressCount_right {
+    mouse.pressCount_right := 1
+    SetTimer(mouse_right_boostSpeed_timer, -300)
+  } Else
+    mouse.pressCount_right := 2
+
+  MouseMove(x, 0,, 'R')
+
+  if KeyWait('t', 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    mouse.moveCount_right := ++mouse.moveCount
+
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_triple
+      y *= y_triple
+    }
+
+    SetTimer(mouse_right_moveCount_timer, A_MouseDelay)
+  }
+}
+
+mouse_right_moveCount_timer() {
+  global
+
+  If GetKeyState("t","P") && (layer_ext || GetKeyState("F24","P")) {
+    if (mouse.moveCount_right != mouse.moveCount)
       return
+
+    ;double clicks
+    if mouse.boostSpeed && x <= x_max {
+      x *= x_double
+      y *= y_double
     }
 
-    If !press_t {
-      press_t := 1
-      SetTimer(speed_t_timer, -300)
-    } Else
-      press_t := 2
+    if GetKeyState("f","P")
+      MouseMove(x, -y,, 'R')
+    else if GetKeyState("s","P")
+      MouseMove(x, y,, 'R')
+    else
+      MouseMove(x, 0,, 'R')
 
-    MouseMove(x, 0,, 'R')
-
-    if KeyWait('t', 'T.1')
-      speed_move := 0
-    Else {
-      move_t := ++move__nth
-
-      ;triple clicks
-      If speed_move {
-        x *= x_triple
-        y *= y_triple
-      }
-
-      SetTimer(move_t_timer, A_MouseDelay)
-    }
+    return
   }
 
-  move_t_timer() {
-    global
+  if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount := 0
+  } Else if (mouse.moveCount_right = 1) {
+    mouse.moveCount--
+    if mouse.moveCount_up > 1
+      mouse.moveCount_up--
+    if mouse.moveCount_down > 1
+      mouse.moveCount_down--
+    if mouse.moveCount_left > 1
+      mouse.moveCount_left--
+  } Else if (mouse.moveCount_right = 2) {
+    mouse.moveCount--
+    if mouse.moveCount_up > 2
+      mouse.moveCount_up--
+    if mouse.moveCount_down > 2
+      mouse.moveCount_down--
+    if mouse.moveCount_left > 2
+      mouse.moveCount_left--
+  }
 
-    If GetKeyState("t","P") && (layer_ext || GetKeyState("F24","P")) {
-      if (move_t != move__nth)
-        return
+  mouse.moveCount_right := 0
+  SetTimer( , 0)
+}
 
-      ;double clicks
-      if speed_move && x <= x_max {
-        x *= x_double
-        y *= y_double
-      }
+mouse_right_boostSpeed_timer() {
+  global
+  if mouse.pressCount_right = 2
+    mouse.boostSpeed := 1
+  mouse.pressCount_right := 0
+}
 
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove(x, 0,, 'R')
-      else if GetKeyState("f","P")
-        MouseMove(x, -y,, 'R')
-      else if GetKeyState("s","P")
-        MouseMove(x, y,, 'R')
+mouseMove_left() {
+  global
 
+  If mouse.moveCount_left
+    return
+
+  if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("t","P") {
+    mouse.moveCount_left := ++mouse.moveCount
+    SetTimer(mouse_left_moveCount_timer, A_MouseDelay)
+    
+    return
+  }
+
+  If !mouse.pressCount_left {
+    mouse.pressCount_left := 1
+    SetTimer(mouse_left_boostSpeed_timer, -300)
+  } Else
+    mouse.pressCount_left := 2
+
+  MouseMove(-x, 0,, 'R')
+
+  if KeyWait('r', 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    mouse.moveCount_left := ++mouse.moveCount
+
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_triple
+      y *= y_triple
+    }
+
+    SetTimer(mouse_left_moveCount_timer, A_MouseDelay)
+  }
+}
+
+mouse_left_moveCount_timer() {
+  global
+
+  If GetKeyState("r","P") && (layer_ext || GetKeyState("F24","P")) {
+    if (mouse.moveCount_left != mouse.moveCount)
       return
+
+    ;double clicks
+    if mouse.boostSpeed && x <= x_max {
+      x *= x_double
+      y *= y_double
     }
 
-    if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
-      resetSpeed()
-      speed_move := 0
-      move__nth := 0
-    } Else if (move_t = 1) {
-      move__nth--
-      if move_f > 1
-        move_f--
-      if move_s > 1
-        move_s--
-      if move_r > 1
-        move_r--
-    } Else if (move_t = 2) {
-      move__nth--
-      if move_f > 2
-        move_f--
-      if move_s > 2
-        move_s--
-      if move_r > 2
-        move_r--
-    }
+    if GetKeyState("f","P")
+      MouseMove(-x, -y,, 'R')
+    else if GetKeyState("s","P")
+      MouseMove(-x, y,, 'R')
+    else
+      MouseMove(-x, 0,, 'R')
 
-    move_t := 0
-    SetTimer( , 0)
+    return
   }
 
-  speed_t_timer() {
-    global
-    if press_t = 2
-      speed_move := 1
-    press_t := 0
-  }
-	move_r := 0
-  press_r := 0
-  r:: {
-    global
-
-    If move_r
-      return
-
-    if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("t","P") {
-      move_r := ++move__nth
-      SetTimer(move_r_timer, A_MouseDelay)
-      
-      return
-    }
-
-    If !press_r {
-      press_r := 1
-      SetTimer(speed_r_timer, -300)
-    } Else
-      press_r := 2
-
-    MouseMove(-x, 0,, 'R')
-
-    if KeyWait('r', 'T.1')
-      speed_move := 0
-    Else {
-      move_r := ++move__nth
-
-      ;triple clicks
-      If speed_move {
-        x *= x_triple
-        y *= y_triple
-      }
-
-      SetTimer(move_r_timer, A_MouseDelay)
-    }
+  if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount := 0
+  } Else if (mouse.moveCount_left = 1) {
+    mouse.moveCount--
+    if mouse.moveCount_up > 1
+      mouse.moveCount_up--
+    if mouse.moveCount_down > 1
+      mouse.moveCount_down--
+    if mouse.moveCount_right > 1
+      mouse.moveCount_right--
+  } Else if (mouse.moveCount_left = 2) {
+    mouse.moveCount--
+    if mouse.moveCount_up > 2
+      mouse.moveCount_up--
+    if mouse.moveCount_down > 2
+      mouse.moveCount_down--
+    if mouse.moveCount_right > 2
+      mouse.moveCount_right--
   }
 
-  move_r_timer() {
-    global
+  mouse.moveCount_left := 0
+  SetTimer( , 0)
+}
 
-    If GetKeyState("r","P") && (layer_ext || GetKeyState("F24","P")) {
-      if (move_r != move__nth)
-        return
-
-      ;double clicks
-      if speed_move && x <= x_max {
-        x *= x_double
-        y *= y_double
-      }
-
-      If !GetKeyState("f","P") && !GetKeyState("s","P")
-        MouseMove(-x, 0,, 'R')
-      else if GetKeyState("f","P")
-        MouseMove(-x, -y,, 'R')
-      else if GetKeyState("s","P")
-        MouseMove(-x, y,, 'R')
-
-      return
-    }
-
-    if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
-      resetSpeed()
-      speed_move := 0
-      move__nth := 0
-    } Else if (move_r = 1) {
-      move__nth--
-      if move_f > 1
-        move_f--
-      if move_s > 1
-        move_s--
-      if move_t > 1
-        move_t--
-    } Else if (move_r = 2) {
-      move__nth--
-      if move_f > 2
-        move_f--
-      if move_s > 2
-        move_s--
-      if move_t > 2
-        move_t--
-    }
-
-    move_r := 0
-    SetTimer( , 0)
-  }
-
-  speed_r_timer() {
-    global
-    if press_r = 2
-      speed_move := 1
-    press_r := 0
-  }
-
-	press_q := 0
-  scroll_q := 0
-  speed_q := 0
-  *q:: {
-    global
-    if scroll_q
-      return
-    If !press_q {
-      press_q := 1
-      SetTimer(speed_q_timer, -300)
-    } Else
-      press_q := 2
-    SendInput '{Blind}{wheelUp}'
-    if KeyWait('q', 'T.2') 
-      speed_q := 0
-    Else{
-      scroll_q := 1
-      scroll_speed := scroll_default_speed
-      If speed_q {
-        scroll_speed *= scroll_speed_multiplier
-        speed_q := 0
-      }
-      setTimer(scroll_q_timer, scroll_speed)
-    }   
-  }
-  scroll_q_timer() {
-    global
-    if GetKeyState("q","P") && (layer_ext || GetKeyState("F24","P"))
-      SendInput '{Blind}{wheelUp}'
-    Else {
-      scroll_speed := scroll_default_speed
-      scroll_q := 0
-      setTimer( , 0)
-    }
-  }
-  speed_q_timer() {
-    global
-    if press_q = 2
-      speed_q := 1
-    press_q := 0
-  }
-
-	press_a := 0
-  scroll_a := 0
-  speed_a := 0
-  *a:: {
-    global
-    if scroll_a
-      return
-    If !press_a {
-      press_a := 1
-      SetTimer(speed_a_timer, -300)
-    } Else
-      press_a := 2
-    SendInput '{Blind}{wheelDown}'
-    if KeyWait('a', 'T.2') 
-      speed_a := 0
-    Else{
-      scroll_a := 1
-      scroll_speed := scroll_default_speed
-      If speed_a {
-        scroll_speed *= scroll_speed_multiplier
-        speed_a := 0
-      }
-      setTimer(scroll_a_timer, scroll_speed)
-    }   
-  }
-  scroll_a_timer() {
-    global
-    if GetKeyState("a","P") && (layer_ext || GetKeyState("F24","P"))
-      SendInput '{Blind}{wheelDown}'
-    Else {
-      scroll_speed := scroll_default_speed
-      scroll_a := 0
-      setTimer( , 0)
-    }
-  }
-  speed_a_timer() {
-    global
-    if press_a = 2
-      speed_a := 1
-    press_a := 0
-  }
-#HotIf
+mouse_left_boostSpeed_timer() {
+  global
+  if mouse.pressCount_left = 2
+    mouse.boostSpeed := 1
+  mouse.pressCount_left := 0
+}
