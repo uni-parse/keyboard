@@ -58,13 +58,13 @@ function getExt(layer) {
     prev += `\t${base[i]}::`
 
     switch (key) {
-      case 'mouseU': prev += `mouseMove_up()`
+      case 'mouseU': prev += `mouse_move('up')`
         mouseU = base[i]; break
-      case 'mouseD': prev += `mouseMove_down()`
+      case 'mouseD': prev += `mouse_move('down')`
         mouseD = base[i]; break
-      case 'mouseL': prev += `mouseMove_left()`
+      case 'mouseL': prev += `mouse_move('left')`
         mouseL = base[i]; break
-      case 'mouseR': prev += `mouseMove_right()`
+      case 'mouseR': prev += `mouse_move('right')`
         mouseR = base[i]; break
 
       case 'toggleMouseSpeed':

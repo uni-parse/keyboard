@@ -163,7 +163,7 @@ function getHotKey(key) {
     case '⊕': return '^NumpadAdd'
     case '⊝': return '^NumpadSub'
     case '⎙': return 'PrintScreen'
-    case '📱': return 'Run( "calc")'
+    case '📱': return 'Run("calc")'
     case '%': return '`%'
     case ';': return '`;'
     default: return key

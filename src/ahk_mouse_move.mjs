@@ -13,7 +13,97 @@ export function move(combo, mouseU, mouseR, mouseD, mouseL) {
     'down', 0,
     'right', 0,
     'left', 0,
+  ),
+  keys: Map(
+    'up', '${mouseU}',
+    'down', '${mouseD}',
+    'right', '${mouseR}',
+    'left', '${mouseL}',
   )
+}
+
+mouse_move(dir) {
+  global
+  local vertical := dir == 'up' || dir == 'down'
+
+  If mouse.moveCount.get(dir)
+    return
+
+  if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'), 'P')
+  || GetKeyState(mouse.keys.get(vertical ? 'right' : 'down'), 'P')
+  || GetKeyState(mouse.keys.get(oppositeDir(dir)), 'P') {
+    mouse.moveCount.set(dir, ++mouse.moveCount_total)
+    SetTimer(mouse_moveCount_timer.bind(dir), A_MouseDelay)
+    
+    return
+  }
+
+  If mouse.pressCount.get(dir) {
+    mouse.pressCount.set(dir, 1)
+    SetTimer(mouse_boostSpeed_timer.bind(dir), -300)
+  } Else
+    mouse.pressCount.set(dir, 2)
+
+  MouseMove(getX(dir), getY(dir),, 'R')
+
+  if KeyWait(mouse.keys.get(dir), 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    mouse.moveCount.set(dir, ++mouse.moveCount_total)
+
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_tripleMultiply
+      y *= y_tripleMultiply
+    }
+
+    SetTimer(mouse_moveCount_timer.bind(dir), A_MouseDelay)
+  }
+}
+
+mouse_moveCount_timer(dir) {
+  global
+  local vertical := dir == 'up' || dir == 'down'
+
+  If GetKeyState(mouse.keys.get(dir), 'P') && (
+    layer_ext
+    || GetKeyState('${combo}', 'P')
+  ) {
+    if mouse.moveCount.get(dir) != mouse.moveCount_total
+      return
+
+    ;single/double clicks
+    multiplyMouseSpeed(mouse.boostSpeed)
+
+    if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'), 'P')
+      MouseMove(getX(dir, 1), getY(dir, 1),, 'R')
+    else if GetKeyState(mouse.keys.get(vertical ? 'right' : 'down'), 'P')
+      MouseMove(getX(dir, 2), getY(dir, 2),, 'R')
+    else
+      MouseMove(getX(dir), getY(dir),, 'R')
+
+    return
+  }
+
+  if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'),'P')
+  || GetKeyState(mouse.keys.get(vertical ? 'right' : 'down'),'P')
+  || GetKeyState(mouse.keys.get(oppositeDir(dir)),'P')
+    mouseMoveCountersDecrement(dir)
+  Else {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount_total := 0
+  }
+
+  mouse.moveCount.set(dir, 0)
+  SetTimer( , 0)
+}
+
+mouse_boostSpeed_timer(dir) {
+  global
+  if mouse.pressCount.set(dir, 2)
+    mouse.boostSpeed := 1
+  mouse.pressCount.set(dir, 0)
 }
 
 resetMouseSpeed() {
@@ -50,145 +140,59 @@ mouseMoveCountersDecrement(dir) {
   for key, value in mouse.moveCount
     if key != dir && value > mouse.moveCount.get(dir)
       mouse.moveCount.set(key, --value)
-}\n`
-    + getBundle(mouseU)
-    + getBundle(mouseD)
-    + getBundle(mouseR)
-    + getBundle(mouseL)
-
-
-  //ahk bundle of function timer1 timer2
-  function getBundle(key) {
-    const dir = getDir(key)
-    const isHorizontal = key == mouseL || key == mouseR
-    return func(key, dir, isHorizontal)
-      + timers(key, dir, isHorizontal)
-  }
-
-  //ahk function
-  function func(key, dir, isHorizontal) {
-    return `
-mouseMove_${dir}() {
-  global
-
-  If mouse.moveCount.get('${dir}')
-    return
-
-  if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
-  || GetKeyState("${isHorizontal ? mouseD : mouseR}","P")
-  || GetKeyState("${getOpposite(key)}","P") {
-    mouse.moveCount.set('${dir}', ++mouse.moveCount_total)
-    SetTimer(mouse_${dir}_moveCount_timer, A_MouseDelay)
-    
-    return
-  }
-
-  If !mouse.pressCount.get('${dir}') {
-    mouse.pressCount.set('${dir}', 1)
-    SetTimer(mouse_${dir}_boostSpeed_timer, -300)
-  } Else
-    mouse.pressCount.set('${dir}', 2)
-
-  MouseMove(${getCoords(key)},, 'R')
-
-  if KeyWait('${key}', 'T.1')
-    mouse.boostSpeed := 0
-  Else {
-    mouse.moveCount.set('${dir}', ++mouse.moveCount_total)
-
-    ;triple clicks
-    If mouse.boostSpeed {
-      x *= x_tripleMultiply
-      y *= y_tripleMultiply
-    }
-
-    SetTimer(mouse_${dir}_moveCount_timer, A_MouseDelay)
-  }
-}\n`
-  }
-
-  //ahk timer1 timer2
-  function timers(key, dir, isHorizontal) {
-    return `
-mouse_${dir}_moveCount_timer() {
-  global
-
-  If GetKeyState("${key}","P") && (
-    layer_ext
-    || GetKeyState("${combo}","P")
-  ) {
-    if mouse.moveCount.get('${dir}') != mouse.moveCount_total
-      return
-
-    ;single/double clicks
-    multiplyMouseSpeed(mouse.boostSpeed)
-
-    if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
-      MouseMove(${getCoords(key, 1)},, 'R')
-    else if GetKeyState("${isHorizontal ? mouseD : mouseR}","P")
-      MouseMove(${getCoords(key, 2)},, 'R')
-    else
-      MouseMove(${getCoords(key)},, 'R')
-
-    return
-  }
-
-  if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
-  || GetKeyState("${isHorizontal ? mouseD : mouseR}","P")
-  || GetKeyState("${getOpposite(key)}","P")
-    mouseMoveCountersDecrement('${dir}')
-  Else {
-    resetMouseSpeed()
-    mouse.boostSpeed := 0
-    mouse.moveCount_total := 0
-  }
-
-  mouse.moveCount.set('${dir}', 0)
-  SetTimer( , 0)
 }
 
-mouse_${dir}_boostSpeed_timer() {
-  global
-  if mouse.pressCount.set('${dir}', 2)
-    mouse.boostSpeed := 1
-  mouse.pressCount.set('${dir}', 0)
-}\n`
+oppositeDir(dir) {
+  switch dir {
+    case 'up':
+      return 'down'
+    case 'down':
+      return 'up'
+    case 'left':
+      return 'right'
+    case 'right':
+      return 'left'
   }
+}
 
+getCoords(dir, cross := 0) {
+  if !cross
+    switch dir {
+      case 'up':
+        return [0, -y]
+      case 'right':
+        return [x, 0]
+      case 'down':
+        return [0, y]
+      case 'left':
+        return [-x, 0]
+    }
+  else if cross == 1
+    switch dir {
+      case 'up', 'left':
+        return [-x, -y]
+      case 'right':
+        return [x, -y]
+      case 'down':
+        return [-x, y]
+    }
+  else if cross == 2
+    switch dir {
+      case 'up':
+        return [x, -y]
+      case 'right', 'down':
+        return [x, y]
+      case 'left':
+        return [-x, y]
+    }
+}
 
-  //helpers
-  function getDir(key, opposite = false) {
-    switch (key) {
-      case mouseU: return !opposite ? 'up' : 'down'
-      case mouseD: return !opposite ? 'down' : 'up'
-      case mouseL: return !opposite ? 'left' : 'right'
-      case mouseR: return !opposite ? 'right' : 'left'
-    }
-  }
-  function getOpposite(key) {
-    switch (key) {
-      case mouseL: return mouseR
-      case mouseR: return mouseL
-      case mouseD: return mouseU
-      case mouseU: return mouseD
-    }
-  }
-  function getCoords(key, cross = 0) {
-    if (!cross) switch (key) {
-      case mouseU: return '0, -y'
-      case mouseR: return 'x, 0'
-      case mouseD: return '0, y'
-      case mouseL: return '-x, 0'
-    } else if (cross == 1) switch (key) {
-      case mouseU:
-      case mouseL: return '-x, -y'
-      case mouseR: return 'x, -y'
-      case mouseD: return '-x, y'
-    } else if (cross == 2) switch (key) {
-      case mouseU: return 'x, -y'
-      case mouseR:
-      case mouseD: return 'x, y'
-      case mouseL: return '-x, y'
-    }
-  }
+getX(dir, cross := 0) {
+  return getCoords(dir, cross)[1]
+}
+
+getY(dir, cross := 0) {
+  return getCoords(dir, cross)[2]
+}
+`
 }
