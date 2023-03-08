@@ -1,15 +1,19 @@
 export function move(combo, mouseU, mouseR, mouseD, mouseL) {
   return `mouse := {
-  boostSpeed : 0, ; on double/triple click  
-  moveCount : 0,
-  moveCount_up : 0,
-  moveCount_down : 0,
-  moveCount_right : 0,
-  moveCount_left : 0,
-  pressCount_up : 0,
-  pressCount_down : 0,
-  pressCount_right : 0,
-  pressCount_left : 0,
+  boostSpeed: 0, ; on double/triple click  
+  moveCount_total: 0,
+  moveCount: Map(
+    'up', 0,
+    'down', 0,
+    'right', 0,
+    'left', 0,
+  ),
+  pressCount: Map(
+    'up', 0,
+    'down', 0,
+    'right', 0,
+    'left', 0,
+  )
 }
 
 resetMouseSpeed() {
@@ -22,6 +26,30 @@ toggleMouseSpeed() {
   global
   mouse_speed_lvl := !mouse_speed_lvl
   resetMouseSpeed()
+}
+
+multiplyMouseSpeed(boost) {
+  global
+
+  if x <= x_max
+    x *= boost ? x_doubleMultiply : x_defaultMultiply
+
+  if y <= y_max
+    y *= boost ? y_doubleMultiply : y_defaultMultiply
+}
+
+mouseMoveCountersDecrement(dir) {
+  global
+
+  if mouse.moveCount.get(dir) != 1
+  && mouse.moveCount.get(dir) != 2
+    return
+
+  mouse.moveCount_total--
+
+  for key, value in mouse.moveCount
+    if key != dir && value > mouse.moveCount.get(dir)
+      mouse.moveCount.set(key, --value)
 }\n`
     + getBundle(mouseU)
     + getBundle(mouseD)
@@ -37,39 +65,41 @@ toggleMouseSpeed() {
       + timers(key, dir, isHorizontal)
   }
 
-  //ahk function 
+  //ahk function
   function func(key, dir, isHorizontal) {
     return `
 mouseMove_${dir}() {
   global
 
-  If mouse.moveCount_${dir}
+  If mouse.moveCount.get('${dir}')
     return
 
-  if GetKeyState("${isHorizontal ? mouseU : mouseL}","P") || GetKeyState("${isHorizontal ? mouseD : mouseR}","P") || GetKeyState("${getOpposite(key)}","P") {
-    mouse.moveCount_${dir} := ++mouse.moveCount
+  if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
+  || GetKeyState("${isHorizontal ? mouseD : mouseR}","P")
+  || GetKeyState("${getOpposite(key)}","P") {
+    mouse.moveCount.set('${dir}', ++mouse.moveCount_total)
     SetTimer(mouse_${dir}_moveCount_timer, A_MouseDelay)
     
     return
   }
 
-  If !mouse.pressCount_${dir} {
-    mouse.pressCount_${dir} := 1
+  If !mouse.pressCount.get('${dir}') {
+    mouse.pressCount.set('${dir}', 1)
     SetTimer(mouse_${dir}_boostSpeed_timer, -300)
   } Else
-    mouse.pressCount_${dir} := 2
+    mouse.pressCount.set('${dir}', 2)
 
   MouseMove(${getCoords(key)},, 'R')
 
   if KeyWait('${key}', 'T.1')
     mouse.boostSpeed := 0
   Else {
-    mouse.moveCount_${dir} := ++mouse.moveCount
+    mouse.moveCount.set('${dir}', ++mouse.moveCount_total)
 
     ;triple clicks
     If mouse.boostSpeed {
-      x *= x_triple
-      y *= y_triple
+      x *= x_tripleMultiply
+      y *= y_tripleMultiply
     }
 
     SetTimer(mouse_${dir}_moveCount_timer, A_MouseDelay)
@@ -83,15 +113,15 @@ mouseMove_${dir}() {
 mouse_${dir}_moveCount_timer() {
   global
 
-  If GetKeyState("${key}","P") && (layer_ext || GetKeyState("${combo}","P")) {
-    if (mouse.moveCount_${dir} != mouse.moveCount)
+  If GetKeyState("${key}","P") && (
+    layer_ext
+    || GetKeyState("${combo}","P")
+  ) {
+    if mouse.moveCount.get('${dir}') != mouse.moveCount_total
       return
 
-    ;double clicks
-    if mouse.boostSpeed && x <= x_max {
-      x *= x_double
-      y *= y_double
-    }
+    ;single/double clicks
+    multiplyMouseSpeed(mouse.boostSpeed)
 
     if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
       MouseMove(${getCoords(key, 1)},, 'R')
@@ -103,37 +133,25 @@ mouse_${dir}_moveCount_timer() {
     return
   }
 
-  if !GetKeyState("${isHorizontal ? mouseU : mouseL}","P") && !GetKeyState("${isHorizontal ? mouseD : mouseR}","P") && !GetKeyState("${getOpposite(key)}","P") {
+  if GetKeyState("${isHorizontal ? mouseU : mouseL}","P")
+  || GetKeyState("${isHorizontal ? mouseD : mouseR}","P")
+  || GetKeyState("${getOpposite(key)}","P")
+    mouseMoveCountersDecrement('${dir}')
+  Else {
     resetMouseSpeed()
     mouse.boostSpeed := 0
-    mouse.moveCount := 0
-  } Else if (mouse.moveCount_${dir} = 1) {
-    mouse.moveCount--
-    if mouse.moveCount_${getDir(isHorizontal ? mouseU : mouseL)} > 1
-      mouse.moveCount_${getDir(isHorizontal ? mouseU : mouseL)}--
-    if mouse.moveCount_${getDir(isHorizontal ? mouseD : mouseR)} > 1
-      mouse.moveCount_${getDir(isHorizontal ? mouseD : mouseR)}--
-    if mouse.moveCount_${getDir(key, 'opposite')} > 1
-      mouse.moveCount_${getDir(key, 'opposite')}--
-  } Else if (mouse.moveCount_${dir} = 2) {
-    mouse.moveCount--
-    if mouse.moveCount_${getDir(isHorizontal ? mouseU : mouseL)} > 2
-      mouse.moveCount_${getDir(isHorizontal ? mouseU : mouseL)}--
-    if mouse.moveCount_${getDir(isHorizontal ? mouseD : mouseR)} > 2
-      mouse.moveCount_${getDir(isHorizontal ? mouseD : mouseR)}--
-    if mouse.moveCount_${getDir(key, 'opposite')} > 2
-      mouse.moveCount_${getDir(key, 'opposite')}--
+    mouse.moveCount_total := 0
   }
 
-  mouse.moveCount_${dir} := 0
+  mouse.moveCount.set('${dir}', 0)
   SetTimer( , 0)
 }
 
 mouse_${dir}_boostSpeed_timer() {
   global
-  if mouse.pressCount_${dir} = 2
+  if mouse.pressCount.set('${dir}', 2)
     mouse.boostSpeed := 1
-  mouse.pressCount_${dir} := 0
+  mouse.pressCount.set('${dir}', 0)
 }\n`
   }
 

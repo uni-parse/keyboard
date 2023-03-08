@@ -18,23 +18,26 @@ config.intro = `;
 #Requires AutoHotkey v2.0
 ProcessSetPriority 'High'
 Persistent
-;#Warn  ; detecting common errors.
+#Warn  ; detecting common errors.
 
 x_slow := 1.5
 x_default := 2.8
-x_double := 1.02
-x_triple := 1.05
+x_defaultMultiply := 1.02
+x_doubleMultiply := 1.02
+x_tripleMultiply := 1.05
 
 y_slow := x_slow
 y_default := x_default
-y_double := x_double
-y_triple := x_triple
+y_defaultMultiply := x_defaultMultiply
+y_doubleMultiply := x_doubleMultiply
+y_tripleMultiply := x_tripleMultiply
 
 x := x_default
 y := y_default
 
 mouse_speed_lvl := 0
 x_max := mouse_speed_lvl ? x_default : 8
+y_max := x_max
 
 wheelDelay_default := 40
 wheelDelay_multiplier := .25
