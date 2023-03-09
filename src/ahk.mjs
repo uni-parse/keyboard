@@ -38,7 +38,17 @@ ${getSymShift()}#HotIf
 ${getSym2()}#HotIf
 
 
+;standard
+ins::switchWindow()
+
+
 ;helper functions 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
+window_toggle := 0
+switchWindow() {
+  global
+  window_toggle := !window_toggle
+  SendInput( window_toggle ? "#^{left}" : "#^{right}")
+}
 ${config.config}
 ${brightness()}
 ${scroll(config.extKey, scrollU, scrollD)}

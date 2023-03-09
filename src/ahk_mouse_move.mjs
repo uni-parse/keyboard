@@ -144,47 +144,35 @@ mouseMoveCountersDecrement(dir) {
 
 oppositeDir(dir) {
   switch dir {
-    case 'up':
-      return 'down'
-    case 'down':
-      return 'up'
-    case 'left':
-      return 'right'
-    case 'right':
-      return 'left'
+    case 'up': return 'down'
+    case 'down': return 'up'
+    case 'left': return 'right'
+    case 'right': return 'left'
   }
 }
 
 getCoords(dir, cross := 0) {
-  if !cross
-    switch dir {
-      case 'up':
-        return [0, -y]
-      case 'right':
-        return [x, 0]
-      case 'down':
-        return [0, y]
-      case 'left':
-        return [-x, 0]
-    }
-  else if cross == 1
-    switch dir {
-      case 'up', 'left':
-        return [-x, -y]
-      case 'right':
-        return [x, -y]
-      case 'down':
-        return [-x, y]
-    }
-  else if cross == 2
-    switch dir {
-      case 'up':
-        return [x, -y]
-      case 'right', 'down':
-        return [x, y]
-      case 'left':
-        return [-x, y]
-    }
+  switch cross {
+    case 0:
+      switch dir {
+        case 'up': return [0, -y]
+        case 'right': return [x, 0]
+        case 'down': return [0, y]
+        case 'left': return [-x, 0]
+      }
+    case 1:
+      switch dir {
+        case 'up', 'left': return [-x, -y]
+        case 'right': return [x, -y]
+        case 'down': return [-x, y]
+      }
+    case 2:
+      switch dir {
+        case 'up': return [x, -y]
+        case 'right', 'down': return [x, y]
+        case 'left': return [-x, y]
+      }
+  }
 }
 
 getX(dir, cross := 0) {
