@@ -595,15 +595,6 @@ mouseMoveCountersDecrement(dir) {
       mouse.moveCount.set(key, --value)
 }
 
-oppositeDir(dir) {
-  switch dir {
-    case 'up': return 'down'
-    case 'down': return 'up'
-    case 'left': return 'right'
-    case 'right': return 'left'
-  }
-}
-
 moveMove_switch(dir) {      
   vertical := dir == 'up' || dir == 'down'
   if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'), 'P')
