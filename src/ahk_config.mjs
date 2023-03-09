@@ -22,9 +22,9 @@ Persistent
 
 x_slow := 1.5
 x_default := 2.8
-x_defaultMultiply := 1.02
-x_doubleMultiply := 1.02
-x_tripleMultiply := 1.05
+x_defaultMultiply := 1.01
+x_doubleMultiply := 1.1
+x_tripleMultiply := 3
 
 y_slow := x_slow
 y_default := x_default

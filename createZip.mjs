@@ -19,7 +19,7 @@ zip
       if (err) throw err
       else console.log(
         ahk + ' ' + getSize(ahk) + '\n'
-        + exe + getSize(exe) + '\n'
+        + exe + ' ' + getSize(exe) + '\n'
         + output + ' ' + getSize(output)
       )
     }

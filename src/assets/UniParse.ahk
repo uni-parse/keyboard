@@ -8,23 +8,26 @@
 #Requires AutoHotkey v2.0
 ProcessSetPriority 'High'
 Persistent
-;#Warn  ; detecting common errors.
+#Warn  ; detecting common errors.
 
 x_slow := 1.5
 x_default := 2.8
-x_double := 1.02
-x_triple := 1.05
+x_defaultMultiply := 1.01
+x_doubleMultiply := 1.1
+x_tripleMultiply := 3
 
 y_slow := x_slow
 y_default := x_default
-y_double := x_double
-y_triple := x_triple
+y_defaultMultiply := x_defaultMultiply
+y_doubleMultiply := x_doubleMultiply
+y_tripleMultiply := x_tripleMultiply
 
 x := x_default
 y := y_default
 
 mouse_speed_lvl := 0
 x_max := mouse_speed_lvl ? x_default : 8
+y_max := x_max
 
 wheelDelay_default := 40
 wheelDelay_multiplier := .25
@@ -35,7 +38,7 @@ currentBrightness := getCurrentBrightness()
 SetCapsLockState('AlwaysOff')
 
 
-;config layers ⚙️      ⚙️       ⚙️      ⚙️      ⚙️     ⚙️
+;config layers ⚙️      ⚙️      ⚙️      ⚙️      ⚙️      ⚙️
 F23::symSwitcher('F23', 400, 200)
 F24::extSwitcher('F24', 400, 200)
 
@@ -56,7 +59,7 @@ F24::extSwitcher('F24', 400, 200)
 )
 	*q::wheelScroll_up()
 	w::Esc
-	f::mouseMove_up()
+	f::mouse_move('up')
 	p::toggleMouseSpeed()
 	l::Home
 	u::Up
@@ -64,9 +67,9 @@ F24::extSwitcher('F24', 400, 200)
 	'::PgUp
 	-::PgDn
 	*a::wheelScroll_down()
-	r::mouseMove_left()
-	s::mouseMove_down()
-	t::mouseMove_right()
+	r::mouse_move('left')
+	s::mouse_move('down')
+	t::mouse_move('right')
 	g::AppsKey
 	m::Tab
 	n::Left
@@ -91,7 +94,7 @@ F24::extSwitcher('F24', 400, 200)
 	y::^Numpad0
 	'::Media_Stop
 	s::Browser_Search
-	m::Run( "calc")
+	m::Run("calc")
 	n::Media_Prev
 	e::Volume_Down
 	i::Media_Next
@@ -230,7 +233,17 @@ F24::extSwitcher('F24', 400, 200)
 #HotIf
 
 
+;standard
+ins::switchWindow()
+
+
 ;helper functions 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺ 🌟⦺
+window_toggle := 0
+switchWindow() {
+  global
+  window_toggle := !window_toggle
+  SendInput( window_toggle ? "#^{left}" : "#^{right}")
+}
 layer_ext := 0
 layer_ext2 := 0
 layer_sym := 0
@@ -441,16 +454,103 @@ wheel_down_boostSpeed_timer() {
 }
 
 mouse := {
-  boostSpeed : 0, ; on double/triple click  
-  moveCount : 0,
-  moveCount_up : 0,
-  moveCount_down : 0,
-  moveCount_right : 0,
-  moveCount_left : 0,
-  pressCount_up : 0,
-  pressCount_down : 0,
-  pressCount_right : 0,
-  pressCount_left : 0,
+  boostSpeed: 0, ; on double/triple click  
+  moveCount_total: 0,
+  moveCount: Map(
+    'up', 0,
+    'down', 0,
+    'right', 0,
+    'left', 0,
+  ),
+  pressCount: Map(
+    'up', 0,
+    'down', 0,
+    'right', 0,
+    'left', 0,
+  ),
+  keys: Map(
+    'up', 'f',
+    'down', 's',
+    'right', 't',
+    'left', 'r',
+  )
+}
+
+mouse_move(dir) {
+  global
+
+  ;ignore auto press repeat of holding.
+  If mouse.moveCount.get(dir)
+    return
+
+  if isCombo(dir) {
+    mouse.moveCount.set(dir, ++mouse.moveCount_total)
+    SetTimer(mouse_moveCount_timer.bind(dir), A_MouseDelay)
+    return
+  }
+
+  if !mouse.pressCount.get(dir) {
+    mouse.pressCount.set(dir, 1)
+    SetTimer(mouse_boostSpeed_timer.bind(dir), -300)
+  } else
+    mouse.pressCount.set(dir, 2)
+
+  moveMove_switch(dir) ;no combo
+
+  if KeyWait(mouse.keys.get(dir), 'T.1')
+    mouse.boostSpeed := 0
+  Else {
+    ;triple clicks
+    If mouse.boostSpeed {
+      x *= x_tripleMultiply
+      y *= y_tripleMultiply
+    }
+    
+    mouse.moveCount.set(dir, ++mouse.moveCount_total)
+    SetTimer(mouse_moveCount_timer.bind(dir), A_MouseDelay)
+  }
+}
+
+mouse_boostSpeed_timer(dir) {
+  global
+  if mouse.pressCount.get(dir) == 2
+    mouse.boostSpeed := 1
+  mouse.pressCount.set(dir, 0)
+}
+
+mouse_moveCount_timer(dir) {
+  global
+  
+  If GetKeyState(mouse.keys.get(dir), 'P') && (
+    layer_ext
+    || GetKeyState('F24', 'P')
+    ) {
+    if mouse.moveCount.get(dir) != mouse.moveCount_total
+      return
+    
+    multiplyMouseSpeed(mouse.boostSpeed) ;single/double clicks
+    moveMove_switch(dir)
+
+    return
+  }
+
+  if isCombo(dir)
+    mouseMoveCountersDecrement(dir)
+  Else {
+    resetMouseSpeed()
+    mouse.boostSpeed := 0
+    mouse.moveCount_total := 0
+  }
+
+  mouse.moveCount.set(dir, 0)
+  SetTimer( , 0)
+}
+
+isCombo(dir) {
+  for key, value in mouse.keys
+    if key != dir && GetKeyState(value, 'p')
+      return true
+  return false
 }
 
 resetMouseSpeed() {
@@ -465,370 +565,64 @@ toggleMouseSpeed() {
   resetMouseSpeed()
 }
 
-mouseMove_up() {
+multiplyMouseSpeed(boost) {
   global
 
-  If mouse.moveCount_up
-    return
-
-  if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("s","P") {
-    mouse.moveCount_up := ++mouse.moveCount
-    SetTimer(mouse_up_moveCount_timer, A_MouseDelay)
-    
-    return
+  if x <= x_max {
+    x *= boost ? x_doubleMultiply : x_defaultMultiply
+    if x > x_max
+      x := x_max
   }
 
-  If !mouse.pressCount_up {
-    mouse.pressCount_up := 1
-    SetTimer(mouse_up_boostSpeed_timer, -300)
-  } Else
-    mouse.pressCount_up := 2
+  if y <= y_max {
+    y *= boost ? y_doubleMultiply : y_defaultMultiply
+    if y > y_max
+      y := y_max
+  }
+}
 
-  MouseMove(0, -y,, 'R')
+mouseMoveCountersDecrement(dir) {
+  global
 
-  if KeyWait('f', 'T.1')
-    mouse.boostSpeed := 0
-  Else {
-    mouse.moveCount_up := ++mouse.moveCount
+  if mouse.moveCount.get(dir) != 1
+  && mouse.moveCount.get(dir) != 2
+    return
 
-    ;triple clicks
-    If mouse.boostSpeed {
-      x *= x_triple
-      y *= y_triple
+  mouse.moveCount_total--
+
+  for key, value in mouse.moveCount
+    if key != dir && value > mouse.moveCount.get(dir)
+      mouse.moveCount.set(key, --value)
+}
+
+oppositeDir(dir) {
+  switch dir {
+    case 'up': return 'down'
+    case 'down': return 'up'
+    case 'left': return 'right'
+    case 'right': return 'left'
+  }
+}
+
+moveMove_switch(dir) {      
+  vertical := dir == 'up' || dir == 'down'
+  if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'), 'P')
+    switch dir {
+      case 'up', 'left': MouseMove(-x, -y,, 'R')
+      case 'right': MouseMove(x, -y,, 'R')
+      case 'down': MouseMove(-x, y,, 'R')
     }
-
-    SetTimer(mouse_up_moveCount_timer, A_MouseDelay)
-  }
-}
-
-mouse_up_moveCount_timer() {
-  global
-
-  If GetKeyState("f","P") && (layer_ext || GetKeyState("F24","P")) {
-    if (mouse.moveCount_up != mouse.moveCount)
-      return
-
-    ;double clicks
-    if mouse.boostSpeed && x <= x_max {
-      x *= x_double
-      y *= y_double
+  else if GetKeyState(mouse.keys.get(vertical ? 'right' : 'down'), 'P')
+    switch dir {
+      case 'up': MouseMove(x, -y,, 'R')
+      case 'right', 'down': MouseMove(x, y,, 'R')
+      case 'left': MouseMove(-x, y,, 'R')
     }
-
-    if GetKeyState("r","P")
-      MouseMove(-x, -y,, 'R')
-    else if GetKeyState("t","P")
-      MouseMove(x, -y,, 'R')
-    else
-      MouseMove(0, -y,, 'R')
-
-    return
-  }
-
-  if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("s","P") {
-    resetMouseSpeed()
-    mouse.boostSpeed := 0
-    mouse.moveCount := 0
-  } Else if (mouse.moveCount_up = 1) {
-    mouse.moveCount--
-    if mouse.moveCount_left > 1
-      mouse.moveCount_left--
-    if mouse.moveCount_right > 1
-      mouse.moveCount_right--
-    if mouse.moveCount_down > 1
-      mouse.moveCount_down--
-  } Else if (mouse.moveCount_up = 2) {
-    mouse.moveCount--
-    if mouse.moveCount_left > 2
-      mouse.moveCount_left--
-    if mouse.moveCount_right > 2
-      mouse.moveCount_right--
-    if mouse.moveCount_down > 2
-      mouse.moveCount_down--
-  }
-
-  mouse.moveCount_up := 0
-  SetTimer( , 0)
-}
-
-mouse_up_boostSpeed_timer() {
-  global
-  if mouse.pressCount_up = 2
-    mouse.boostSpeed := 1
-  mouse.pressCount_up := 0
-}
-
-mouseMove_down() {
-  global
-
-  If mouse.moveCount_down
-    return
-
-  if GetKeyState("r","P") || GetKeyState("t","P") || GetKeyState("f","P") {
-    mouse.moveCount_down := ++mouse.moveCount
-    SetTimer(mouse_down_moveCount_timer, A_MouseDelay)
-    
-    return
-  }
-
-  If !mouse.pressCount_down {
-    mouse.pressCount_down := 1
-    SetTimer(mouse_down_boostSpeed_timer, -300)
-  } Else
-    mouse.pressCount_down := 2
-
-  MouseMove(0, y,, 'R')
-
-  if KeyWait('s', 'T.1')
-    mouse.boostSpeed := 0
-  Else {
-    mouse.moveCount_down := ++mouse.moveCount
-
-    ;triple clicks
-    If mouse.boostSpeed {
-      x *= x_triple
-      y *= y_triple
+  else
+    switch dir {
+      case 'up': MouseMove(0, -y,, 'R')
+      case 'right': MouseMove(x, 0,, 'R')
+      case 'down': MouseMove(0, y,, 'R')
+      case 'left': MouseMove(-x, 0,, 'R')
     }
-
-    SetTimer(mouse_down_moveCount_timer, A_MouseDelay)
-  }
-}
-
-mouse_down_moveCount_timer() {
-  global
-
-  If GetKeyState("s","P") && (layer_ext || GetKeyState("F24","P")) {
-    if (mouse.moveCount_down != mouse.moveCount)
-      return
-
-    ;double clicks
-    if mouse.boostSpeed && x <= x_max {
-      x *= x_double
-      y *= y_double
-    }
-
-    if GetKeyState("r","P")
-      MouseMove(-x, y,, 'R')
-    else if GetKeyState("t","P")
-      MouseMove(x, y,, 'R')
-    else
-      MouseMove(0, y,, 'R')
-
-    return
-  }
-
-  if !GetKeyState("r","P") && !GetKeyState("t","P") && !GetKeyState("f","P") {
-    resetMouseSpeed()
-    mouse.boostSpeed := 0
-    mouse.moveCount := 0
-  } Else if (mouse.moveCount_down = 1) {
-    mouse.moveCount--
-    if mouse.moveCount_left > 1
-      mouse.moveCount_left--
-    if mouse.moveCount_right > 1
-      mouse.moveCount_right--
-    if mouse.moveCount_up > 1
-      mouse.moveCount_up--
-  } Else if (mouse.moveCount_down = 2) {
-    mouse.moveCount--
-    if mouse.moveCount_left > 2
-      mouse.moveCount_left--
-    if mouse.moveCount_right > 2
-      mouse.moveCount_right--
-    if mouse.moveCount_up > 2
-      mouse.moveCount_up--
-  }
-
-  mouse.moveCount_down := 0
-  SetTimer( , 0)
-}
-
-mouse_down_boostSpeed_timer() {
-  global
-  if mouse.pressCount_down = 2
-    mouse.boostSpeed := 1
-  mouse.pressCount_down := 0
-}
-
-mouseMove_right() {
-  global
-
-  If mouse.moveCount_right
-    return
-
-  if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("r","P") {
-    mouse.moveCount_right := ++mouse.moveCount
-    SetTimer(mouse_right_moveCount_timer, A_MouseDelay)
-    
-    return
-  }
-
-  If !mouse.pressCount_right {
-    mouse.pressCount_right := 1
-    SetTimer(mouse_right_boostSpeed_timer, -300)
-  } Else
-    mouse.pressCount_right := 2
-
-  MouseMove(x, 0,, 'R')
-
-  if KeyWait('t', 'T.1')
-    mouse.boostSpeed := 0
-  Else {
-    mouse.moveCount_right := ++mouse.moveCount
-
-    ;triple clicks
-    If mouse.boostSpeed {
-      x *= x_triple
-      y *= y_triple
-    }
-
-    SetTimer(mouse_right_moveCount_timer, A_MouseDelay)
-  }
-}
-
-mouse_right_moveCount_timer() {
-  global
-
-  If GetKeyState("t","P") && (layer_ext || GetKeyState("F24","P")) {
-    if (mouse.moveCount_right != mouse.moveCount)
-      return
-
-    ;double clicks
-    if mouse.boostSpeed && x <= x_max {
-      x *= x_double
-      y *= y_double
-    }
-
-    if GetKeyState("f","P")
-      MouseMove(x, -y,, 'R')
-    else if GetKeyState("s","P")
-      MouseMove(x, y,, 'R')
-    else
-      MouseMove(x, 0,, 'R')
-
-    return
-  }
-
-  if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("r","P") {
-    resetMouseSpeed()
-    mouse.boostSpeed := 0
-    mouse.moveCount := 0
-  } Else if (mouse.moveCount_right = 1) {
-    mouse.moveCount--
-    if mouse.moveCount_up > 1
-      mouse.moveCount_up--
-    if mouse.moveCount_down > 1
-      mouse.moveCount_down--
-    if mouse.moveCount_left > 1
-      mouse.moveCount_left--
-  } Else if (mouse.moveCount_right = 2) {
-    mouse.moveCount--
-    if mouse.moveCount_up > 2
-      mouse.moveCount_up--
-    if mouse.moveCount_down > 2
-      mouse.moveCount_down--
-    if mouse.moveCount_left > 2
-      mouse.moveCount_left--
-  }
-
-  mouse.moveCount_right := 0
-  SetTimer( , 0)
-}
-
-mouse_right_boostSpeed_timer() {
-  global
-  if mouse.pressCount_right = 2
-    mouse.boostSpeed := 1
-  mouse.pressCount_right := 0
-}
-
-mouseMove_left() {
-  global
-
-  If mouse.moveCount_left
-    return
-
-  if GetKeyState("f","P") || GetKeyState("s","P") || GetKeyState("t","P") {
-    mouse.moveCount_left := ++mouse.moveCount
-    SetTimer(mouse_left_moveCount_timer, A_MouseDelay)
-    
-    return
-  }
-
-  If !mouse.pressCount_left {
-    mouse.pressCount_left := 1
-    SetTimer(mouse_left_boostSpeed_timer, -300)
-  } Else
-    mouse.pressCount_left := 2
-
-  MouseMove(-x, 0,, 'R')
-
-  if KeyWait('r', 'T.1')
-    mouse.boostSpeed := 0
-  Else {
-    mouse.moveCount_left := ++mouse.moveCount
-
-    ;triple clicks
-    If mouse.boostSpeed {
-      x *= x_triple
-      y *= y_triple
-    }
-
-    SetTimer(mouse_left_moveCount_timer, A_MouseDelay)
-  }
-}
-
-mouse_left_moveCount_timer() {
-  global
-
-  If GetKeyState("r","P") && (layer_ext || GetKeyState("F24","P")) {
-    if (mouse.moveCount_left != mouse.moveCount)
-      return
-
-    ;double clicks
-    if mouse.boostSpeed && x <= x_max {
-      x *= x_double
-      y *= y_double
-    }
-
-    if GetKeyState("f","P")
-      MouseMove(-x, -y,, 'R')
-    else if GetKeyState("s","P")
-      MouseMove(-x, y,, 'R')
-    else
-      MouseMove(-x, 0,, 'R')
-
-    return
-  }
-
-  if !GetKeyState("f","P") && !GetKeyState("s","P") && !GetKeyState("t","P") {
-    resetMouseSpeed()
-    mouse.boostSpeed := 0
-    mouse.moveCount := 0
-  } Else if (mouse.moveCount_left = 1) {
-    mouse.moveCount--
-    if mouse.moveCount_up > 1
-      mouse.moveCount_up--
-    if mouse.moveCount_down > 1
-      mouse.moveCount_down--
-    if mouse.moveCount_right > 1
-      mouse.moveCount_right--
-  } Else if (mouse.moveCount_left = 2) {
-    mouse.moveCount--
-    if mouse.moveCount_up > 2
-      mouse.moveCount_up--
-    if mouse.moveCount_down > 2
-      mouse.moveCount_down--
-    if mouse.moveCount_right > 2
-      mouse.moveCount_right--
-  }
-
-  mouse.moveCount_left := 0
-  SetTimer( , 0)
-}
-
-mouse_left_boostSpeed_timer() {
-  global
-  if mouse.pressCount_left = 2
-    mouse.boostSpeed := 1
-  mouse.pressCount_left := 0
 }

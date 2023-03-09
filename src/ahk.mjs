@@ -9,7 +9,7 @@ const base = keys.standard.map(k => k == ';' ? '`;' : k)
 let mouseL, mouseR, mouseU, mouseD, scrollU, scrollD
 
 export const autohotkeyStr = `${config.intro}
-;config layers ⚙️      ⚙️       ⚙️      ⚙️      ⚙️     ⚙️
+;config layers ⚙️      ⚙️      ⚙️      ⚙️      ⚙️      ⚙️
 ${config.switchers}
 
 

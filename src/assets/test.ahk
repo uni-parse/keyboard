@@ -1,23 +1,11 @@
 ﻿#Requires AutoHotkey v2.0
+#Warn
 
-a := 1
-b := ++a ;coole
-c := 1
-obj := {
-  b:0,
-  a:10
-}
-4::0
-5::0
-ins::MsgBox(obj.a)
-`::increment(-5)
-1::send('⚠️')
-2::sendText('⚠️')
-3::0
+`::test()
 
+test() {
+  arr := [1,2,3]
+  ;MsgBox(arr[0])
+  MsgBox(arr[1])
 
-
-increment(val := -10) {
-  global
-  obj.a += -val
 }
