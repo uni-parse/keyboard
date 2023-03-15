@@ -1,22 +1,28 @@
 //⎋⇥⇪⇧␣⏎⌦⌫⇱⇲⇟⇞↑↓←→⌧⏵⏸⏯⏮⏭🔈🔊🔇⤾⤿⥁🔍
 import './sass/main.scss'
-import { attachMedias } from './mediaIcons'
-import { keyboard, typeListener } from './keyboard'
+import { attachMedia } from './mediaIcons'
+import { keyboard, fetchAudios, typeListener } from './keyboard'
 import { panel, switcherListener } from './panel'
 import { script } from './scriptAhk'
+import { pendingLoader } from './loader'
+import { sleep } from './utilities'
 
 const main = document.createElement('main')
-document.body.append(main)
+document.body.append(main);
 
-const kbdCtx = document.createElement('div')
-kbdCtx.id = 'kbdCtx'
-kbdCtx.append(keyboard, panel)
-main.append(kbdCtx, script)
+(async () => {
+  const audiosPromises = fetchAudios()
+  await sleep(150)//audios buffer
+  await pendingLoader(audiosPromises, main)
 
-attachMedias(main)
+  const kbdCtx = document.createElement('div')
+  kbdCtx.id = 'kbdCtx'
+  kbdCtx.append(keyboard, panel)
+  main.append(kbdCtx, script)
 
-switcherListener()
-typeListener()
+  switcherListener()
+  typeListener()
 
-
-console.log('💡💡done💡💡')
+  attachMedia(main, 2000)
+  console.log('💡💡done💡💡');
+})();

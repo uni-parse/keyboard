@@ -1,6 +1,7 @@
 import { keys } from "./keys"
+import { keyboard_backgrounds } from "./keyboard_backgrounds"
 
-export { typeListener } from './typeListener'
+export { typeListener, fetchAudios } from './keyboard_listener'
 export const keyboard = document.createElement('div')
 keyboard.id = 'keyboard'
 
@@ -28,6 +29,7 @@ const rowsCtxs = rows.map(([row, rowKeys]) => {
 })
 keyboard.append(...rowsCtxs)
 
+keyboard_backgrounds(keyboard)
 
 //helper functions
 function getValidId(key) {
