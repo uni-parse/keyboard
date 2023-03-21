@@ -10,19 +10,17 @@ import { sleep } from './utilities'
 const main = document.createElement('main')
 document.body.append(main);
 
-(async () => {
-  const audiosPromises = fetchAudios()
-  await sleep(150)//audios buffer
-  await pendingLoader(audiosPromises, main)
+const audiosPromises = fetchAudios()
+await sleep(150)//audios buffer
+await pendingLoader(audiosPromises, main)
 
-  const kbdCtx = document.createElement('div')
-  kbdCtx.id = 'kbdCtx'
-  kbdCtx.append(keyboard, panel)
-  main.append(kbdCtx, script)
+const kbdCtx = document.createElement('div')
+kbdCtx.id = 'kbdCtx'
+kbdCtx.append(keyboard, panel)
+main.append(kbdCtx, script)
 
-  switcherListener()
-  typeListener()
+switcherListener()
+typeListener()
 
-  attachMedia(main, 2000)
-  console.log('💡💡done💡💡');
-})();
+attachMedia(main, 2000)
+console.log('💡💡done💡💡');

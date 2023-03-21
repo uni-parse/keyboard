@@ -7,18 +7,15 @@ import audioPop2 from "./assets/audio/pop2.wav"
 import audioPop3 from "./assets/audio/pop3.wav"
 
 function fetchAudios(delay = 0, promises = []) {
-  const pending = new Map()
-  .set('pop1', fetchAudio(audioPop1))
-  .set('pop2', fetchAudio(audioPop2))
-  .set('pop3', fetchAudio(audioPop3))
-  
-  for (const entry of pending.entries())
-  promises.push(audioPromise(entry))
-  
+  new Map()
+    .set('pop1', fetchAudio(audioPop1))
+    .set('pop2', fetchAudio(audioPop2))
+    .set('pop3', fetchAudio(audioPop3))
+    .forEach((v, k) => promises.push(audioPromise([k, v])))
+
   promises.push(sleep(delay))
   return promises
 }
-
 
 
 //helpers

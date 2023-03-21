@@ -20,10 +20,53 @@ let user = {
 }
 
 async function attachMedia(ctx, delay = 0, mediasDelay = 2500) {
-  const mediaIcons = await getMediaIcons()
-  ctx.append(mediaIcons)
+  const address = await getAddress()
+  ctx.append(address)
+
+  const img = address.querySelector('img.userMedias')
+  await eventPromise(img, 'load')
+
   await sleep(delay)//fix append & transition issue
   showMedias(mediasDelay)
+}
+
+//helpers
+async function getAddress() {
+  const address = document.createElement('address')
+  address.id = 'mediaIcons'
+
+  const icons = await fetchMediaIcons()
+
+  //append ...<a><svg> in <address>
+  const anchors = user.urls.map(url => {
+    const a = document.createElement('a')
+    a.target = '_blank'
+    a.href = url
+
+    const mediaName = url.slice(8, url.indexOf('.'))
+    const svg_html = icons[mediaName]
+    a.innerHTML = svg_html
+
+    //accessibility
+    const svg = a.querySelector('svg')
+    svg.role = 'img'
+    const title = document.createElement('title')
+    title.innerText = `${mediaName} of ${user.name}`
+    svg.prepend(title)
+
+    return a
+  })
+  address.append(...anchors)
+
+  //append <img> in <address>
+  const img = document.createElement('img')
+  img.srcset = user.srcset
+  img.alt = user.name
+  img.className = 'userMedias'
+  address.append(img)
+
+  user = null // trash
+  return address
 }
 
 async function showMedias(mediasDelay = 2500) {
@@ -69,44 +112,6 @@ async function showMedias(mediasDelay = 2500) {
   }
 }
 
-async function getMediaIcons() {
-  const address = document.createElement('address')
-  address.id = 'mediaIcons'
-
-  const icons = await fetchMediaIcons()
-
-  //append ...<a><svg> in <address>
-  const anchors = user.urls.map(url => {
-    const a = document.createElement('a')
-    a.target = '_blank'
-    a.href = url
-
-    const mediaName = url.slice(8, url.indexOf('.'))
-    const svg_html = icons[mediaName]
-    a.innerHTML = svg_html
-
-    //accessibility
-    const svg = a.querySelector('svg')
-    svg.role = 'img'
-    const title = document.createElement('title')
-    title.innerText = `${mediaName} of ${user.name}`
-    svg.prepend(title)
-
-    return a
-  })
-  address.append(...anchors)
-
-  //append <img> in <address>
-  const img = document.createElement('img')
-  img.srcset = user.srcset
-  img.alt = user.name
-  address.append(img)
-
-  user = null // trash
-  return address
-}
-
-//helpers
 async function fetchMediaIcons() {
   const response = await fetch(iconsUrl)
   const icons = await response.json()

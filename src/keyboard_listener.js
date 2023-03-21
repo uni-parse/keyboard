@@ -21,17 +21,12 @@ function typeListener() {
 
     console.log(code, keyDown)
 
-    const targetBtn = [].find.call(buttons, btn =>
+    const targetBtn = Array.prototype.find.call(buttons, btn =>
       btn.innerText == keyDown
-      || btn.className.split(' ').find(className =>
-        className == keyDown || className == '_' + keyDown
-        || className == 'space' && keyDown == ' '
-        || className == 'LShift' && keyDown == 'Shift'
-        //|| className == 'LShift' && code == 'ShiftLeft'
-        //|| className == 'LShift' && code == 'ShiftRight'
-        //|| className == 'LShift' && code == 'IntlBackslash'
-        //|| c == 'sym' && code == 'AltLeft'
-      )
+      || btn.classList.contains(keyDown)
+      || btn.classList.contains('_' + keyDown)
+      || btn.classList.contains('space') && keyDown == ' '
+      || btn.classList.contains('LShift') && keyDown == 'Shift'
     )
     if (!targetBtn) return
 
