@@ -16,42 +16,14 @@ config.intro = `;
 ;
 ;
 #Requires AutoHotkey v2.0
-ProcessSetPriority 'High'
-Persistent
-#Warn  ; detecting common errors.
-
-x_slow := 1.5
-x_default := 2.8
-x_defaultMultiply := 1.01
-x_doubleMultiply := 1.1
-x_tripleMultiply := 3
-
-y_slow := x_slow
-y_default := x_default
-y_defaultMultiply := x_defaultMultiply
-y_doubleMultiply := x_doubleMultiply
-y_tripleMultiply := x_tripleMultiply
-
-x := x_default
-y := y_default
-
-mouse_speed_lvl := 0
-x_max := mouse_speed_lvl ? x_default : 8
-y_max := x_max
-
-wheelDelay_default := 40
-wheelDelay_multiplier := .25
-
-brightnessJump := 10
-currentBrightness := getCurrentBrightness()
-
-SetCapsLockState('AlwaysOff')
-\n`
+ProcessSetPriority("High")
+Persistent()
+#Warn  ; detecting common errors.\n`
 
 
 config.switchers =
-  `${symbolKey}::symSwitcher('${symbolKey}', 400, 200)
-${extendKey}::extSwitcher('${extendKey}', 400, 200)`
+  `${symbolKey}::symSwitcher("${symbolKey}", 400, 200)
+${extendKey}::extSwitcher("${extendKey}", 400, 200)`
 
 
 config.layer_condition = {
@@ -116,7 +88,7 @@ symSwitcher(key, doubleDelay := 400, holdDelay := 200) {
     SetTimer(double_sym_timer, -doubleDelay)
     KeyWait(key)
     switchers.holding_sym := 0
-  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+  } Else if KeyWait(key, "T" . holdDelay / 1000) {
     layer_ext := 0
     layer_sym := 1
     switchers.pressCount_sym := 0
@@ -148,7 +120,7 @@ extSwitcher(key, doubleDelay := 400, holdDelay := 200) {
     SetTimer(double_ext_timer, -doubleDelay)
     KeyWait(key)
     switchers.holding_ext := 0
-  } Else if KeyWait(key, 'T' . holdDelay / 1000) {
+  } Else if KeyWait(key, "T" . holdDelay / 1000) {
     layer_sym := 0
     layer_ext := 1
     switchers.pressCount_ext := 0

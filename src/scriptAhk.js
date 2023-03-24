@@ -1,19 +1,28 @@
 import { autohotkeyStr } from './ahk'
 import { sleep } from './utilities'
+import { Prism } from './lib/prism'
 
 export const script = document.createElement('div')
 script.id = 'ahkCtx'
 
+const pre = document.createElement('pre')
+pre.className = 'language-autohotkey'
+script.append(pre)
 
-const ol = document.createElement('ol')
-script.append(ol)
+//append line indexes
+autohotkeyStr.split('\n').map((str, i) => {
+  const lineIndex = document.createElement('div')
+  lineIndex.className = 'lineIndex'
+  lineIndex.innerText = i
+  lineIndex.style.userSelect = 'none'
 
-const listItems = autohotkeyStr.split('\n').map(line => {
-  const li = document.createElement('li')
-  li.textContent = line
-  return li
+  const lineContent = document.createElement('div')
+  lineContent.className = 'lineContent'
+  lineContent.innerHTML =
+    Prism.highlight(str, Prism.languages.autohotkey)
+
+  pre.append(lineIndex, lineContent)
 })
-ol.append(...listItems)
 
 
 const copyBtn = document.createElement('button')

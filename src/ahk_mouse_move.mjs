@@ -3,22 +3,22 @@ export function move(combo, mouseU, mouseR, mouseD, mouseL) {
   boostSpeed: 0, ; on double/triple click  
   moveCount_total: 0,
   moveCount: Map(
-    'up', 0,
-    'down', 0,
-    'right', 0,
-    'left', 0,
+    "up", 0,
+    "down", 0,
+    "right", 0,
+    "left", 0,
   ),
   pressCount: Map(
-    'up', 0,
-    'down', 0,
-    'right', 0,
-    'left', 0,
+    "up", 0,
+    "down", 0,
+    "right", 0,
+    "left", 0,
   ),
   keys: Map(
-    'up', '${mouseU}',
-    'down', '${mouseD}',
-    'right', '${mouseR}',
-    'left', '${mouseL}',
+    "up", "${mouseU}",
+    "down", "${mouseD}",
+    "right", "${mouseR}",
+    "left", "${mouseL}",
   )
 }
 
@@ -43,7 +43,7 @@ mouse_move(dir) {
 
   moveMove_switch(dir) ;no combo
 
-  if KeyWait(mouse.keys.get(dir), 'T.1')
+  if KeyWait(mouse.keys.get(dir), "T.1")
     mouse.boostSpeed := 0
   Else {
     ;triple clicks
@@ -67,9 +67,9 @@ mouse_boostSpeed_timer(dir) {
 mouse_moveCount_timer(dir) {
   global
   
-  If GetKeyState(mouse.keys.get(dir), 'P') && (
+  If GetKeyState(mouse.keys.get(dir), "P") && (
     layer_ext
-    || GetKeyState('${combo}', 'P')
+    || GetKeyState("${combo}", "P")
     ) {
     if mouse.moveCount.get(dir) != mouse.moveCount_total
       return
@@ -94,7 +94,7 @@ mouse_moveCount_timer(dir) {
 
 isCombo(dir) {
   for key, value in mouse.keys
-    if key != dir && GetKeyState(value, 'p')
+    if key != dir && GetKeyState(value, "p")
       return true
   return false
 }
@@ -142,25 +142,25 @@ mouseMoveCountersDecrement(dir) {
 }
 
 moveMove_switch(dir) {      
-  vertical := dir == 'up' || dir == 'down'
-  if GetKeyState(mouse.keys.get(vertical ? 'left' : 'up'), 'P')
+  vertical := dir == "up" || dir == "down"
+  if GetKeyState(mouse.keys.get(vertical ? "left" : "up"), "P")
     switch dir {
-      case 'up', 'left': MouseMove(-x, -y,, 'R')
-      case 'right': MouseMove(x, -y,, 'R')
-      case 'down': MouseMove(-x, y,, 'R')
+      case "up", "left": MouseMove(-x, -y,, "R")
+      case "right": MouseMove(x, -y,, "R")
+      case "down": MouseMove(-x, y,, "R")
     }
-  else if GetKeyState(mouse.keys.get(vertical ? 'right' : 'down'), 'P')
+  else if GetKeyState(mouse.keys.get(vertical ? "right" : "down"), "P")
     switch dir {
-      case 'up': MouseMove(x, -y,, 'R')
-      case 'right', 'down': MouseMove(x, y,, 'R')
-      case 'left': MouseMove(-x, y,, 'R')
+      case "up": MouseMove(x, -y,, "R")
+      case "right", "down": MouseMove(x, y,, "R")
+      case "left": MouseMove(-x, y,, "R")
     }
   else
     switch dir {
-      case 'up': MouseMove(0, -y,, 'R')
-      case 'right': MouseMove(x, 0,, 'R')
-      case 'down': MouseMove(0, y,, 'R')
-      case 'left': MouseMove(-x, 0,, 'R')
+      case "up": MouseMove(0, -y,, "R")
+      case "right": MouseMove(x, 0,, "R")
+      case "down": MouseMove(0, y,, "R")
+      case "left": MouseMove(-x, 0,, "R")
     }
 }
 `

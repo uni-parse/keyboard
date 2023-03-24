@@ -2,33 +2,10 @@
   position: relative;
   height: 80vh;
   padding: 0.5em;
-}
 
-ol {
-  border: double;
-  border-radius: 0.5em;
-  font-size: clamp(1rem, 1.25vw, 1.25rem);
-  tab-size: 2;
-  overflow: auto;
-  white-space: break-spaces;
-  background-color: #333;
-  max-height: 100%;
-  color: yellowgreen;
-  margin: 0 0.1em;
-
-  li {
-    white-space: break-spaces;
-    counter-increment: index;
-
-    &::marker {
-      content: counter(index, decimal-leading-zero) '  ';
-      color: darkorange;
-    }
-
-    &::selection {
-      background-color: #222;
-      color: darkorange;
-    }
+  //border: red solid thin;
+  ::selection {
+    background-color: #151515;
   }
 }
 
@@ -37,6 +14,7 @@ ol {
   position: absolute;
   right: 2rem;
   top: 1rem;
+
   &::selection {
     background-color: transparent;
     color: currentColor;
@@ -49,5 +27,117 @@ ol {
     opacity: 0;
     white-space: nowrap;
     transition: opacity 500ms;
+  }
+}
+
+pre {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-gap: 0 .5em;
+
+  color: #f8f8f2;
+  background-color: #333;
+  //background-color: #272822;
+
+  //border: red solid;
+  border-radius: 0.3em;
+
+  font: clamp(1rem, 1.25vw, 1.25rem) / 1.5 Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+
+  tab-size: 2;
+  //hyphens: none;
+
+  margin: .5em 0;
+
+  overflow: auto;
+  white-space: break-spaces;
+  max-height: calc(100% - .5em);
+
+  .lineIndex {
+    text-align: end;
+    border-right: solid thin;
+    color: #bbb;
+    padding: 0 .5em;
+    width: 100%;
+  }
+
+  .lineContent {
+    background-color: #272822;
+  }
+}
+
+.token {
+
+  &.comment,
+  &.prolog,
+  &.doctype,
+  &.cdata {
+    color: #8292a2;
+  }
+
+  &.punctuation {
+    color: #f8f8f2;
+  }
+
+  &.namespace {
+    opacity: .7;
+  }
+
+  &.property,
+  &.tag,
+  &.constant,
+  &.symbol,
+  &.deleted {
+    color: #f92672;
+  }
+
+  &.boolean,
+  &.number {
+    color: #ae81ff;
+  }
+
+  &.selector,
+  &.attr-name,
+  &.char,
+  &.builtin,
+  &.inserted {
+    color: #a6e22e;
+  }
+
+  &.operator,
+  &.string,
+  &.entity,
+  &.url,
+  &.variable {
+    color: #f8f8f2;
+  }
+
+  &.atrule,
+  &.attr-value,
+  &.function,
+  &.class-name {
+    color: #e6db74;
+  }
+
+  &.keyword {
+    color: #66d9ef;
+  }
+
+  &.regex,
+  &.important {
+    color: #fd971f;
+  }
+
+  &.important,
+  &.bold {
+    font-weight: bold;
+  }
+
+  &.italic {
+    font-style: italic;
+  }
+
+  &.entity {
+    cursor: help;
   }
 }
