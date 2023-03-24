@@ -18,14 +18,11 @@ $lightness: -8%;
   padding: 0.25em;
   //border: solid yellow thin;
   border-radius: .7em;
-  background-color: #333;
+  background-color: color.adjust(#333, $alpha: -.4%);
   overflow: auto;
   font: clamp(1em, 1.5vw, 1.25em) monospace;
 
-  ::selection {
-    background-color: transparent;
-    color: currentColor;
-  }
+  user-select: none;
 
   .row {
     display: grid;

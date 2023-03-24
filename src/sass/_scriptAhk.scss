@@ -1,11 +1,19 @@
+@use 'sass:color';
+
+$selectBackground: #ffffff20; //selection
+$editBackground: #0c0020; //editor
+$indexes: #ffffff73;
+
 #ahkCtx {
   position: relative;
   height: 80vh;
   padding: 0.5em;
+  margin-bottom: 3em;
 
   //border: red solid thin;
   ::selection {
-    background-color: #151515;
+    background-color: $selectBackground;
+    //color: currentColor;
   }
 }
 
@@ -15,10 +23,7 @@
   right: 2rem;
   top: 1rem;
 
-  &::selection {
-    background-color: transparent;
-    color: currentColor;
-  }
+  user-select: none;
 
   span {
     position: absolute;
@@ -30,19 +35,21 @@
   }
 }
 
+
 pre {
   display: grid;
   grid-template-columns: max-content 1fr;
   grid-gap: 0 .5em;
 
   color: #f8f8f2;
-  background-color: #333;
-  //background-color: #272822;
+  //background-color: #333;
+  background: color.adjust($editBackground, $alpha:-.2%);
+
 
   //border: red solid;
   border-radius: 0.3em;
 
-  font: clamp(1rem, 1.25vw, 1.25rem) / 1.5 Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font: clamp(1rem, 1.25vw, 1.25rem) / 1.1 Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
   tab-size: 2;
   //hyphens: none;
@@ -56,19 +63,26 @@ pre {
   .lineIndex {
     text-align: end;
     border-right: solid thin;
-    color: #bbb;
+    color: $indexes;
     padding: 0 .5em;
     width: 100%;
   }
 
-  .lineContent {
-    background-color: #272822;
-  }
+  //.lineContent {
+  //background-color: #272822;
+  //}
 }
+
+
+
 
 .token {
 
-  &.comment,
+  &.comment {
+    color: #dabdff96;
+    font-style: italic;
+  }
+
   &.prolog,
   &.doctype,
   &.cdata {
@@ -76,24 +90,28 @@ pre {
   }
 
   &.punctuation {
-    color: #f8f8f2;
+    color: #53d49e;
   }
 
   &.namespace {
     opacity: .7;
   }
 
-  &.property,
+  &.property {
+    color: #7ab1f8;
+  }
+
+
   &.tag,
-  &.constant,
   &.symbol,
   &.deleted {
     color: #f92672;
   }
 
+  &.constant,
   &.boolean,
   &.number {
-    color: #ae81ff;
+    color: #f97e72;
   }
 
   &.selector,
@@ -101,14 +119,22 @@ pre {
   &.char,
   &.builtin,
   &.inserted {
-    color: #a6e22e;
+    color: #FF8C00;
   }
 
-  &.operator,
-  &.string,
-  &.entity,
-  &.url,
+  &.operator {
+    color: #53a5d4;
+  }
+
+  &.string {
+    color: #ffece3d0;
+  }
+
   &.variable {
+    color: #c368ff;
+  }
+
+  &.url {
     color: #f8f8f2;
   }
 
@@ -116,11 +142,11 @@ pre {
   &.attr-value,
   &.function,
   &.class-name {
-    color: #e6db74;
+    color: #57dae4;
   }
 
   &.keyword {
-    color: #66d9ef;
+    color: #7a53d4;
   }
 
   &.regex,
@@ -138,6 +164,7 @@ pre {
   }
 
   &.entity {
+    color: #4870df;
     cursor: help;
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "js",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.6.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,8 +17,7 @@
     "postcss-preset-env": "^7.7.1",
     "sass": "^1.52.3",
     "vite": "^2.9.12",
-    "vite-imagetools": "^4.0.4",
-    "vite-plugin-top-level-await": "^1.2.4"
+    "vite-imagetools": "^4.0.4"
   },
   "browserslist": [
     "last 2 versions and >= 1% and not IE <= 11"
