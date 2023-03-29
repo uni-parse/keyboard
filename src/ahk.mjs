@@ -7,6 +7,7 @@ import { brightness } from './ahk_brightness.mjs'
 
 const base = keys.standard.map(k => k == ';' ? '`;' : k)
 let mouseL, mouseR, mouseU, mouseD, scrollU, scrollD
+const extKey = 'F24', symKey = 'F23'
 
 export const autohotkeyStr = `${config.intro}
 ;config layers ⚙️      ⚙️      ⚙️      ⚙️      ⚙️
@@ -55,7 +56,7 @@ ${brightness()}
 wheelDelay_default := 40
 wheelDelay_multiplier := .25
 
-${scroll(config.extKey, scrollU, scrollD)}
+${scroll(scrollU, scrollD)}
 
 x_slow := 1.5
 x_default := 2.8
@@ -76,7 +77,9 @@ mouse_speed_lvl := 0
 x_max := mouse_speed_lvl ? x_default : 8
 y_max := x_max
 
-${move(config.extKey, mouseU, mouseR, mouseD, mouseL)}`
+${move(mouseU, mouseR, mouseD, mouseL)}`
+
+
 
 function getExt(layer) {
   return keys[layer].reduce((prev, key, i) => {

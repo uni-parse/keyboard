@@ -11,21 +11,22 @@ Persistent()
 #Warn  ; detecting common errors.
 
 ;config layers ⚙️      ⚙️      ⚙️      ⚙️      ⚙️
-F23::symSwitcher("F23", 400, 200)
-F24::extSwitcher("F24", 400, 200)
+F23::switcher("sym")
+F24::switcher("ext")
+
 
 ;extend layer 🌟    🌟    🌟    🌟    🌟    🌟
-#HotIf !layer_ext2 && (
+#HotIf !layers.get("ext2") && (
   (
-    layer_ext
-    && !GetKeyState("F23", "P")
+    layers.get("ext")
+    && !GetKeyState(symbolKey, "P")
   ) || (
-    !layer_ext
-    && GetKeyState("F24", "P")
-    && !GetKeyState("F23", "P")
+    !layers.get("ext")
+    && GetKeyState(extendKey, "P")
+    && !GetKeyState(symbolKey, "P")
   ) || (
-    layer_sym
-    && GetKeyState("F24", "P")
+    layers.get("sym")
+    && GetKeyState(extendKey, "P")
   )
 )
 	*q::wheelScroll_up()
@@ -58,7 +59,7 @@ F24::extSwitcher("F24", 400, 200)
 #HotIf
 
 ;extend2 layer 🌟🌟     🌟🌟     🌟🌟     🌟🌟
-#HotIf layer_ext2
+#HotIf layers.get("ext2")
 	l::PrintScreen
 	u::Volume_Up
 	y::^Numpad0
@@ -77,17 +78,17 @@ F24::extSwitcher("F24", 400, 200)
 #HotIf
 
 ;symbol layer 💲     💲     💲     💲     💲
-#HotIf !layer_sym2 && (
+#HotIf !layers.get("sym2") && (
   (
-    layer_sym
-    && !GetKeyState("F24", "P")
+    layers.get("sym")
+    && !GetKeyState(extendKey, "P")
   ) || (
-    !layer_sym
-    && GetKeyState("F23", "P")
-    && !GetKeyState("F24", "P")
+    !layers.get("sym")
+    && GetKeyState(symbolKey, "P")
+    && !GetKeyState(extendKey, "P")
   ) || (
-    layer_ext
-    && GetKeyState("F23", "P")
+    layers.get("ext")
+    && GetKeyState(symbolKey, "P")
   )
 )
 	`::Send("{U+22c6}")
@@ -126,7 +127,7 @@ F24::extSwitcher("F24", 400, 200)
 #HotIf
 
 ;symbol1 layer ⇧💲      ⇧💲      ⇧💲      ⇧💲
-#HotIf GetKeyState("F23", "P") && GetKeyState("F24", "P")
+#HotIf GetKeyState(extendKey, "P") && GetKeyState(symbolKey, "P")
 	`::Send("{U+22c6}")
 	1::Send("{U+25aa}")
 	2::Send("{U+25b8}")
@@ -163,7 +164,7 @@ F24::extSwitcher("F24", 400, 200)
 #HotIf
 
 ;symbol2 layer 💲💲    💲💲    💲💲    💲💲
-#HotIf layer_sym2
+#HotIf layers.get("sym2")
 	1::Send("{U+2152}")
 	2::Send("{U+bd}")
 	3::Send("{U+2153}")
@@ -205,80 +206,70 @@ ins::switchWindow()
 ;helper functions 🌟⦺     🌟⦺     🌟⦺     🌟⦺
 SetCapsLockState("AlwaysOff")
 
-layer_ext := 0
-layer_ext2 := 0
-layer_sym := 0
-layer_sym2 := 0
+extendKey := "F24"
+symbolKey := "F23"
 
-switchers := {
-  holding_sym: 0,
-  holding_ext: 0,
-  pressCount_sym: 0,
-  pressCount_ext: 0
-}
+layers := Map(
+  "ext", 0,
+  "ext2", 0,
+  "sym", 0,
+  "sym2", 0
+)
 
-symSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+holding := Map(
+  "sym", 0,
+  "ext", 0
+)
+
+doublePress := Map(
+  "sym", 0,
+  "ext", 0
+)
+
+switcher(layer, doubleDelay := 400, holdDelay := 200) {
   global
 
-  if switchers.holding_sym
+  if holding.get(layer)
     return
 
-  switchers.holding_sym := 1
-  layer_sym := 0
+  holding.set(layer, 1)
 
-  If !switchers.pressCount_sym {
-    switchers.pressCount_sym := 1
-    SetTimer(double_sym_timer, -doubleDelay)
+  if layers.get(layer)
+    layers.set(layer, 0)
+
+  local key := layer == "ext" ? extendKey : symbolKey
+
+  ;first press
+  If !doublePress.get(layer) {
+    doublePress.set(layer, 1)
+    SetTimer(() => doublePress.set(layer, 0), -doubleDelay)
     KeyWait(key)
-    switchers.holding_sym := 0
-  } Else if KeyWait(key, "T" . holdDelay / 1000) {
-    layer_ext := 0
-    layer_sym := 1
-    switchers.pressCount_sym := 0
-    switchers.holding_sym := 0
-  } else {
-    layer_sym2 := 1
-    KeyWait(key)
-    layer_sym2 := 0
-    switchers.holding_sym := 0
   }
-}
 
-double_sym_timer() {
-  global
-  switchers.pressCount_sym := 0
-}
+  ;double press
+  else {
+    layers.set(layer . 2, 1)
+    
+    local released := KeyWait(key, "T" . holdDelay / 1000)
 
-extSwitcher(key, doubleDelay := 400, holdDelay := 200) {
-  global
+    if released {
+      layers.set(getOppositeLayer(layer), 0)
+      layers.set(layer, 1)
+      doublePress.set(layer, 0)
+    } else
+      KeyWait(key)
 
-  if switchers.holding_ext
-    return
-  
-  switchers.holding_ext := 1
-  layer_ext := 0
-
-  If !switchers.pressCount_ext {
-    switchers.pressCount_ext := 1
-    SetTimer(double_ext_timer, -doubleDelay)
-    KeyWait(key)
-    switchers.holding_ext := 0
-  } Else if KeyWait(key, "T" . holdDelay / 1000) {
-    layer_sym := 0
-    layer_ext := 1
-    switchers.pressCount_ext := 0
-    switchers.holding_ext := 0
-  } else {
-    layer_ext2 := 1
-    KeyWait(key)
-    layer_ext2 := 0
-    switchers.holding_ext := 0        
+    layers.set(layer . 2, 0)
   }
+
+  holding.set(layer, 0)
 }
 
-double_ext_timer() {
-  global
-  switchers.pressCount_ext := 0
+getOppositeLayer(layer) {
+  switch layer {
+    case "sym": return "ext"
+    case "ext": return "sym"
+  }
 }
 
 window_toggle := 0
@@ -366,7 +357,7 @@ wheelScroll_up() {
 
 wheel_up_scrolling_timer() {
   global
-  if GetKeyState("q","P") && (layer_ext || GetKeyState("F24","P"))
+  if GetKeyState("q","P") && (layers.get("ext") || GetKeyState(extendKey,"P"))
     SendInput '{Blind}{WheelUp}'
   Else {
     wheelDelay := wheelDelay_default
@@ -413,7 +404,7 @@ wheelScroll_down() {
 
 wheel_down_scrolling_timer() {
   global
-  if GetKeyState("a","P") && (layer_ext || GetKeyState("F24","P"))
+  if GetKeyState("a","P") && (layers.get("ext") || GetKeyState(extendKey,"P"))
     SendInput '{Blind}{WheelDown}'
   Else {
     wheelDelay := wheelDelay_default
@@ -450,13 +441,11 @@ x_max := mouse_speed_lvl ? x_default : 8
 y_max := x_max
 
 mouse := {
-  boostSpeed: 0, ; on double/triple click  
-  moveCount_total: 0,
-  moveCount: Map(
-    "up", 0,
-    "down", 0,
-    "right", 0,
-    "left", 0,
+  keys: Map(
+    "up", "f",
+    "down", "s",
+    "right", "t",
+    "left", "r",
   ),
   pressCount: Map(
     "up", 0,
@@ -464,12 +453,14 @@ mouse := {
     "right", 0,
     "left", 0,
   ),
-  keys: Map(
-    "up", "f",
-    "down", "s",
-    "right", "t",
-    "left", "r",
-  )
+  moveCount_total: 0,
+  moveCount: Map(
+    "up", 0,
+    "down", 0,
+    "right", 0,
+    "left", 0,
+  ),
+  boostSpeed: 0 ; on double/triple click  
 }
 
 mouse_move(dir) {
@@ -518,8 +509,8 @@ mouse_moveCount_timer(dir) {
   global
   
   If GetKeyState(mouse.keys.get(dir), "P") && (
-    layer_ext
-    || GetKeyState("F24", "P")
+    layers.get("ext")
+    || GetKeyState(extendKey, "P")
     ) {
     if mouse.moveCount.get(dir) != mouse.moveCount_total
       return

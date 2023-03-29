@@ -1,12 +1,10 @@
-export function move(combo, mouseU, mouseR, mouseD, mouseL) {
+export function move(mouseU, mouseR, mouseD, mouseL) {
   return `mouse := {
-  boostSpeed: 0, ; on double/triple click  
-  moveCount_total: 0,
-  moveCount: Map(
-    "up", 0,
-    "down", 0,
-    "right", 0,
-    "left", 0,
+  keys: Map(
+    "up", "${mouseU}",
+    "down", "${mouseD}",
+    "right", "${mouseR}",
+    "left", "${mouseL}",
   ),
   pressCount: Map(
     "up", 0,
@@ -14,12 +12,14 @@ export function move(combo, mouseU, mouseR, mouseD, mouseL) {
     "right", 0,
     "left", 0,
   ),
-  keys: Map(
-    "up", "${mouseU}",
-    "down", "${mouseD}",
-    "right", "${mouseR}",
-    "left", "${mouseL}",
-  )
+  moveCount_total: 0,
+  moveCount: Map(
+    "up", 0,
+    "down", 0,
+    "right", 0,
+    "left", 0,
+  ),
+  boostSpeed: 0 ; on double/triple click  
 }
 
 mouse_move(dir) {
@@ -68,8 +68,8 @@ mouse_moveCount_timer(dir) {
   global
   
   If GetKeyState(mouse.keys.get(dir), "P") && (
-    layer_ext
-    || GetKeyState("${combo}", "P")
+    layers.get("ext")
+    || GetKeyState(extendKey, "P")
     ) {
     if mouse.moveCount.get(dir) != mouse.moveCount_total
       return

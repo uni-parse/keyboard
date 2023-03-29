@@ -1,4 +1,4 @@
-export function scroll(combo, scrollU, scrollD) {
+export function scroll(scrollU, scrollD) {
   return `wheel := {
   boostSpeed_up: 0,
   boostSpeed_down: 0,
@@ -55,7 +55,7 @@ wheelScroll_${dir}() {
     return `
 wheel_${dir}_scrolling_timer() {
   global
-  if GetKeyState("${key}","P") && (layer_ext || GetKeyState("${combo}","P"))
+  if GetKeyState("${key}","P") && (layers.get("ext") || GetKeyState(extendKey,"P"))
     SendInput '{Blind}{${getHotkey(key)}}'
   Else {
     wheelDelay := wheelDelay_default

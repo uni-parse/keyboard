@@ -46,14 +46,14 @@ formateKeysToArrays() // keys = { layer1: ['key1', ...], ... }
 keys.shift = getShifts(keys.standard)
 keys.symShift = getShifts(keys.sym, !'shiftDot')
 
-keys.standardHtk = keys.standard.map(key => getHotKey(key))
-keys.extHtk = keys.ext.map(key => getHotKey(key))
-keys.ext2Htk = keys.ext2.map(key => getHotKey(key))
+keys.standardHtk = keys.standard.map(getHotKey)
+keys.extHtk = keys.ext.map(getHotKey)
+keys.ext2Htk = keys.ext2.map(getHotKey)
 
 keys.standardRows = getKeysByRows(standardStr)
 keys.standardHtkRows = getKeysByRows(
   standardStr.split('')
-    .map(key => getHotKey(key))
+    .map(getHotKey)
     .join('')
 )
 
@@ -68,7 +68,6 @@ function formateKeysToArrays() {
       .replaceAll('  ', ' ')     //remove extra spaces
       .split(' ')
   )
-
 }
 function getKeysByRows(standardStr) {
   const names = ['top', 'upper', 'home', 'lower', 'bottom'],

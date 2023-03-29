@@ -1,13 +1,11 @@
 const
   symbolKey = 'F23',
-  extendKey = 'F24',
-  delay = [-400, 2]
+  extendKey = 'F24'
 
 export const config = {
   symKey: symbolKey,
   extKey: extendKey
 }
-
 config.intro = `;
 ;
 ;   made by UniParse
@@ -22,120 +20,111 @@ Persistent()
 
 
 config.switchers =
-  `${symbolKey}::symSwitcher("${symbolKey}", 400, 200)
-${extendKey}::extSwitcher("${extendKey}", 400, 200)`
+  `${symbolKey}::switcher("sym")
+${extendKey}::switcher("ext")
+`
 
 
 config.layer_condition = {
-  ext: `!layer_ext2 && (
+  ext: `!layers.get("ext2") && (
   (
-    layer_ext
-    && !GetKeyState("${symbolKey}", "P")
+    layers.get("ext")
+    && !GetKeyState(symbolKey, "P")
   ) || (
-    !layer_ext
-    && GetKeyState("${extendKey}", "P")
-    && !GetKeyState("${symbolKey}", "P")
+    !layers.get("ext")
+    && GetKeyState(extendKey, "P")
+    && !GetKeyState(symbolKey, "P")
   ) || (
-    layer_sym
-    && GetKeyState("${extendKey}", "P")
+    layers.get("sym")
+    && GetKeyState(extendKey, "P")
   )
 )`,
 
-  ext2: `layer_ext2`,
+  ext2: `layers.get("ext2")`,
 
-  sym: `!layer_sym2 && (
+  sym: `!layers.get("sym2") && (
   (
-    layer_sym
-    && !GetKeyState("${extendKey}", "P")
+    layers.get("sym")
+    && !GetKeyState(extendKey, "P")
   ) || (
-    !layer_sym
-    && GetKeyState("${symbolKey}", "P")
-    && !GetKeyState("${extendKey}", "P")
+    !layers.get("sym")
+    && GetKeyState(symbolKey, "P")
+    && !GetKeyState(extendKey, "P")
   ) || (
-    layer_ext
-    && GetKeyState("${symbolKey}", "P")
+    layers.get("ext")
+    && GetKeyState(symbolKey, "P")
   )
 )`,
 
-  sym1: `GetKeyState("${symbolKey}", "P") && GetKeyState("${extendKey}", "P")`,
+  sym1: `GetKeyState(extendKey, "P") && GetKeyState(symbolKey, "P")`,
 
-  sym2: `layer_sym2`
+  sym2: `layers.get("sym2")`
 }
 
-config.config = `layer_ext := 0
-layer_ext2 := 0
-layer_sym := 0
-layer_sym2 := 0
+config.config = `extendKey := "${extendKey}"
+symbolKey := "${symbolKey}"
 
-switchers := {
-  holding_sym: 0,
-  holding_ext: 0,
-  pressCount_sym: 0,
-  pressCount_ext: 0
-}
+layers := Map(
+  "ext", 0,
+  "ext2", 0,
+  "sym", 0,
+  "sym2", 0
+)
 
-symSwitcher(key, doubleDelay := 400, holdDelay := 200) {
+holding := Map(
+  "sym", 0,
+  "ext", 0
+)
+
+doublePress := Map(
+  "sym", 0,
+  "ext", 0
+)
+
+switcher(layer, doubleDelay := 400, holdDelay := 200) {
   global
 
-  if switchers.holding_sym
+  if holding.get(layer)
     return
 
-  switchers.holding_sym := 1
-  layer_sym := 0
+  holding.set(layer, 1)
 
-  If !switchers.pressCount_sym {
-    switchers.pressCount_sym := 1
-    SetTimer(double_sym_timer, -doubleDelay)
+  if layers.get(layer)
+    layers.set(layer, 0)
+
+  local key := layer == "ext" ? extendKey : symbolKey
+
+  ;first press
+  If !doublePress.get(layer) {
+    doublePress.set(layer, 1)
+    SetTimer(() => doublePress.set(layer, 0), -doubleDelay)
     KeyWait(key)
-    switchers.holding_sym := 0
-  } Else if KeyWait(key, "T" . holdDelay / 1000) {
-    layer_ext := 0
-    layer_sym := 1
-    switchers.pressCount_sym := 0
-    switchers.holding_sym := 0
-  } else {
-    layer_sym2 := 1
-    KeyWait(key)
-    layer_sym2 := 0
-    switchers.holding_sym := 0
   }
-}
 
-double_sym_timer() {
-  global
-  switchers.pressCount_sym := 0
-}
+  ;double press
+  else {
+    layers.set(layer . 2, 1)
+    
+    local released := KeyWait(key, "T" . holdDelay / 1000)
 
-extSwitcher(key, doubleDelay := 400, holdDelay := 200) {
-  global
+    if released {
+      layers.set(getOppositeLayer(layer), 0)
+      layers.set(layer, 1)
+      doublePress.set(layer, 0)
+    } else
+      KeyWait(key)
 
-  if switchers.holding_ext
-    return
-  
-  switchers.holding_ext := 1
-  layer_ext := 0
-
-  If !switchers.pressCount_ext {
-    switchers.pressCount_ext := 1
-    SetTimer(double_ext_timer, -doubleDelay)
-    KeyWait(key)
-    switchers.holding_ext := 0
-  } Else if KeyWait(key, "T" . holdDelay / 1000) {
-    layer_sym := 0
-    layer_ext := 1
-    switchers.pressCount_ext := 0
-    switchers.holding_ext := 0
-  } else {
-    layer_ext2 := 1
-    KeyWait(key)
-    layer_ext2 := 0
-    switchers.holding_ext := 0        
+    layers.set(layer . 2, 0)
   }
+
+  holding.set(layer, 0)
 }
 
-double_ext_timer() {
-  global
-  switchers.pressCount_ext := 0
+getOppositeLayer(layer) {
+  switch layer {
+    case "sym": return "ext"
+    case "ext": return "sym"
+  }
 }`
 
 
