@@ -54,12 +54,17 @@ copyBtn.addEventListener('click', async () => {
 //download button
 const downloadBtn = document.createElement('button')
 downloadBtn.id = 'downloadBtn'
+downloadBtn.textContent = 'download'
 script.append(downloadBtn)
 
-const a = document.createElement('a')
-a.textContent = 'download'
-a.download = 'uniparse.ahk'
-downloadBtn.append(a)
+//onClick download uniparse.ahk
+downloadBtn.addEventListener('click', () => {
+  const blob = new Blob([autohotkeyStr], { type: 'text/plain' })
+  
+  const a = document.createElement('a')
+  a.download = 'uniparse.ahk'
+  a.href = URL.createObjectURL(blob)
+  a.click()
 
-const blob = new Blob([autohotkeyStr], { type: 'text/plain' })
-a.href = URL.createObjectURL(blob)
+  URL.revokeObjectURL(a.href)
+})
