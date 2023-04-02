@@ -1,5 +1,5 @@
 import { autohotkeyStr } from './ahk'
-import { eventPromise, sleep } from './utilities'
+import { sleep } from './utilities'
 import { Prism } from './lib/prism'
 
 export const script = document.createElement('div')
@@ -59,12 +59,11 @@ script.append(downloadBtn)
 
 //onClick download uniparse.ahk
 downloadBtn.addEventListener('click', () => {
-  const blob = new Blob([autohotkeyStr], { type: 'text/plain' })
-  
-  const a = document.createElement('a')
-  a.download = 'uniparse.ahk'
-  a.href = URL.createObjectURL(blob)
-  a.click()
+  const ilnk = document.createElement('a')
+  ilnk.download = 'uniparse.ahk'
+  ilnk.href = URL.createObjectURL(
+    new Blob([autohotkeyStr], { type: 'text/plain' }))
+  ilnk.click()
 
-  URL.revokeObjectURL(a.href)
+  URL.revokeObjectURL(ilnk.href)
 })
