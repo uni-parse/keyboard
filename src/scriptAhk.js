@@ -1,5 +1,5 @@
 import { autohotkeyStr } from './ahk'
-import { sleep } from './utilities'
+import { eventPromise, sleep } from './utilities'
 import { Prism } from './lib/prism'
 
 export const script = document.createElement('div')
@@ -24,7 +24,7 @@ autohotkeyStr.split('\n').map((str, i) => {
   pre.append(lineIndex, lineContent)
 })
 
-
+//copy button
 const copyBtn = document.createElement('button')
 copyBtn.id = 'copyBtn'
 copyBtn.textContent = 'copy'
@@ -51,3 +51,15 @@ copyBtn.addEventListener('click', async () => {
 }, { once: false })
 
 
+//download button
+const downloadBtn = document.createElement('button')
+downloadBtn.id = 'downloadBtn'
+script.append(downloadBtn)
+
+const a = document.createElement('a')
+a.textContent = 'download'
+a.download = 'uniparse.ahk'
+downloadBtn.append(a)
+
+const blob = new Blob([autohotkeyStr], { type: 'text/plain' })
+a.href = URL.createObjectURL(blob)

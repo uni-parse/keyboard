@@ -17,21 +17,61 @@ $indexes: #ffffff73;
   }
 }
 
-#copyBtn {
-  padding: 0.25rem;
+//colors
+$magenta: color.adjust(#f0f, $lightness: 6%, $hue: 25);
+$cyan: color.adjust(#0ff, $hue: 20);
+
+#ahkCtx button {
   position: absolute;
   right: 2rem;
-  top: 1rem;
 
   user-select: none;
 
+  color: white;
+  background: radial-gradient(transparent, $magenta);
+
+  border: outset $magenta .15rem;
+  border-radius: .5rem 0;
+
+  outline: outset $cyan .12rem;
+  box-shadow: 0 0 .8rem $cyan;
+  
+  &:hover {
+    box-shadow: 0 0 1.3rem $cyan;
+    outline: outset $cyan .13rem;
+  }
+
+  &:active{
+    border-style:inset;
+    outline-style: inset;
+  }
+}
+
+#copyBtn {
+  padding: 0.25rem;
+  padding-top: .1rem;
+  top: 1rem;
+
   span {
     position: absolute;
-    top: 0.25em;
+    top: 0.1em;
     right: 120%;
     opacity: 0;
     white-space: nowrap;
     transition: opacity 500ms;
+  }
+}
+
+#downloadBtn {
+  padding: 0;
+  top: 3rem;
+
+  a {
+    color: currentColor;
+    text-decoration-line: none;
+    display: inline-block;
+    padding: 0.25rem;
+    padding-top: .1rem;
   }
 }
 
@@ -43,7 +83,7 @@ pre {
 
   color: #f8f8f2;
   //background-color: #333;
-  background: color.adjust($editBackground, $alpha:-.2%);
+  background: color.adjust($editBackground, $alpha: -.2%);
 
 
   //border: red solid;
@@ -72,8 +112,6 @@ pre {
   //background-color: #272822;
   //}
 }
-
-
 
 
 .token {
