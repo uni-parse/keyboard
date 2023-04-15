@@ -44,7 +44,7 @@ const standardStr = keys.standard
 formateKeysToArrays() // keys = { layer1: ['key1', ...], ... }
 
 keys.shift = getShifts(keys.standard)
-keys.symShift = getShifts(keys.sym, !'shiftDot')
+keys.symShift = getShifts(keys.sym, { shiftDot: false })
 
 keys.standardHtk = keys.standard.map(getHotKey)
 keys.extHtk = keys.ext.map(getHotKey)
@@ -59,28 +59,22 @@ keys.standardHtkRows = getKeysByRows(
 
 
 function formateKeysToArrays() {
-  Object.entries(keys).forEach(([key, value]) =>
-    keys[key] = value
-      .replace('\n', '')         //remove first new line
-      .replaceAll('\n', ' ')     //remove all new lines
-      .replaceAll('    ', ' ')   //remove extra spaces
-      .replaceAll('   ', ' ')    //remove extra spaces
-      .replaceAll('  ', ' ')     //remove extra spaces
-      .split(' ')
-  )
+  Object.entries(keys).forEach(([layer, keysStr]) =>
+    keys[layer] = keysStr.match(/\S+/gu))
 }
+
 function getKeysByRows(standardStr) {
   const names = ['top', 'upper', 'home', 'lower', 'bottom'],
     rows = standardStr
-      .replace('\n', '')         //remove first newLine0
-      .replaceAll('    ', ' ')   //remove extra spaces
-      .replaceAll('   ', ' ')    //remove extra spaces
-      .replaceAll('  ', ' ')     //remove extra spaces
+      .replace('\n', '')         //remove first newLine
+      .replace(/ {2,}/g, ' ')    //remove extra spaces
       .split('\n')
   rows.forEach((row, i) => rows[i] = row.split(' '))
   return Object.fromEntries(names.map((n, i) => [n, rows[i]]))
 }
-function getShifts(layer, shiftDot = true) {
+
+function getShifts(layer, options = {}) {
+  const { shiftDot = true } = options
   return layer.map(key => {
     if (shiftDot && key == '.') return '>'
     switch (key) {
