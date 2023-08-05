@@ -10,7 +10,7 @@ pp pp rr Rm mm ll ll   lR   rr mm Mr rr pp  gg
 gg  Pp Rr Mm Ll Ll   Lr   rr Rr Mm Rr Pp pp  gg
 gg   PP RR MM LL Ll   lr   Rr RR MM RR PP pp  gg
 gg  gg Rr Mm LL Ll  ll  rr  Rr RR Mm Rr gg
-gg     gg  GG         Gg         GG  gg   gg  gg`,
+gg     gg  GG         Gg       GG  gg   gg  gg`,
   standard: `
 \`  1 2 3 4 5 6   \\   7 8 9 0 =   ⌫
 ⇄    q w f p b   [   j l u y ' -   ⏎
