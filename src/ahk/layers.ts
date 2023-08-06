@@ -7,8 +7,8 @@ const layersByStr = {
 40     26  10         18       10  26   40  60`,
   bg: `
 pp pp rr Rm mm il il   lR   ir mm Mr rr pp  gg
-gg  Pp Rr Mm Il Il   Lr   ir Ir Mm Rr Pp pp  gg
-gg   PP RR MM IL Il   lr   Ir IR MM RR PP pp  gg
+Gg  Pp Rr Mm Il Il   Lr   ir Ir Mm Rr Pp Pp  gg
+Gg   PP RR MM IL Il   lr   Ir IR MM RR PP Pp  gg
 gg  Gg Rr Mm IL Il  il  ir  Ir IR Mm Rr Gg
 gg     gg  sym        GG      ext  gg   gg  gg`,
   standard: `

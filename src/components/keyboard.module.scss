@@ -1,1 +1,21 @@
 @use './keysBg' as *;
+
+.row_top {
+  grid-template-columns: repeat(13, minmax(1em, 1fr)) 11%;
+}
+
+.row_upper {
+  grid-template-columns: 9.5% repeat(12, minmax(1em, 1fr)) 7.4%;
+}
+
+.row_home {
+  grid-template-columns: 11% repeat(13, minmax(1em, 1fr));
+}
+
+.row_lower {
+  grid-template-columns: 7.4% repeat(11, minmax(1em, 1fr)) 16.5%;
+}
+
+.row_bottom {
+  grid-template-columns: repeat(3, 1fr) 4fr repeat(4, 1fr);
+}
