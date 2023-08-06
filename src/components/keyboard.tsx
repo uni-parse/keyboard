@@ -1,31 +1,44 @@
+import { ReactNode } from 'react'
 import { layersByRows } from '@/ahk/layers'
+import styles from '@/components/keyboard.module.scss'
 
-const entries = Object.entries(layersByRows.standard)
+const keysEntries = Object.entries(layersByRows.standard)
 
 export default function Keyboard() {
   return (
     <div>
-      {entries.map(([row, keys]) => (
-        <Row key={row} keys={keys} />
+      {keysEntries.map(([rowName, keys]) => (
+        <Row key={rowName} rowName={rowName} keys={keys} />
       ))}
     </div>
   )
 }
 
-interface RowCtxType {
-  keys: string[]
-}
+type RowProps = { rowName: string; keys: string[] }
 
-function Row({ keys }: RowCtxType) {
+function Row({ rowName, keys }: RowProps) {
   return (
     <div>
-      {keys.map(key => (
-        <Key key={key}>{key}</Key>
+      {keys.map((key, i) => (
+        <Key
+          key={key}
+          bgClass={styles[layersByRows.bg[rowName][i]]}>
+          {key}
+        </Key>
       ))}
     </div>
   )
 }
 
-function Key({ children }: any) {
-  return <button type='button'>{children}</button>
+type KeyProps = {
+  bgClass: string
+  children: ReactNode
+}
+
+function Key({ bgClass, children }: KeyProps) {
+  return (
+    <button className={`${bgClass} text-[white]`} type='button'>
+      {children}
+    </button>
+  )
 }

@@ -1,0 +1,160 @@
+@use 'sass:color';
+
+$pincky: hsl(200, 67%, 24%);
+$ring: hsl(330, 88%, 23%);
+$middle: hsl(147, 93%, 16%);
+$indexL: hsl(216, 70%, 25%);
+$indexR: hsl(281, 51%, 24%);
+$modifier: #333;
+
+@function clr($c, $lightness) {
+  @return color.scale($c, $lightness: $lightness)
+}
+
+$lightness1: -20%;
+$lightness2: 10%;
+$lightness3: 30%;
+
+$ext: color.mix($modifier, hsl(80, 100%, 50%), 60%);
+$sym: color.mix($modifier, orange, 60%);
+
+$gg: clr($modifier, $lightness1);
+$Gg: clr($modifier, $lightness2);
+$GG: clr($modifier, $lightness3);
+
+$il: clr($indexL, $lightness1);
+$Il: clr($indexL, $lightness2);
+$IL: clr($indexL, $lightness3);
+
+$ir: clr($indexR, $lightness1);
+$Ir: clr($indexR, $lightness2);
+$IR: clr($indexR, $lightness3);
+
+$mm: clr($middle, $lightness1);
+$Mm: clr($middle, $lightness2);
+$MM: clr($middle, $lightness3);
+
+$rr: clr($ring, $lightness1);
+$Rr: clr($ring, $lightness2);
+$RR: clr($ring, $lightness3);
+
+$pp: clr($pincky, $lightness1);
+$Pp: clr($pincky, $lightness2);
+$PP: clr($pincky, $lightness3);
+
+$shadowIn: radial-gradient(transparent 20%, #0009);
+
+@mixin bg($c1, $percent1: 0%, $c2: false, $percent2: 100%) {
+  @if ($c2) {
+    background-image:
+      $shadowIn,
+      linear-gradient(90deg, $c1 $percent1, $c2 $percent2);
+  }
+
+  @else {
+    background-color: $c1;
+    background-image: $shadowIn;
+  }
+}
+
+
+
+.ext {
+  @include bg($ext)
+}
+
+.sym {
+  @include bg($sym)
+}
+
+.gg {
+  @include bg($gg)
+}
+
+.Gg {
+  @include bg($Gg)
+}
+
+.GG {
+  @include bg($GG)
+}
+
+.il {
+  @include bg($il)
+}
+
+.Il {
+  @include bg($Il)
+}
+
+.IL {
+  @include bg($IL)
+}
+
+.ir {
+  @include bg($ir)
+}
+
+.Ir {
+  @include bg($Ir)
+}
+
+.IR {
+  @include bg($IR)
+}
+
+.mm {
+  @include bg($mm)
+}
+
+.Mm {
+  @include bg($Mm)
+}
+
+.MM {
+  @include bg($MM)
+}
+
+.rr {
+  @include bg($rr)
+}
+
+.Rr {
+  @include bg($Rr)
+}
+
+.RR {
+  @include bg($RR)
+}
+
+.pp {
+  @include bg($pp)
+}
+
+.Pp {
+  @include bg($Pp)
+}
+
+.PP {
+  @include bg($PP)
+}
+
+.Rm {
+  @include bg($rr, 60%, $mm)
+}
+
+.Mr {
+  @include bg($mm, 60%, $rr)
+}
+
+.lR {
+  @include bg($il, 0%, $ir, 40%)
+}
+
+.Lr {
+  @include bg($il, 60%, $ir)
+}
+
+.lr {
+  @include bg($il, 30%, $ir, 70%)
+}

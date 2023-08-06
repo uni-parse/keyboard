@@ -6,11 +6,11 @@ const layersByStr = {
 46  33 27 24 18 22  37  37  22 18 24 27 33
 40     26  10         18       10  26   40  60`,
   bg: `
-pp pp rr Rm mm ll ll   lR   rr mm Mr rr pp  gg
-gg  Pp Rr Mm Ll Ll   Lr   rr Rr Mm Rr Pp pp  gg
-gg   PP RR MM LL Ll   lr   Rr RR MM RR PP pp  gg
-gg  gg Rr Mm LL Ll  ll  rr  Rr RR Mm Rr gg
-gg     gg  GG         Gg       GG  gg   gg  gg`,
+pp pp rr Rm mm il il   lR   ir mm Mr rr pp  gg
+gg  Pp Rr Mm Il Il   Lr   ir Ir Mm Rr Pp pp  gg
+gg   PP RR MM IL Il   lr   Ir IR MM RR PP pp  gg
+gg  Gg Rr Mm IL Il  il  ir  Ir IR Mm Rr Gg
+gg     gg  sym        GG      ext  gg   gg  gg`,
   standard: `
 \`  1 2 3 4 5 6   \\   7 8 9 0 =   ⌫
 ⇄    q w f p b   [   j l u y ' -   ⏎
@@ -46,7 +46,6 @@ alt   a r s t g   ]   m n e i o ;   ⏎
 // ....................................................
 
 const power = toArr(layersByStr.power)
-const bg = toArr(layersByStr.bg)
 const standard = toArr(layersByStr.standard)
 const ext = toArr(layersByStr.ext)
 const ext2 = toArr(layersByStr.ext2)
@@ -55,12 +54,10 @@ const sym2 = toArr(layersByStr.sym2)
 
 const layersByArr = {
   power,
-  bg,
+  shift: getShifts(standard),
 
   standard,
   standardHtk: standard.map(getHotKey),
-
-  shift: getShifts(standard),
 
   ext,
   extHtk: ext.map(getHotKey),
@@ -71,6 +68,7 @@ const layersByArr = {
   symShift: getShifts(sym, false),
   sym2,
 }
+
 // ....................................................
 
 const standardHtkStr = layersByStr.standard
@@ -81,6 +79,7 @@ const standardHtkStr = layersByStr.standard
 const layersByRows = {
   standard: getLayerByRows(layersByStr.standard),
   standardHtk: getLayerByRows(standardHtkStr),
+  bg: getLayerByRows(layersByStr.bg),
 }
 
 // ....................................................
