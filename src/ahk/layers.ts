@@ -43,7 +43,7 @@ alt   a r s t g   ]   m n e i o ;   ⏎
 .      .   .         .         .   .   .   .`,
 }
 
-// ....................................................
+// layersByArr ........................................
 
 const power = toArr(layersByStr.power)
 const standard = toArr(layersByStr.standard)
@@ -52,7 +52,7 @@ const ext2 = toArr(layersByStr.ext2)
 const sym = toArr(layersByStr.sym)
 const sym2 = toArr(layersByStr.sym2)
 
-const layersByArr = {
+export const layersByArr = {
   power,
   shift: getShifts(standard),
 
@@ -69,7 +69,7 @@ const layersByArr = {
   sym2,
 }
 
-// ....................................................
+// layersByRows .........................................
 
 const standardHtkStr = layersByStr.standard
   .split('')
@@ -82,7 +82,15 @@ const layersByRows = {
   bg: getLayerByRows(layersByStr.bg),
 }
 
-// ....................................................
+export const rowsLayersByKeys = {
+  top: getRowLayersByKeys('top'),
+  upper: getRowLayersByKeys('upper'),
+  home: getRowLayersByKeys('home'),
+  lower: getRowLayersByKeys('lower'),
+  bottom: getRowLayersByKeys('bottom'),
+}
+
+// helper functions .........................................
 
 function toArr(layer: string) {
   const layerArr = layer.match(/\S+/gu)!
@@ -97,10 +105,41 @@ function getLayerByRows(standardStr: string) {
     .map(row => row.split(' ')) // row: string => string[]
 
   const rowsNames = ['top', 'upper', 'home', 'lower', 'bottom']
-  const LayerByRows = Object.fromEntries(
+  const layerByRows = Object.fromEntries(
     rowsNames.map((n, i) => [n, rows[i]])
   )
-  return LayerByRows
+
+  type LayerByRows = {
+    top: string[]
+    upper: string[]
+    home: string[]
+    lower: string[]
+    bottom: string[]
+  }
+
+  return layerByRows as LayerByRows
+}
+
+function getRowLength(row: string) {
+  const rowsLengths = {
+    top: 14,
+    upper: 14,
+    home: 14,
+    lower: 13,
+    bottom: 8,
+  }
+  return (rowsLengths as any)[row] as number
+}
+
+function getRowLayersByKeys(row: string) {
+  const range = new Array(getRowLength(row)).fill(null)
+
+  const rowLayersByKeys = range.map((el, i) => ({
+    standard: (layersByRows.standard as any)[row][i] as string,
+    bg: (layersByRows.bg as any)[row][i] as string,
+  }))
+
+  return rowLayersByKeys
 }
 
 function getShifts(layer: string[], shiftDot = true) {
@@ -203,5 +242,3 @@ function getHotKey(key: string) {
   const hotkey = hotkeysMap.get(key) ?? key
   return hotkey
 }
-
-export { layersByArr, layersByRows }
