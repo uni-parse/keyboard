@@ -12,13 +12,13 @@ $modifier: #333;
 }
 
 
-$lightness1: -20%;
+$lightness1: 0%;
 $lightness2: 7%;
-$lightness3: 30%;
+$lightness3: 10%;
 $mix: 75%;
 
-$ext: color.mix($modifier, hsl(80, 100%, 50%), $mix);
-$sym: color.mix($modifier, orange, $mix);
+$ext: clr($modifier, $lightness3);
+$sym: clr($modifier, $lightness3);
 
 $gg: clr($modifier, $lightness1);
 $Gg: clr($modifier, $lightness2);
@@ -44,7 +44,7 @@ $pp: clr($pincky, $lightness1);
 $Pp: clr($pincky, $lightness2);
 $PP: clr($pincky, $lightness3);
 
-$shadowIn: radial-gradient(transparent 20%, #0009);
+$shadowIn: radial-gradient(transparent , #000e);
 
 @mixin bg($c1, $percent1: 0%, $c2: false, $percent2: 100%) {
   @if ($c2) {
@@ -74,11 +74,11 @@ $shadowIn: radial-gradient(transparent 20%, #0009);
 }
 
 .Gg {
-  @include bg($Gg)
+  @include bg($gg)
 }
 
 .GG {
-  @include bg($GG)
+  @include bg($gg)
 }
 
 .il {

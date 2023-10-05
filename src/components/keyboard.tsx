@@ -1,49 +1,18 @@
-import { ReactNode } from 'react'
-import { layersByRows } from '@/ahk/layers'
-import styles from '@/components/keyboard.module.scss'
+import { rowsLayersByKeys } from '@/ahk/layers'
+import KeysRow from '@/components/KeysRow'
 
-const keysEntries = Object.entries(layersByRows.standard)
+const rowsEntries = Object.entries(rowsLayersByKeys)
 
 export default function Keyboard() {
   return (
-    <div className='grid gap-1 overflow-auto rounded-xl bg-[#3337] p-1 [font:clamp(1em,1.5vw,1.25em)_monospace] [user-select:none]'>
-      {keysEntries.map(([rowName, keys]) => (
-        <Row key={rowName} rowName={rowName} keys={keys} />
+    <div className='grid gap-[.25em] overflow-auto rounded-xl bg-[#fff] p-1 [user-select:none]'>
+      {
+        // max-w-[24em]
+        // [font:clamp(1em,1.5vw,1.25em)_monospace]
+      }
+      {rowsEntries.map(([rowName, keys]) => (
+        <KeysRow key={rowName} rowName={rowName} keys={keys} />
       ))}
     </div>
-  )
-}
-
-type RowProps = { rowName: string; keys: string[] }
-
-function Row({ rowName, keys }: RowProps) {
-  return (
-    <div
-      className={`${
-        styles[`row_${rowName}`]
-      } grid justify-between gap-1`}>
-      {keys.map((key, i) => (
-        <Key
-          key={key}
-          bgClass={styles[layersByRows.bg[rowName][i]]}>
-          {key}
-        </Key>
-      ))}
-    </div>
-  )
-}
-
-type KeyProps = {
-  bgClass: string
-  children: ReactNode
-}
-
-function Key({ bgClass, children }: KeyProps) {
-  return (
-    <button
-      className={`${bgClass} h-[2em] rounded-[.5em_.5em_50%_50%/.5em_.5em_.5em_.5em] p-0 text-center text-[white] [border:black_thin_groove] [box-shadow:.2em_.3em_7px_0_#111]`}
-      type='button'>
-      {children}
-    </button>
   )
 }
