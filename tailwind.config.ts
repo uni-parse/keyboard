@@ -8,7 +8,8 @@ const config: Config = {
   ],
 
   corePlugins: {
-    preflight: false, // !true = !remove User-Agent initial styles
+    preflight: false,
+    // !true = !remove User-Agent initial styles
   },
 
   theme: {
