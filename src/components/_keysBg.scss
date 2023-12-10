@@ -3,8 +3,8 @@
 $pincky: hsl(200, 67%, 24%);
 $ring: hsl(330, 88%, 23%);
 $middle: hsl(147, 93%, 16%);
-$indexL: hsl(216, 70%, 25%);
-$indexR: hsl(281, 51%, 24%);
+$indexWest: hsl(216, 70%, 25%);
+$indexEast: hsl(281, 51%, 24%);
 $modifier: #333;
 
 @function clr($c, $lightness) {
@@ -12,9 +12,10 @@ $modifier: #333;
 }
 
 
-$lightness1: 0%;
-$lightness2: 7%;
-$lightness3: 10%;
+$lightness0: 0%;
+$lightness1: 7%;
+$lightness2: 15%;
+$lightness3: 40%;
 $mix: 75%;
 
 $ext: clr($modifier, $lightness3);
@@ -24,13 +25,15 @@ $gg: clr($modifier, $lightness1);
 $Gg: clr($modifier, $lightness2);
 $GG: clr($modifier, $lightness3);
 
-$il: clr($indexL, $lightness1);
-$Il: clr($indexL, $lightness2);
-$IL: clr($indexL, $lightness3);
+$ww: clr($indexWest, $lightness0);
+$wW: clr($indexWest, $lightness1);
+$Ww: clr($indexWest, $lightness2);
+$WW: clr($indexWest, $lightness3);
 
-$ir: clr($indexR, $lightness1);
-$Ir: clr($indexR, $lightness2);
-$IR: clr($indexR, $lightness3);
+$ee: clr($indexEast, $lightness0);
+$eE: clr($indexEast, $lightness1);
+$Ee: clr($indexEast, $lightness2);
+$EE: clr($indexEast, $lightness3);
 
 $mm: clr($middle, $lightness1);
 $Mm: clr($middle, $lightness2);
@@ -44,7 +47,7 @@ $pp: clr($pincky, $lightness1);
 $Pp: clr($pincky, $lightness2);
 $PP: clr($pincky, $lightness3);
 
-$shadowIn: radial-gradient(transparent , #000e);
+$shadowIn: radial-gradient(transparent, #000e);
 
 @mixin bg($c1, $percent1: 0%, $c2: false, $percent2: 100%) {
   @if ($c2) {
@@ -81,28 +84,36 @@ $shadowIn: radial-gradient(transparent , #000e);
   @include bg($gg)
 }
 
-.il {
-  @include bg($il)
+.ww {
+  @include bg($ww)
 }
 
-.Il {
-  @include bg($Il)
+.Ww {
+  @include bg($Ww)
 }
 
-.IL {
-  @include bg($IL)
+.wW {
+  @include bg($wW)
 }
 
-.ir {
-  @include bg($ir)
+.WW {
+  @include bg($WW)
 }
 
-.Ir {
-  @include bg($Ir)
+.ee {
+  @include bg($ee)
 }
 
-.IR {
-  @include bg($IR)
+.Ee {
+  @include bg($Ee)
+}
+
+.eE {
+  @include bg($eE)
+}
+
+.EE {
+  @include bg($EE)
 }
 
 .mm {
@@ -141,22 +152,26 @@ $shadowIn: radial-gradient(transparent , #000e);
   @include bg($PP)
 }
 
-.Rm {
-  @include bg($rr, 60%, $mm)
-}
-
 .Mr {
-  @include bg($mm, 60%, $rr)
+  @include bg($mm, 70%, $rr)
 }
 
-.lR {
-  @include bg($il, 0%, $ir, 40%)
+.Rm {
+  @include bg($rr, 40%, $mm, 80%)
 }
 
-.Lr {
-  @include bg($il, 60%, $ir)
+.mw {
+  @include bg($mm, 30%, $ww, 70%)
 }
 
-.lr {
-  @include bg($il, 30%, $ir, 70%)
+.em {
+  @include bg($ee, 50%, $mm, 90%)
+}
+
+.We {
+  @include bg($ww, 60%, $ee)
+}
+
+.we {
+  @include bg($ww, 30%, $ee, 70%)
 }

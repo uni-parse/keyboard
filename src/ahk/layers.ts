@@ -1,42 +1,45 @@
 const layersByStr = {
   power: `
-55 46 40 34 29 29 35   47   29 29 30 35 42  51
+55 46 40 34 29 29   35 47   29 29 30 35 42  51
 42  30 25 21 23 26   44   34 22 20 24 30 36  47
 34   16 13 11 10 29   42   29 10 11 13 16 34  48
 46  33 27 24 18 22  37  37  22 18 24 27 33
 40     26  10         18       10  26   40  60`,
+// ⚠️ remove lR Mr Rm Lr
+// 💡 add iL
+// replace il/ir with ww/ee
   bg: `
-pp pp rr Rm mm il il   lR   ir mm Mr rr pp  gg
-Gg  Pp Rr Mm Il Il   Lr   ir Ir Mm Rr Pp Pp  gg
-Gg   PP RR MM IL Il   lr   Ir IR MM RR PP Pp  gg
-gg  Gg Rr Mm IL Il  il  ir  Ir IR Mm Rr Gg
+pp pp rr Rm mw wW   ww ee   eE em Mr rr pp  gg
+Gg  Pp Rr Mm Ww Ww   We   eE Ee Mm Rr Pp Pp  gg
+Gg   PP RR MM WW Ww   we   Ee EE MM RR PP Pp  gg
+gg  Gg Rr Mm WW Ww  ww  ee  Ee EE Mm Rr Gg
 gg     gg  sym        GG      ext  gg   gg  gg`,
   standard: `
-\`  1 2 3 4 5 6   \\   7 8 9 0 =   ⌫
+\`  1 2 3 4 5   = \\   6 7 8 9 0   ⌫
 ⇄    q w f p b   [   j l u y ' -   ⏎
 alt   a r s t g   ]   m n e i o ;   ⏎
 ⇧    ⇧ x c d v   z /   k h , . ⇧
 ⊞      ⨁ 💲     space    ⭐ ⨁ ⨁ ≣`,
   ext: `
-.  . . . . . .   .   . . . . .    .
+.  . . . . .    . .   . . . . .    .
 .   ⇈ ⊗ ▴ ⎇ .   .   . ⇱ ↑ ⇲ ⇞ ⇟   .
 .    ⇊ ◂ ▾ ▸ ≣   .   ⇄ ← ↓ → ⏎ .   .
 .   . ↩ ↪ ⌫ ⌦   . .   ⇪ ◴ ⦺ ◷ .
 .       . .      .        . . . .`,
   ext2: `
-.  . . . . . .   .   . . . . .      .
+.  . . . . .   . .   . . . . .      .
 .   . . . . .   .   . ⎙ 🔊 ⊚ ◼ .   .
 .   . . 🔍 . .  .   📱 ⏮ 🔉 ⏭ ⏯ 🔇   .
 .  . . . . .   . .   ☀ ✳ ⊕ ⊝ .
 .       . .     .     . . . .`,
   sym: `
-⋆  ▪ ▸ . . » .   .   › • . . ⁃  .
+⋆  ▪ ▸ . . »   . .   › • . . ⁃  .
 . \` [ ] . .    .  .  . ( ) " _  .
 .   1 2 3 4 .   €  \\ 7 8 9 0 :  .
 .  . { } 5 =   . .   / 6 < > .
 .     . .       .      . . . .`,
   sym2: `
-. ⅒ ½  ⅓  ¼  ⅕  .    .    ¾  ⁰  .  .  .   .
+. ⅒  ½  ⅓  ¼  ⅕    . .    ¾  ⁰  .  .  .   .
 .  💡 ⚠️  ↑  π  ≈   ∉    .  .  ≤  ≥  …   ±   .
 .   F1 F2 F3 F4 ≠    ∈   .  F7 F8 F9 F10  .   .
 .  .  ✗  ㊿ F5 F11  . .  F12 F6  .  .  .
