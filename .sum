@@ -1,0 +1,21 @@
+most have:
+  local storage of templates (layoutes)
+
+should have:
+  auto log in
+  sync user local storage templates with database
+
+could have:
+  share btn
+  test text
+  extra downloads as MSKLC 1.4
+
+won't have:
+  AI bot
+
+
+
+msklc 1.4:
+  https://www.microsoft.com/en-us/download/details.aspx?id=102134
+  edit:
+    /"Microsoft Keyboard Layout Creator 1.4"/inc/kbd.h
